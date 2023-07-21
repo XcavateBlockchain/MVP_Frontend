@@ -24,11 +24,35 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>XCavate</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      window.kilt = {};
+      Object.defineProperty(window.kilt, 'meta', {
+        value: { versions: { credentials: '3.0' } },
+        enumerable: false,
+      });
+    </script>
+    <div class="loader-container" id="loader-container">
+      <div class="loader">
+          <div class="rotatingLoader"></div>
+      </div>
+    </div>
+    <script>
+      var loader = document.getElementById("loader-container");
+        window.addEventListener("load",function(){
+            setTimeout(function(){
+                loader.style.opacity = "0";
+            },600);
+            setTimeout(function(){
+                loader.style.display = "none";
+            },900);
+        });
+
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
