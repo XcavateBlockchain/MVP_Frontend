@@ -1,14 +1,14 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import PropertyInfo from "../../utils/Forms/PropertyInfo";
 import { MdVerified } from "react-icons/md";
 import AdditionalInfo from "../../utils/Forms/AdditionalInfo";
 import ListedInfo from "../../utils/Forms/ListedInfo";
 const PropertyListing = () => {
-    const [page,setPage]= useState(1);
-    const onChangingPage = (num) =>{
-        setPage(num);
-        console.log(num);
-    }
+  const [page, setPage] = useState(1);
+  const onChangingPage = (num) => {
+    setPage(num);
+    console.log(num);
+  }
   return (
     <>
       <div className="container mt-20  m-auto flex justify-center items-center flex-col h-[100%]">
@@ -23,11 +23,11 @@ const PropertyListing = () => {
           <div className="flex items-center  ">
             <input
               id="bordered-radio-1"
-              type="radio" 
-              checked={page===1}
-       
+              type="radio"
+              checked={page === 1}
+
               name="info"
-              onClick={(e)=>onChangingPage(1)}
+              onClick={(e) => onChangingPage(1)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -40,12 +40,12 @@ const PropertyListing = () => {
           </div>
           <div className="flex items-center ">
             <input
-              
+
               id="bordered-radio-2"
               type="radio"
-              checked={page===2}
+              checked={page === 2}
               name="info"
-              onClick={(e)=>onChangingPage(2)}
+              onClick={(e) => onChangingPage(2)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -57,12 +57,12 @@ const PropertyListing = () => {
           </div>
           <div className="flex items-center ">
             <input
-              checked={page===3}
+              checked={page === 3}
               id="bordered-radio-3"
               type="radio"
-       
+
               name="info"
-              onClick={(e)=>onChangingPage(3)}
+              onClick={(e) => onChangingPage(3)}
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -74,9 +74,9 @@ const PropertyListing = () => {
           </div>
 
         </div>
-          {page==1 && <PropertyInfo/>}
-          {page==2 && <ListedInfo/>}
-          {page==3 && <AdditionalInfo/>}
+        {page == 1 && <PropertyInfo />}
+        {page == 2 && <ListedInfo />}
+        {page == 3 && <AdditionalInfo />}
       </div>
     </>
   );
