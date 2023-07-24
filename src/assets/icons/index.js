@@ -7,6 +7,7 @@ import BathAndShowerSvgIcon from "./bath-and-shower.svg";
 import LoadingSvgIcon from "./loading.svg";
 import VerifiedSvgIcon from "./verified.svg";
 import ShareSvgIcon from "./share.svg";
+import Upload1SvgIcon from "./upload1.svg";
 
 export {
   WalletSvgIcon,
@@ -18,4 +19,5 @@ export {
   LoadingSvgIcon,
   VerifiedSvgIcon,
   ShareSvgIcon,
+  Upload1SvgIcon,
 }
