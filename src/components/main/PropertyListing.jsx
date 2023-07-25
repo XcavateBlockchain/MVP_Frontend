@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropertyInfo from '../../utils/Forms/PropertyInfo'
 import AdditionalInfo from '../../utils/Forms/AdditionalInfo'
 import ListedInfo from '../../utils/Forms/ListedInfo'
 import { useSelector, useDispatch } from 'react-redux'
 import { VerifiedSvgIcon } from '../../assets/icons'
+import { initialize } from '../../utils/Polkadot/index'
 
 const PropertyListing = () => {
   const dispatch = useDispatch()
@@ -12,8 +13,14 @@ const PropertyListing = () => {
 
   const onChangingPage = (num) => {
     setPage(num)
-    console.log(num)
   }
+
+  useEffect(() => {
+    const start = async () => {
+      await initialize()
+    }
+    start()
+  }, [])
 
   return (
     <>
@@ -37,7 +44,7 @@ const PropertyListing = () => {
               type='radio'
               checked={page === 1}
               name='info'
-              onClick={(e) => onChangingPage(1)}
+              onChange={(e) => onChangingPage(1)}
               className='w-5 h-5'
             />
             <label
@@ -55,7 +62,7 @@ const PropertyListing = () => {
               type='radio'
               checked={page === 2}
               name='info'
-              onClick={(e) => onChangingPage(2)}
+              onChange={(e) => onChangingPage(2)}
               className='w-5 h-5'
             />
             <label
@@ -73,7 +80,7 @@ const PropertyListing = () => {
               id='bordered-radio-3'
               type='radio'
               name='info'
-              onClick={(e) => onChangingPage(3)}
+              onChange={(e) => onChangingPage(3)}
               className='w-5 h-5'
             />
             <label

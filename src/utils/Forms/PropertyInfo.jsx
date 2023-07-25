@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { Upload1SvgIcon } from '../../assets/icons'
+import { addNft } from '../Polkadot/nft'
 const PropertyInfo = () => {
   const [formaData, setFormData] = useState({
     p_title: '',
@@ -87,6 +88,27 @@ const PropertyInfo = () => {
     }
     console.log(data)
   }
+
+  const create = async () => {
+    try {
+      const collection = 1
+      const item = 2
+      const mint_to = ['4tXieDGzm6sfAujC4Z4etqoZrsXdXmg446jJ1auYDiJJHTij']
+      const data = {
+        name: 'C appart 1',
+        number: '3/32/34932/HDMLD',
+        address: '9389 Alia Bialkk Daialek',
+      }
+      const is_frozen = false
+      const phrase = 'forest turn anchor because angry miracle slot unhappy claim blood champion dolphin'
+      
+      const tx = await addNft(collection, item, mint_to, data, phrase)
+      console.log('tx :: ', tx)
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <>
       <div className='container  m-auto flex justify-center items-center flex-col h-[100%] rounded-b-lg mt-4'>
@@ -464,7 +486,7 @@ const PropertyInfo = () => {
           </div>
           <button
             type='button'
-            onClick={formSubmissionClick}
+            onClick={create}
             className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-12 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >
             <h4 className=' font-dmsans-bold text-lg text-white'>
