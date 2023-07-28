@@ -1,112 +1,57 @@
-import React, { useState } from 'react'
-import { AiFillCloseCircle } from 'react-icons/ai'
-import { Upload1SvgIcon } from '../../assets/icons'
-import { addNft } from '../Polkadot/nft'
-const PropertyInfo = () => {
-  const [formaData, setFormData] = useState({
-    p_title: '',
-    p_number: '',
-    p_street: '',
-    p_city: '',
-    p_code: '',
-    p_desc: '',
-  })
-  const [formImages, setFormImages] = useState({
-    floor_plan: {
-      preview: '',
-      data: '',
-    },
-    sale_agreement: {
-      preview: '',
-      data: '',
-    },
-    property_image_1: {
-      preview: '',
-      data: '',
-    },
-    property_image_2: {
-      preview: '',
-      data: '',
-    },
-    property_image_3: {
-      preview: '',
-      data: '',
-    },
-    property_image_4: {
-      preview: '',
-      data: '',
-    },
-  })
-
-  const [inputFields, setInputFields] = useState([
-    {
-      feature: '',
-    },
-  ])
-
-  const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        feature: '',
-      },
-    ])
-  }
-  const removeInputFields = (index) => {
-    const rows = [...inputFields]
-    rows.splice(index, 1)
-    setInputFields(rows)
-  }
-  const handleChange = (index, evnt) => {
-    const { name, value } = evnt.target
-    const list = [...inputFields]
-    list[index][name] = value
-    setInputFields(list)
-  }
-
+import React from 'react'
+import { Upload1SvgIcon, Upload2SvgIcon } from '../../assets/icons'
+const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
   const handleFileChange = (e) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    }
+    // const img = {
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    //   data: e.target.files[0],
+    // }
     let name = e.target.name
-    setFormImages({ ...formImages, [name]: img })
+    if (name.includes('property_image_')) {
+      setProperty({
+        ...property,
+        images: [
+          ...property.images,
+          e.target.files[0],
+        ]
+      })
+    } else {
+      setProperty({
+        ...property,
+        [name]: e.target.files[0],
+      })
+    }
   }
 
   const onFormChange = (e) => {
     let name = e.target.name
     let value = e.target.value
-    setFormData({ ...formaData, [name]: value })
-    console.log(formaData)
+    if (name.includes('f_')) {
+      setProperty({
+        ...property,
+        features: {
+          ...property.features,
+          [name]: value,
+        }
+      })
+    } else if (['street', 'city', 'zipcode'].includes(name)) {
+      setProperty({
+        ...property,
+        address: {
+          ...property.address,
+          [name]: value,
+        }
+      })
+    } else {
+      setProperty({
+        ...property,
+        [name]: value,
+      })
+    }
   }
 
-  const formSubmissionClick = () => {
-    const data = {
-      formaData,
-      formImages,
-      features: inputFields,
-    }
-    console.log(data)
-  }
-
-  const create = async () => {
-    try {
-      const collection = 1
-      const item = 2
-      const mint_to = ['4tXieDGzm6sfAujC4Z4etqoZrsXdXmg446jJ1auYDiJJHTij']
-      const data = {
-        name: 'C appart 1',
-        number: '3/32/34932/HDMLD',
-        address: '9389 Alia Bialkk Daialek',
-      }
-      const is_frozen = false
-      const phrase = 'forest turn anchor because angry miracle slot unhappy claim blood champion dolphin'
-      
-      const tx = await addNft(collection, item, mint_to, data, phrase)
-      console.log('tx :: ', tx)
-    } catch (error) {
-      
-    }
+  const next = async () => {
+    onChangingPage(2)
   }
 
   return (
@@ -116,15 +61,15 @@ const PropertyInfo = () => {
           <div className='grid md:grid-cols-2 md:gap-6'>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='email'
+                htmlFor='name'
                 className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
                 {`Property name`}
               </label>
               <input
                 type='text'
-                id='ptitle'
-                name='p_title'
+                id='name'
+                name='name'
                 onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Briks and blocks'
@@ -133,15 +78,15 @@ const PropertyInfo = () => {
             </div>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='email'
+                htmlFor='number'
                 className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
                 {`Property Number`}
               </label>
               <input
                 type='text'
-                id='ptype'
-                name='p_number'
+                id='number'
+                name='number'
                 onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='3/22/1700/HH'
@@ -151,16 +96,16 @@ const PropertyInfo = () => {
           </div>
           <div className='mb-6'>
             <label
-              htmlFor='p_street'
+              htmlFor='address'
               className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Address
+              {`Property Address`}
             </label>
             <div className='grid md:grid-cols-3 md:gap-3'>
               <input
                 type='text'
-                id='p_street'
-                name='p_street'
+                id='street'
+                name='street'
                 onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Street'
@@ -168,8 +113,8 @@ const PropertyInfo = () => {
               />
               <input
                 type='text'
-                id='p_city'
-                name='p_city'
+                id='city'
+                name='city'
                 onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='City'
@@ -177,8 +122,8 @@ const PropertyInfo = () => {
               />
               <input
                 type='text'
-                id='p_code'
-                name='p_code'
+                id='zipcode'
+                name='zipcode'
                 onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Zip code/ postal code'
@@ -188,14 +133,14 @@ const PropertyInfo = () => {
           </div>
           <div className='mb-6'>
             <label
-              htmlFor='p_desc'
+              htmlFor='description'
               className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Description
+              {`Property Description`}
             </label>
             <textarea
-              id='p_desc'
-              name='p_desc'
+              id='description'
+              name='description'
               rows='4'
               onChange={(e) => onFormChange(e)}
               className=' border-2 border-solid border-form border-opacity-[0.5] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
@@ -204,10 +149,10 @@ const PropertyInfo = () => {
           </div>
           <div className='mb-6'>
             <label
-              htmlFor='feature'
+              htmlFor='features'
               className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Feature
+              {`Property features`}
             </label>
             <div className='grid md:grid-cols-3 md:gap-3'>
               <input
@@ -293,32 +238,18 @@ const PropertyInfo = () => {
           <div className='mt-5 mb-3 grid grid-cols-2 gap-5'>
             <div className='flex justify-center flex-col'>
               <label
-                htmlFor='floor_plan'
+                htmlFor='floorPlanImage'
                 className=' font-graphik-regular text-lg text-headers'
               >
                 {`Doc 1 (Floor plan file)`}
               </label>
               <div className='flex items-center justify-center w-full mt-1'>
                 <label
-                  htmlFor='floor_plan'
+                  htmlFor='floorPlanImage'
                   className='flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500'
                 >
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                    <svg
-                      aria-hidden='true'
-                      className='w-10 h-10 mb-3 text-gray-400'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
-                      ></path>
-                    </svg>
+                    <Upload2SvgIcon />
                     <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
                       <span className=' font-graphik-medium'>Click to upload</span> or
                       drag and drop
@@ -327,9 +258,9 @@ const PropertyInfo = () => {
                   <input
                     type='file'
                     accept='image/*'
-                    id='floor_plan'
+                    id='floorPlanImage'
                     className='hidden'
-                    name='floor_plan'
+                    name='floorPlanImage'
                     onChange={(e) => handleFileChange(e)}
                   />
                 </label>
@@ -337,44 +268,30 @@ const PropertyInfo = () => {
             </div>
             <div className='flex justify-center flex-col mx-3'>
               <label
-                htmlFor='id'
+                htmlFor='assignmentImage'
                 className=' font-graphik-regular text-lg text-headers'
               >
                 {`Doc 2 (DEED Of assignment)`}
               </label>
               <div className='flex items-center justify-center w-full mt-1'>
                 <label
-                  htmlFor='sale_agreement'
+                  htmlFor='assignmentImage'
                   className='flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500'
                 >
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                    <svg
-                      aria-hidden='true'
-                      className='w-10 h-10 mb-3 text-gray-400'
-                      fill='none'
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
-                      ></path>
-                    </svg>
+                    <Upload2SvgIcon />
                     <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
                       <span className=' font-graphik-medium'>Click to upload</span> or
                       drag and drop
                     </p>
                   </div>
                   <input
-                    id='sale_agreement'
+                    id='assignmentImage'
                     accept='image/*'
                     onChange={(e) => handleFileChange(e)}
                     type='file'
                     className='hidden'
-                    name='sale_agreement'
+                    name='assignmentImage'
                   />
                 </label>
               </div>
@@ -486,7 +403,7 @@ const PropertyInfo = () => {
           </div>
           <button
             type='button'
-            onClick={create}
+            onClick={next}
             className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-12 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >
             <h4 className=' font-dmsans-bold text-lg text-white'>

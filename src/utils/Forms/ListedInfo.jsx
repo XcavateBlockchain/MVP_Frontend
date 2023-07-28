@@ -1,5 +1,19 @@
 import React from 'react'
-const ListedInfo = () => {
+const ListedInfo = ({ property, setProperty, onChangingPage }) => {
+  const onFormChange = (e) => {
+    let name = e.target.name
+    let value = e.target.value
+
+    setProperty({
+      ...property,
+      [name]: value,
+    })
+  }
+
+  const next = async () => {
+    onChangingPage(3)
+  }
+
   return (
     <>
       <div className='container flex justify-center items-center flex-col mt-4'>
@@ -7,14 +21,16 @@ const ListedInfo = () => {
           <div className=' w-full lg:w-1/2'>
             <div className='mb-6'>
               <label
-                htmlFor='listingType'
+                htmlFor='type'
                 className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
-                Listing Type
+                {`Listing Type`}
               </label>
               <input
                 type='text'
-                id='listingType'
+                id='type'
+                name='type'
+                onChange={(e) => onFormChange(e)}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Sale'
                 required
@@ -23,22 +39,25 @@ const ListedInfo = () => {
             <div className=''>
               <div className='relative z-0 w-full mb-6 group'>
                 <label
-                  htmlFor='listingPricePound'
+                  htmlFor='price'
                   className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
                 >
-                  Listing Price
+                  {`Listing Price`}
                 </label>
                 <div className='w-full grid grid-cols-2 gap-4'>
                   <input
                     type='number'
-                    id='listingPricePound'
+                    id='price'
+                    name='price'
+                    onChange={(e) => onFormChange(e)}
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
                   />
                   <input
                     type='number'
-                    id='listingPriceXCAV'
+                    id='priceXCAV'
+                    name='priceXCAV'
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
@@ -52,19 +71,22 @@ const ListedInfo = () => {
                   htmlFor='email'
                   className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
                 >
-                  Estimated Rental Income
+                  {`Estimated Rental Income`}
                 </label>
                 <div className='grid grid-cols-2 gap-4'>
                   <input
                     type='number'
-                    id='incomePound'
+                    id='rentalIncome'
+                    name='rentalIncome'
+                    onChange={(e) => onFormChange(e)}
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
                   />
                   <input
                     type='number'
-                    id='incomeXCAV'
+                    id='rentalIncomeXCAV'
+                    name='rentalIncomeXCAV'
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
@@ -73,7 +95,8 @@ const ListedInfo = () => {
               </div>
             </div>
             <button
-              type='submit'
+              type='button'
+              onClick={next}
               className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
             >
               <h4 className=' font-dmsans-bold text-lg text-white'>

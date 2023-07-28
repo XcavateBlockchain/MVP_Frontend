@@ -8,6 +8,7 @@ import LoadingSvgIcon from "./loading.svg";
 import VerifiedSvgIcon from "./verified.svg";
 import ShareSvgIcon from "./share.svg";
 import Upload1SvgIcon from "./upload1.svg";
+import Upload2SvgIcon from "./upload2.svg";
 
 export {
   WalletSvgIcon,
@@ -20,4 +21,5 @@ export {
   VerifiedSvgIcon,
   ShareSvgIcon,
   Upload1SvgIcon,
+  Upload2SvgIcon,
 }

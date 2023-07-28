@@ -5,29 +5,20 @@ const styles = {
   input: 'border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]',
 }
 
-const AdditionalInfo = () => {
-  const initialFormData = Object.freeze({
-    development_number: 0,
-    permission_number: 0,
-    local_authority: '',
-    deed_number: 0,
-    map_url: '',
-  })
-  const [formData, updateFormData] = useState(initialFormData)
+const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
+  const onFormChange = (e) => {
+    let name = e.target.name
+    let value = e.target.value
 
-  const handleChange = (e) => {
-    updateFormData({
-      ...formData,
-
-      // Trimming any whitespace
-      [e.target.name]: e.target.value.trim()
+    setProperty({
+      ...property,
+      [name]: value,
     })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
-    // ... submit to API or something
+    onSubmit()
   }
   return (
     <>
@@ -36,16 +27,16 @@ const AdditionalInfo = () => {
           <div className='grid md:grid-cols-2 md:gap-6'>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='development_number'
+                htmlFor='developmentNumber'
                 className={`${styles.label}`}
               >
-                Property development number*
+                {`Property development number *`}
               </label>
               <input
-                type='number'
-                onChange={handleChange}
-                id='development_number'
-                name='development_number'
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='developmentNumber'
+                name='developmentNumber'
                 className={`${styles.input}`}
                 placeholder='4564SXZ'
                 required
@@ -53,16 +44,16 @@ const AdditionalInfo = () => {
             </div>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='permission_number'
+                htmlFor='planningPermissionNumber'
                 className={`${styles.label}`}
               >
-                Planning permission number*
+                {`Planning permission number *`}
               </label>
               <input
-                type='number'
-                onChange={handleChange}
-                id='permission_number'
-                name='permission_number'
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='planningPermissionNumber'
+                name='planningPermissionNumber'
                 className={`${styles.input}`}
                 placeholder='3/22/1700/HH'
                 required
@@ -72,16 +63,16 @@ const AdditionalInfo = () => {
           <div className='grid md:grid-cols-2 md:gap-6'>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='local_authority'
+                htmlFor='localAuthority'
                 className={`${styles.label}`}
               >
-                Local Authority*
+                {`Local Authority *`}
               </label>
               <input
                 type='text'
-                onChange={handleChange}
-                id='local_authority'
-                name='local_authority'
+                onChange={(e) => onFormChange(e)}
+                id='localAuthority'
+                name='localAuthority'
                 className={`${styles.input}`}
                 placeholder='East Herts'
                 required
@@ -89,16 +80,16 @@ const AdditionalInfo = () => {
             </div>
             <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor='deed_number'
+                htmlFor='titleDeadNumber'
                 className={`${styles.label}`}
               >
-                Title deed number*
+                {`Title deed number *`}
               </label>
               <input
-                type='number'
-                onChange={handleChange}
-                id='deed_number'
-                name='deed_number'
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='titleDeadNumber'
+                name='titleDeadNumber'
                 className={`${styles.input}`}
                 placeholder='17646cnnn'
                 required
@@ -108,16 +99,16 @@ const AdditionalInfo = () => {
           <div className=''>
             <div className='relative z-0 w-full lg:w-1/2'>
               <label
-                htmlFor='map_url'
+                htmlFor='googleMapLink'
                 className={`${styles.label}`}
               >
-                Google map link
+                {`Google map link`}
               </label>
               <input
-                type='url'
-                onChange={handleChange}
-                id='map_url'
-                name='map_url'
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='googleMapLink'
+                name='googleMapLink'
                 className={`${styles.input}`}
                 placeholder='124.234.'
                 required
@@ -125,7 +116,7 @@ const AdditionalInfo = () => {
             </div>
           </div>
           <button
-            type='submit'
+            type='button'
             onClick={handleSubmit}
             className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >

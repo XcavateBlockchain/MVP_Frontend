@@ -2,14 +2,36 @@ import React, { useEffect, useState } from 'react'
 import PropertyInfo from '../../utils/Forms/PropertyInfo'
 import AdditionalInfo from '../../utils/Forms/AdditionalInfo'
 import ListedInfo from '../../utils/Forms/ListedInfo'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { VerifiedSvgIcon } from '../../assets/icons'
 import { initialize } from '../../utils/Polkadot/index'
+import { create } from '../../api/property'
 
 const PropertyListing = () => {
-  const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const [page, setPage] = useState(1)
+  const [property, setProperty] = useState({
+    name: '',
+    number: '',
+    address: {
+      street: '',
+      city: '',
+      zipcode: '',
+    },
+    description: '',
+    features: {},
+    floorPlanImage: null,
+    assignmentImage: null,
+    images: [],
+    type: '',
+    price: '',
+    rentalIncome: '',
+    developmentNumber: '',
+    planningPermissionNumber: '',
+    localAuthority: '',
+    titleDeadNumber: '',
+    googleMapLink: '',
+  })
 
   const onChangingPage = (num) => {
     setPage(num)
@@ -21,6 +43,39 @@ const PropertyListing = () => {
     }
     start()
   }, [])
+
+  const submit = async () => {
+    try {
+      const formData = new FormData()
+  
+      formData.append('name', property.name)
+      formData.append('number', property.number)
+      formData.append('address', JSON.stringify(property.address))
+      formData.append('description', property.description)
+      formData.append('features', JSON.stringify(property.features))
+      formData.append('floorPlanImage', property.floorPlanImage)
+      formData.append('assignmentImage', property.assignmentImage)
+      Array.from(property.images).forEach(image => {
+        formData.append("images", image);
+      });
+      formData.append('type', property.type)
+      formData.append('price', property.price)
+      formData.append('rentalIncome', property.rentalIncome)
+      formData.append('developmentNumber', property.developmentNumber)
+      formData.append('planningPermissionNumber', property.planningPermissionNumber)
+      formData.append('localAuthority', property.localAuthority)
+      formData.append('titleDeadNumber', property.titleDeadNumber)
+      formData.append('googleMapLink', property.googleMapLink)
+  
+      const result = await create(formData)
+      console.log('result :: ', result)
+      if (result?.status === 201 && result?.data?.data) {
+  
+      }
+    } catch (error) {
+      console.log('property creation error :: ', error)
+    }
+  }
 
   return (
     <>
@@ -93,9 +148,9 @@ const PropertyListing = () => {
             </label>
           </div>
         </div>
-        {page === 1 && <PropertyInfo />}
-        {page === 2 && <ListedInfo />}
-        {page === 3 && <AdditionalInfo />}
+        {page === 1 && <PropertyInfo property={property} setProperty={setProperty} onChangingPage={onChangingPage} />}
+        {page === 2 && <ListedInfo property={property} setProperty={setProperty} onChangingPage={onChangingPage} />}
+        {page === 3 && <AdditionalInfo property={property} setProperty={setProperty} onSubmit={submit} />}
       </div>
     </>
   )
