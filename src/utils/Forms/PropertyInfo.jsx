@@ -1,498 +1,419 @@
-import React, { useState } from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
-const PropertyInfo = () => {
-  const [formaData, setFormData] = useState({
-    p_title: "",
-    p_number: "",
-    p_street: "",
-    p_city: "",
-    p_code: "",
-    p_desc: "",
-  });
-  const [formImages, setFormImages] = useState({
-    floor_plan: {
-      preview: "",
-      data: "",
-    },
-    sale_agreement: {
-      preview: "",
-      data: "",
-    },
-    property_image_1: {
-      preview: "",
-      data: "",
-    },
-    property_image_2: {
-      preview: "",
-      data: "",
-    },
-    property_image_3: {
-      preview: "",
-      data: "",
-    },
-    property_image_4: {
-      preview: "",
-      data: "",
-    },
-  });
-
-  const [inputFields, setInputFields] = useState([
-    {
-      feature: "",
-    },
-  ]);
-
-  const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        feature: "",
-      },
-    ]);
-  };
-  const removeInputFields = (index) => {
-    const rows = [...inputFields];
-    rows.splice(index, 1);
-    setInputFields(rows);
-  };
-  const handleChange = (index, evnt) => {
-    const { name, value } = evnt.target;
-    const list = [...inputFields];
-    list[index][name] = value;
-    setInputFields(list);
-  };
-
+import React from 'react'
+import { Upload1SvgIcon, Upload2SvgIcon } from '../../assets/icons'
+const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
   const handleFileChange = (e) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    let name = e.target.name;
-    setFormImages({ ...formImages, [name]: img });
-  };
+    // const img = {
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    //   data: e.target.files[0],
+    // }
+    let name = e.target.name
+    if (name.includes('property_image_')) {
+      setProperty({
+        ...property,
+        images: [
+          ...property.images,
+          e.target.files[0],
+        ]
+      })
+    } else {
+      setProperty({
+        ...property,
+        [name]: e.target.files[0],
+      })
+    }
+  }
 
   const onFormChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setFormData({ ...formaData, [name]: value });
-    console.log(formaData);
-  };
+    let name = e.target.name
+    let value = e.target.value
+    if (name.includes('f_')) {
+      setProperty({
+        ...property,
+        features: {
+          ...property.features,
+          [name]: value,
+        }
+      })
+    } else if (['street', 'city', 'zipcode'].includes(name)) {
+      setProperty({
+        ...property,
+        address: {
+          ...property.address,
+          [name]: value,
+        }
+      })
+    } else {
+      setProperty({
+        ...property,
+        [name]: value,
+      })
+    }
+  }
 
-  const formSubmissionClick = () => {
-    const data = {
-      formaData,
-      formImages,
-      features: inputFields,
-    };
-    console.log(data);
-  };
+  const next = async () => {
+    onChangingPage(2)
+  }
+
   return (
     <>
-      <div className="container  m-auto flex justify-center items-center flex-col h-[100%]">
-        <div className="py-10 px-20 rounded-md bg-white w-[60%]">
-          <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
+      <div className='container  m-auto flex justify-center items-center flex-col h-[100%] rounded-b-lg mt-4'>
+        <div className='py-10 px-20 bg-white w-full'>
+          <div className='grid md:grid-cols-2 md:gap-6'>
+            <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='name'
+                className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
-                Property Title
+                {`Property name`}
               </label>
               <input
-                type="text"
-                id="ptitle"
-                name="p_title"
+                type='text'
+                id='name'
+                name='name'
                 onChange={(e) => onFormChange(e)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="Nikku Apartment"
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Briks and blocks'
                 required
               />
             </div>
-            <div className="relative z-0 w-full mb-6 group">
+            <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='number'
+                className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
-                Property Number
+                {`Property Number`}
               </label>
               <input
-                type="number"
-                id="ptype"
-                name="p_number"
+                type='text'
+                id='number'
+                name='number'
                 onChange={(e) => onFormChange(e)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="House , Apartment , Land"
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='3/22/1700/HH'
                 required
               />
             </div>
           </div>
-          <div className="mb-6">
+          <div className='mb-6'>
             <label
-              htmlFor="p_street"
-              className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+              htmlFor='address'
+              className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Address
+              {`Property Address`}
             </label>
-            <div className="grid md:grid-cols-3 md:gap-3">
+            <div className='grid md:grid-cols-3 md:gap-3'>
               <input
-                type="text"
-                id="p_street"
-                name="p_street"
+                type='text'
+                id='street'
+                name='street'
                 onChange={(e) => onFormChange(e)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="Street"
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Street'
                 required
               />
               <input
-                type="text"
-                id="p_city"
-                name="p_city"
+                type='text'
+                id='city'
+                name='city'
                 onChange={(e) => onFormChange(e)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="City"
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='City'
                 required
               />
               <input
-                type="text"
-                id="p_code"
-                name="p_code"
+                type='text'
+                id='zipcode'
+                name='zipcode'
                 onChange={(e) => onFormChange(e)}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="Zip Code"
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Zip code/ postal code'
                 required
               />
             </div>
           </div>
-
-          <div className="mb-6">
+          <div className='mb-6'>
             <label
-              htmlFor="p_desc"
-              className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+              htmlFor='description'
+              className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Description
+              {`Property Description`}
             </label>
             <textarea
-              id="p_desc"
-              name="p_desc"
-              rows="4"
+              id='description'
+              name='description'
+              rows='4'
               onChange={(e) => onFormChange(e)}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="We would like to know more about you as a real estate developer..."
+              className=' border-2 border-solid border-form border-opacity-[0.5] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+              placeholder='Give a brief detail about this property'
             ></textarea>
           </div>
-
-          <div className="mb-6">
+          <div className='mb-6'>
             <label
-              htmlFor="feature"
-              className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+              htmlFor='features'
+              className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
             >
-              Property Feature
+              {`Property features`}
             </label>
-            <div className="grid md:grid-cols-3 md:gap-3">
-              {inputFields.map((data, index) => {
-                const { fullName, emailAddress, salary } = data;
-                return (
-                  <div className="flex">
-                    <input
-                      type="text"
-                      key={index}
-                      onChange={(evnt) => handleChange(index, evnt)}
-                      value={fullName}
-                      name="feature"
-                      id="ptype"
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                      placeholder="Fetatures"
-                      required
-                    />
-                    {inputFields.length !== 1 ? (
-                      <AiFillCloseCircle
-                        className="mx-2 cursor-pointer"
-                        size={30}
-                        onClick={removeInputFields}
-                      />
-                    ) : (
-                      ""
-                    )}{" "}
-                  </div>
-                );
-              })}
-            </div>
-            <span
-              className="mt-1 text-sm text-blue-600 cursor-pointer"
-              onClick={addInputField}
-            >
-              Add More
-            </span>
-          </div>
-
-          <label
-            htmlFor="id"
-            className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-          >
-            Document Upload
-          </label>
-          <div className="flex">
-            <div className="flex justify-center flex-col">
-              <label
-                htmlFor="floor_plan"
-                className="block mb-4 text-sm font-bold text-gray-900 dark:text-gray-500 "
-              >
-                Upload Floor Plan File
-              </label>
-              <div className="flex items-center justify-center w-full">
-                <label
-                  htmlFor="floor_plan"
-                  className="flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-10 h-10 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    id="floor_plan"
-                    className="hidden"
-                    name="floor_plan"
-                    onChange={(e) => handleFileChange(e)}
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="flex justify-center flex-col mx-3">
-              <label
-                htmlFor="id"
-                className="block mb-4 text-sm font-bold text-gray-900 dark:text-gray-500 "
-              >
-                Sales Agreements
-              </label>
-              <div className="flex items-center justify-center w-full">
-                <label
-                  htmlFor="sale_agreement"
-                  className="flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-10 h-10 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                  </div>
-                  <input
-                    id="sale_agreement"
-                    accept="image/*"
-                    onChange={(e) => handleFileChange(e)}
-                    type="file"
-                    className="hidden"
-                    name="sale_agreement"
-                  />
-                </label>
-              </div>
+            <div className='grid md:grid-cols-3 md:gap-3'>
+              <input
+                type='text'
+                id='f_internal_area'
+                name='f_internal_area'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Internal area'
+                required
+              />
+              <input
+                type='text'
+                id='f_finish_quality'
+                name='f_finish_quality'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Finish quality'
+                required
+              />
+              <input
+                type='text'
+                id='f_property_type'
+                name='f_property_type'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Property type'
+                required
+              />
+              <input
+                type='text'
+                id='f_number_of_bedrooms'
+                name='f_number_of_bedrooms'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Number of bedrooms'
+                required
+              />
+              <input
+                type='text'
+                id='f_out_door_space'
+                name='f_out_door_space'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Out door space'
+                required
+              />
+              <input
+                type='text'
+                id='f_construction_date'
+                name='f_construction_date'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Construction date'
+                required
+              />
+              <input
+                type='text'
+                id='f_number_of_bathrooms'
+                name='f_number_of_bathrooms'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Number of bathrooms'
+                required
+              />
+              <input
+                type='text'
+                id='f_off_street_parking'
+                name='f_off_street_parking'
+                onChange={(e) => onFormChange(e)}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Off street parking'
+                required
+              />
             </div>
           </div>
-
           <label
-            htmlFor="id"
-            className="block mb-4 mt-3 text-sm font-bold text-gray-900 dark:text-gray-500 "
+            htmlFor=''
+            className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
           >
-            Upload property image maximum of 1 -4
+            {`Document upload`}
           </label>
-          <div className="grid md:grid-cols-4 md:gap-2">
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex items-center justify-center w-full">
+          <div className='mt-5 mb-3 grid grid-cols-2 gap-5'>
+            <div className='flex justify-center flex-col'>
+              <label
+                htmlFor='floorPlanImage'
+                className=' font-graphik-regular text-lg text-headers'
+              >
+                {`Doc 1 (Floor plan file)`}
+              </label>
+              <div className='flex items-center justify-center w-full mt-1'>
                 <label
-                  htmlFor="property_image_4"
-                  className="flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 "
+                  htmlFor='floorPlanImage'
+                  className='flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500'
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-6 h-6 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload2SvgIcon />
+                    <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
+                      <span className=' font-graphik-medium'>Click to upload</span> or
                       drag and drop
                     </p>
                   </div>
                   <input
-                    id="property_image_4"
-                    accept="image/*"
+                    type='file'
+                    accept='image/*'
+                    id='floorPlanImage'
+                    className='hidden'
+                    name='floorPlanImage'
                     onChange={(e) => handleFileChange(e)}
-                    type="file"
-                    className="hidden"
-                    name="property_image_4"
                   />
                 </label>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex items-center justify-center w-full">
+            <div className='flex justify-center flex-col mx-3'>
+              <label
+                htmlFor='assignmentImage'
+                className=' font-graphik-regular text-lg text-headers'
+              >
+                {`Doc 2 (DEED Of assignment)`}
+              </label>
+              <div className='flex items-center justify-center w-full mt-1'>
                 <label
-                  htmlFor="property_image_1"
-                  className="flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 "
+                  htmlFor='assignmentImage'
+                  className='flex flex-col items-center justify-center w-full h-34 px-4 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50   dark:border-gray-600 dark:hover:border-gray-500'
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-6 h-6 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload2SvgIcon />
+                    <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
+                      <span className=' font-graphik-medium'>Click to upload</span> or
                       drag and drop
                     </p>
                   </div>
                   <input
-                    id="property_image_1"
-                    accept="image/*"
+                    id='assignmentImage'
+                    accept='image/*'
                     onChange={(e) => handleFileChange(e)}
-                    type="file"
-                    className="hidden"
-                    name="property_image_1"
+                    type='file'
+                    className='hidden'
+                    name='assignmentImage'
                   />
                 </label>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex items-center justify-center w-full">
+          </div>
+          <label
+            htmlFor=''
+            className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
+          >
+            {`Property image upload`}
+          </label>
+          <div className='grid md:grid-cols-4 md:gap-2 mt-2'>
+            <div className='flex flex-col justify-center items-center'>
+              <div className='flex items-center justify-center w-full'>
                 <label
-                  htmlFor="property_image_2"
-                  className="flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 "
+                  htmlFor='property_image_1'
+                  className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-6 h-6 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload1SvgIcon />
+                    <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                      <span className=' font-dmsans-medium'>Click to upload</span> or
                       drag and drop
                     </p>
                   </div>
                   <input
-                    id="property_image_2"
-                    accept="image/*"
+                    id='property_image_1'
+                    accept='image/*'
                     onChange={(e) => handleFileChange(e)}
-                    type="file"
-                    className="hidden"
-                    name="property_image_2"
+                    type='file'
+                    className='hidden'
+                    name='property_image_1'
                   />
                 </label>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex items-center justify-center w-full">
+            <div className='flex flex-col justify-center items-center'>
+              <div className='flex items-center justify-center w-full'>
                 <label
-                  htmlFor="property_image_3"
-                  className="flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 "
+                  htmlFor='property_image_2'
+                  className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      aria-hidden="true"
-                      className="w-6 h-6 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload1SvgIcon />
+                    <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                      <span className=' font-dmsans-medium'>Click to upload</span> or
                       drag and drop
                     </p>
                   </div>
                   <input
-                    id="property_image_3"
-                    accept="image/*"
+                    id='property_image_2'
+                    accept='image/*'
                     onChange={(e) => handleFileChange(e)}
-                    type="file"
-                    className="hidden"
-                    name="property_image_3"
+                    type='file'
+                    className='hidden'
+                    name='property_image_2'
+                  />
+                </label>
+              </div>
+            </div>
+            <div className='flex flex-col justify-center items-center'>
+              <div className='flex items-center justify-center w-full'>
+                <label
+                  htmlFor='property_image_3'
+                  className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
+                >
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload1SvgIcon />
+                    <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                      <span className=' font-dmsans-medium'>Click to upload</span> or
+                      drag and drop
+                    </p>
+                  </div>
+                  <input
+                    id='property_image_3'
+                    accept='image/*'
+                    onChange={(e) => handleFileChange(e)}
+                    type='file'
+                    className='hidden'
+                    name='property_image_3'
+                  />
+                </label>
+              </div>
+            </div>
+            <div className='flex flex-col justify-center items-center'>
+              <div className='flex items-center justify-center w-full'>
+                <label
+                  htmlFor='property_image_4'
+                  className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
+                >
+                  <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                    <Upload1SvgIcon />
+                    <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                      <span className=' font-dmsans-medium'>Click to upload</span> or
+                      drag and drop
+                    </p>
+                  </div>
+                  <input
+                    id='property_image_4'
+                    accept='image/*'
+                    onChange={(e) => handleFileChange(e)}
+                    type='file'
+                    className='hidden'
+                    name='property_image_4'
                   />
                 </label>
               </div>
             </div>
           </div>
           <button
-            type="button"
-            onClick={formSubmissionClick}
-            className="text-white button rounded-md w-full mt-10 focus:ring-4 focus:outline-none font-bold text-sm px-5 py-2.5 text-center"
+            type='button'
+            onClick={next}
+            className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-12 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >
-            Next
+            <h4 className=' font-dmsans-bold text-lg text-white'>
+              {`Next`}
+            </h4>
           </button>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PropertyInfo;
+export default PropertyInfo

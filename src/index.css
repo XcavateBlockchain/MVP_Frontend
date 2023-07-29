@@ -41,7 +41,7 @@ body {
 .asset-card {
   border-radius: 8px;
   color: black !important;
-  /* background-image: url("./assets/bg-logo.svg") !important; */
+  /* background-image: url("./assets/common/bg-logo.svg") !important; */
   background-repeat: no-repeat !important;
   background-size: contain !important;
   background-position: right !important;
@@ -235,7 +235,7 @@ body {
   animation: round 700ms linear infinite;
 }
 .background-img {
-  background-image: url("./assets/bg-logo.svg");
+  background-image: url("./assets/common/bg-logo.svg");
   background-repeat: no-repeat;
   background-size: contain !important;
   background-position: right !important;

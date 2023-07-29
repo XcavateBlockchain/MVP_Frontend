@@ -1,137 +1,133 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-const AdditionalInfo = () => {
-  const initialFormData = Object.freeze({
-    development_number: 0,
-    permission_number: 0,
-    local_authority: "",
-    deed_number:0,
-    map_url: "",
-  });
-  const [formData, updateFormData] = useState(initialFormData);
+const styles = {
+  label: 'font-graphik-medium text-headers text-lg tracking-[0.45px]',
+  input: 'border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]',
+}
 
-  const handleChange = (e) => {
-    updateFormData({
-      ...formData,
+const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
+  const onFormChange = (e) => {
+    let name = e.target.name
+    let value = e.target.value
 
-      // Trimming any whitespace
-      [e.target.name]: e.target.value.trim()
-    });
-  };
+    setProperty({
+      ...property,
+      [name]: value,
+    })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData);
-    // ... submit to API or something
-  };
+    onSubmit()
+  }
   return (
-    
     <>
-      <div className="container m-auto flex justify-center items-center flex-col h-[100%]">
-        
-        <div className="py-10 px-10 rounded-sm bg-white w-[60%]">
-          <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
+      <div className='container flex justify-center items-center bg-white flex-col mt-4 rounded-b-lg'>
+        <div className='py-10 px-10 w-full lg:w-3/4'>
+          <div className='grid md:grid-cols-2 md:gap-6'>
+            <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor="development_number"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='developmentNumber'
+                className={`${styles.label}`}
               >
-                Property development number*
+                {`Property development number *`}
               </label>
               <input
-                type="number"
-                onChange={handleChange}
-                id="development_number"
-                name="development_number"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="Nikku Apartment"
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='developmentNumber'
+                name='developmentNumber'
+                className={`${styles.input}`}
+                placeholder='4564SXZ'
                 required
               />
             </div>
-            <div className="relative z-0 w-full mb-6 group">
+            <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor="permission_number"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='planningPermissionNumber'
+                className={`${styles.label}`}
               >
-                Planning permission number*
+                {`Planning permission number *`}
               </label>
               <input
-                type="number"
-                onChange={handleChange}
-                id="permission_number"
-                name="permission_number"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="House , Apartment , Land"
-                required
-              />
-            </div>
-          </div>
-          <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor="local_authority"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Local Authority*
-              </label>
-              <input
-                type="text"
-                onChange={handleChange}
-                id="local_authority"
-                name="local_authority"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="Nikku Apartment"
-                required
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor="deed_number"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Title deed number*
-              </label>
-              <input
-                type="number"
-                onChange={handleChange}
-                id="deed_number"
-                name="deed_number"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="House , Apartment , Land"
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='planningPermissionNumber'
+                name='planningPermissionNumber'
+                className={`${styles.input}`}
+                placeholder='3/22/1700/HH'
                 required
               />
             </div>
           </div>
-          <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
+          <div className='grid md:grid-cols-2 md:gap-6'>
+            <div className='relative z-0 w-full mb-6 group'>
               <label
-                htmlFor="map_url"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='localAuthority'
+                className={`${styles.label}`}
               >
-                Google map link
+                {`Local Authority *`}
               </label>
               <input
-                type="url"
-                onChange={handleChange}
-                id="map_url"
-                name="map_url"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="Url Map to"
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='localAuthority'
+                name='localAuthority'
+                className={`${styles.input}`}
+                placeholder='East Herts'
+                required
+              />
+            </div>
+            <div className='relative z-0 w-full mb-6 group'>
+              <label
+                htmlFor='titleDeadNumber'
+                className={`${styles.label}`}
+              >
+                {`Title deed number *`}
+              </label>
+              <input
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='titleDeadNumber'
+                name='titleDeadNumber'
+                className={`${styles.input}`}
+                placeholder='17646cnnn'
+                required
+              />
+            </div>
+          </div>
+          <div className=''>
+            <div className='relative z-0 w-full lg:w-1/2'>
+              <label
+                htmlFor='googleMapLink'
+                className={`${styles.label}`}
+              >
+                {`Google map link`}
+              </label>
+              <input
+                type='text'
+                onChange={(e) => onFormChange(e)}
+                id='googleMapLink'
+                name='googleMapLink'
+                className={`${styles.input}`}
+                placeholder='124.234.'
                 required
               />
             </div>
           </div>
           <button
-            type="button"
+            type='button'
             onClick={handleSubmit}
-            className="text-white button rounded-md w-full mt-10 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold  text-sm px-5 py-2.5 text-center  dark:focus:ring-blue-800"
+            className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >
-            Send For Verification
+            <h4 className=' font-dmsans-bold text-lg text-white'>
+              {`Send for verification`}
+            </h4>
           </button>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AdditionalInfo;
+export default AdditionalInfo
