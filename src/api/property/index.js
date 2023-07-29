@@ -20,3 +20,13 @@ export const create = (data) => {
     },
   })
 }
+
+export const getAllProperties = () => {
+  const token = getToken()
+  return client.get('/property', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+}

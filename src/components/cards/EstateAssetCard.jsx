@@ -15,34 +15,33 @@ const EstateAssetCard = ({ item }) => {
         <a href='#'>
           <img
             className='rounded-t-lg w-[100%]'
-            src={item.imageUrl}
-            alt='hello'
+            src={item.images[0] || ''}
+            alt='property image'
           />
         </a>
         <div className='p-3 absolute top-0 '>
-          {item.verificationStatus === 'Listed' && (
+          {item.isListed && (
             <span className='text-orange-500  bg-white font-bold   text-xs mr-2 px-2.5 py-0.5 rounded '>
-              Listed
+              {`Listed`}
             </span>
           )}
-          {item.verificationStatus === 'Verified' && (
+          {item.isVerified? (
             <span className='text-blue-500  bg-white text-xs font-bold    mr-2 px-2.5 py-0.5 rounded '>
-              Verified
+              {`Verified`}
             </span>
-          )}
-          {item.verificationStatus === 'Not Verified' && (
+          ) : (
             <span className='text-red-500   text-xs bg-white font-bold mr-2 px-2.5 py-0.5 rounded '>
-              Not Verified
+              {`Not Verified`}
             </span>
           )}
         </div>
         <div className='p-5'>
           <div className='flex justify-between'>
             <h5 className='mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-black'>
-              {item.title}
+              {item.name}
             </h5>
             <h5 className='mb-2 text-1xl font-bold tracking-tight text-black dark:text-black'>
-              £ {item.listingPrice}
+              £ {item.price}
             </h5>
           </div>
           {/* <h3 className='text-black mt-1 mb-1'>{item.description}</h3> */}
@@ -50,7 +49,7 @@ const EstateAssetCard = ({ item }) => {
             <a className='flex' href={item.googleMapCode}>
               <HiOutlineLocationMarker className='text-blue-400' size={22} />
               <h5 className=' mx-2 text-1xl tracking-tight text-gray-900 dark:text-gray-500'>
-                {item.address}
+                {`${item?.address?.street} ${item?.address?.city} ${item?.address?.zipcode}`}
               </h5>
             </a>
           </div>
@@ -64,23 +63,18 @@ const EstateAssetCard = ({ item }) => {
               </span>
             </div>
             <div className='mt-5 flex'>
-              {item.verificationStatus === 'Not Verified' && (
+              {!item.isVerified && (
                 <button className='inline-flex button  items-center px-3 py-2 text-sm text-center text-white rounded-lg '>
-                  verify
+                  {`Verify`}
                 </button>
               )}
-              {item.verificationStatus === 'Verified' && (
+              {!item.isListed && (
                 <button className='inline-flex button  items-center px-3 py-2 text-sm text-center text-white rounded-lg '>
-                  Listed
-                </button>
-              )}
-              {item.verificationStatus === 'Listed' && (
-                <button className='inline-flex button  items-center px-3 py-2 text-sm text-center text-white rounded-lg '>
-                  Listed
+                {`List`}
                 </button>
               )}
               <button className='text-center mx-5 w-[100%] border  px-3 py-2 text-sm text-black rounded-lg'>
-                View Details
+                {`View Details`}
               </button>
             </div>
           </div>
