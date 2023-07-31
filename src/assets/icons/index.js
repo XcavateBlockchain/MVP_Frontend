@@ -14,6 +14,8 @@ import FolderSvgIcon from './folder.svg'
 import FolderShareSvgIcon from './folder-share.svg'
 import TransactionSvgIcon from './transaction.svg'
 import BellSvgIcon from './bell.svg'
+import StatusSvgIcon from './status.svg'
+import LocationSvgIcon from './location.svg'
 
 export {
   WalletSvgIcon,
@@ -32,4 +34,6 @@ export {
   FolderShareSvgIcon,
   BellSvgIcon,
   TransactionSvgIcon,
+  StatusSvgIcon,
+  LocationSvgIcon,
 }

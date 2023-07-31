@@ -18,7 +18,7 @@ const SummaryCard = ({ title, value }) => {
         </div>
         <img
           src={Logo}
-          alt='bg image'
+          alt='background'
           className=' absolute right-0 bottom-0 w-1/2 xl:w-1/3 object-cover grayscale opacity-20'
         />
       </div>

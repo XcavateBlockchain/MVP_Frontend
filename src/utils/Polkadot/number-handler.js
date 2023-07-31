@@ -19,9 +19,9 @@ const toBigNumber = (number) => {
   return bigNumber(number)
 }
 
-const fromBigNumber = (number) => {
-  return number.toFixed(8)
-}
+// const fromBigNumber = (number) => {
+//   return number.toFixed(8)
+// }
 
 const stringAmountDecimalDecombiner = (amount, decimal) => {
   if(amount) {

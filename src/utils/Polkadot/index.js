@@ -2,7 +2,7 @@ import { ApiPromise, WsProvider, Keyring } from '@polkadot/api'
 import { cryptoWaitReady } from '@polkadot/util-crypto'
 import { stringAmountDecimalDecombiner } from './number-handler'
 import { decodeAddress, encodeAddress } from '@polkadot/keyring'
-import { BN, hexToU8a, isHex } from '@polkadot/util'
+import { hexToU8a, isHex } from '@polkadot/util'
 import config from '../../config'
 
 const NODE_URL = config.PROVIDER_SOCKET
@@ -15,8 +15,6 @@ const isPolkadotAddress = (address) => {
     return false
   }
 }
-
-let currentNonce = new BN(-1)
 
 const keyring = new Keyring({ type: 'sr25519' })
 // admin phrase

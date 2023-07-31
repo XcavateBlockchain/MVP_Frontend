@@ -15,7 +15,7 @@ const PropertyDetail = () => {
           <img
             className='h-[30%] rounded-md w-[100%] max-w-full'
             src={img}
-            alt='image description'
+            alt='description'
           />
 
           <div className='block w-full p-6 mt-4 bg-white rounded-lg dark:border-gray-700 '>
