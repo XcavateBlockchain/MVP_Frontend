@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const styles = {
   label: 'font-graphik-medium text-headers text-lg tracking-[0.45px]',

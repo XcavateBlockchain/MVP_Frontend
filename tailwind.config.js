@@ -37,6 +37,7 @@ module.exports = {
         "frame": '#FAFAFA',
         "verified": '#00C058',
         "progress": '#FF8C00',
+        "listed": "#2F8BB2",
       },
       textColor: {
         "headers": '#1C1F20',

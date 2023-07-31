@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import EstateAssetCard from '../cards/EstateAssetCard'
 import SummaryCard from '../cards/SummaryCard'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { USER_ROLES } from '../../data/mockData'
 import { ShareSvgIcon, VerifiedSvgIcon } from '../../assets/icons'
@@ -14,7 +13,6 @@ import ListedTab from '../partials/profile/ListedTab'
 import { getAllProperties } from '../../api/property'
 
 const Profile = () => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = useSelector((state) => state.user)
   const [userRole, setUserRole] = useState('')
@@ -50,6 +48,10 @@ const Profile = () => {
     navigate('/list-property')
   }
 
+  const listProperty = () => {
+
+  }
+
   return (
     <section className='mt-[126px] flex flex-col items-center mb-24'>
       {/* banner */}
@@ -57,7 +59,7 @@ const Profile = () => {
         {/* banner image */}
         <img
           src={user?.userData?.bannerImage || BannerPlaceholderImage}
-          alt='banner image'
+          alt='banner'
           className='w-full h-[300px] object-cover rounded-t-lg'
         />
         {/* profile data */}
@@ -65,7 +67,7 @@ const Profile = () => {
           {/* profile image */}
           <img
             src={user?.userData?.profileImage || MalePlaceholderImage}
-            alt='profile image'
+            alt='profile'
             className='w-[180px] h-[180px] rounded-full border-[5px] border-white'
           />
           <div className=' w-full flex flex-row items-center justify-between h-[87px] ml-8'>
@@ -120,7 +122,7 @@ const Profile = () => {
       <ProfileTab tab={tab} setTab={setTab} />
       {/* contents */}
       {tab === 'profile' && <ProfileDatailTab />}
-      {tab === 'properties' && properties.length > 0 && <ListedTab properties={properties} />}
+      {tab === 'properties' && properties.length > 0 && <ListedTab properties={properties} listProperty={listProperty} />}
     </section>
   )
 }
