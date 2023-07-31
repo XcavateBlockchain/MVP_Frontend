@@ -11,6 +11,11 @@ import ProfileTab from '../tabs/ProfileTab'
 import ProfileDatailTab from '../partials/profile/DetailTab'
 import ListedTab from '../partials/profile/ListedTab'
 import { getAllProperties } from '../../api/property'
+import { useSubstrateState } from '../../contexts/SubstrateContext'
+import { web3FromSource } from '@polkadot/extension-dapp'
+import { bnFromHex } from '@polkadot/util'
+import { create, getLastId } from '../../api/collection'
+import { toast } from 'react-toastify'
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -18,11 +23,15 @@ const Profile = () => {
   const [userRole, setUserRole] = useState('')
   const [tab, setTab] = useState('profile')
   const [properties, setProperties] = useState([])
+  const { api, keyring, polkadotAccount } = useSubstrateState()
+  const [collectionData, setCollectionData] = useState({
+    id: 0,
+    owner: '',
+  })
 
   const getProperties = async () => {
     try {
       const result = await getAllProperties()
-      console.log('result :: ', result)
       if (result?.status === 200) {
         setProperties(result?.data?.data)
       }
@@ -48,8 +57,99 @@ const Profile = () => {
     navigate('/list-property')
   }
 
-  const listProperty = () => {
+  const getFromAcct = async () => {
+    const currentAccount = keyring.getPair(polkadotAccount)
+    const {
+      address,
+      meta: { source, isInjected },
+    } = currentAccount
 
+    if (!isInjected) {
+      return [currentAccount]
+    }
+
+    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
+    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
+    const injector = await web3FromSource(source)
+    return [address, { signer: injector.signer }]
+  }
+
+  const txResHandler = ({ events = [], status, txHash }) =>{
+    status.isFinalized
+      ? toast.success(`😉 Finalized. Block hash: ${status.asFinalized.toString()}`)
+      : toast.info(`Current transaction status: ${status.type}`)
+
+      // Loop through Vec<EventRecord> to display all events
+      events.forEach(async ({ _, event: { data, method, section } }) => {
+        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+          // extract the data for this event
+          const [dispatchError, dispatchInfo] = data;
+          console.log(`dispatchinfo: ${dispatchInfo}`)
+          let errorInfo;
+          
+          // decode the error
+          if (dispatchError.isModule) {
+            // for module errors, we have the section indexed, lookup
+            // (For specific known errors, we can also do a check against the
+            // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+            const mod = dispatchError.asModule
+            const error = api.registry.findMetaError(
+                new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+            )
+            let message = `${error.section}.${error.name}${
+                Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+            }`
+            
+            errorInfo = `${message}`;
+            console.log(`Error-info::${JSON.stringify(error)}`)
+          } else {
+            // Other, CannotLookup, BadOrigin, no extra info
+            errorInfo = dispatchError.toString();
+          }
+          toast.warn(`😞 Transaction Failed! ${section}.${method}::${errorInfo}`)
+        } else if (section + ":" + method === 'system:ExtrinsicSuccess' ) {
+          toast.success(`❤️️ Transaction successful! tx hash: ${txHash} , Block hash: ${status.asFinalized.toString()}`)
+          const addCollectionResult = await create(collectionData)
+  
+          if (addCollectionResult?.status === 201) {
+            toast.success('Successfully listed')
+          }
+        }
+      });
+  }
+
+  const listProperty = async (item) => {
+    try {
+      let collection = 1
+      const lastIdResult = await getLastId()
+      if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
+        const lastId = lastIdResult?.data?.data
+        collection = lastId + 1
+      }
+
+      setCollectionData({
+        id: collection,
+        owner: polkadotAccount,
+      })
+      
+      const fromAcct = await getFromAcct()
+      let txs = []
+      txs.push(api.tx.uniques.create(collection, polkadotAccount))
+
+      const nftAmount = 100
+      const price = nftAmount > 0? Math.round(Number(item?.price) / nftAmount) : 0
+
+      if (price > 0) {
+        for (let index = 0; index < 100; index++) {
+          txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
+          txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
+        }
+      }
+
+      await api.tx.utility.batch(txs).signAndSend(...fromAcct, txResHandler)      
+    } catch (error) {
+      console.log('error :: ', error)
+    }
   }
 
   return (

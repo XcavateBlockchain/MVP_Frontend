@@ -1,7 +1,4 @@
 import React from 'react'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { GiBathtub } from 'react-icons/gi'
-import { LuBedSingle } from 'react-icons/lu'
 import { BathAndShowerSvgIcon, BedSvgIcon, LocationSvgIcon, StatusSvgIcon } from '../../assets/icons'
 import { abbreviation } from '../../utils'
 const EstateAssetCard = ({ item, listProperty }) => {
@@ -74,7 +71,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
             {item.isVerified ? (
               !item.isListed && (
                 <button
-                  onClick={() => listProperty()}
+                  onClick={() => listProperty(item)}
                   className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mr-4'
                 >
                   <h5 className=' font-dmsans-bold text-base text-white'>
