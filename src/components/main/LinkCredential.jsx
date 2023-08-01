@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowPrevSvgIcon, LoadingSvgIcon } from '../../assets/icons'
 import { create } from '../../api/user'
 import { getTerms, requestAttestation } from '../../api/sporran'
-import { exceptionToError } from '../../utilities/exceptionToError'
 import {
   apiWindow,
   getCompatibleExtensions,
@@ -30,8 +29,6 @@ const LinkCredential = () => {
     did: user.did || '',
   })
   const [session, setSession] = useState(null)
-  const [error, setError] = useState(null)
-  const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -89,8 +86,6 @@ const LinkCredential = () => {
   }
 
   const handleClaim = async () => {
-    setError(undefined)
-
     let sporranSession = session
 
     try {
@@ -136,7 +131,6 @@ const LinkCredential = () => {
                 toast.success('Successfully requested attestation')
                 navigate('/user-role')
               }
-              setStatus('requested')
             })
 
             // encrypt submit-terms message on the backend
@@ -151,16 +145,8 @@ const LinkCredential = () => {
           setLoading(false)
           console.error(error)
         })
-    } catch (exception) {
-      const { message } = exceptionToError(exception)
-      if (message.includes('closed') || message.includes('Conflict')) {
-        setError('closed')
-      } else if (message.includes('Not authorized')) {
-        setError('unauthorized')
-      } else {
-        setError('unknown')
-        console.error(exception)
-      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -377,6 +363,7 @@ const LinkCredential = () => {
           <button
             type="button"
             onClick={handleClaim}
+            disabled={loading}
             className=" flex flex-row items-center justify-center w-full h-[60px] mt-10 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]"
           >
             {loading? <LoadingSvgIcon /> : <h5 className=" font-graphik-bold text-lg text-white">

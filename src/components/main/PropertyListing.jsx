@@ -6,8 +6,11 @@ import { useSelector } from 'react-redux'
 import { VerifiedSvgIcon } from '../../assets/icons'
 import { initialize } from '../../utils/Polkadot/index'
 import { create } from '../../api/property'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const PropertyListing = () => {
+  const navigate = useNavigate()
   const user = useSelector((state) => state.user)
   const [page, setPage] = useState(1)
   const [property, setProperty] = useState({
@@ -32,6 +35,7 @@ const PropertyListing = () => {
     titleDeadNumber: '',
     googleMapLink: '',
   })
+  const [loading, setLoading] = useState(false)
 
   const onChangingPage = (num) => {
     setPage(num)
@@ -46,6 +50,8 @@ const PropertyListing = () => {
 
   const submit = async () => {
     try {
+      setLoading(true)
+
       const formData = new FormData()
   
       formData.append('name', property.name)
@@ -70,10 +76,19 @@ const PropertyListing = () => {
       const result = await create(formData)
       console.log('result :: ', result)
       if (result?.status === 201 && result?.data?.data) {
-  
+        setLoading(false)
+        toast.success('Created a new property successfully')
+        setTimeout(() => {
+          navigate('/profile')
+        }, 3000)
+      } else {
+        setLoading(false)
+        toast.warn('Unexpected error occurred')
       }
     } catch (error) {
+      setLoading(false)
       console.log('property creation error :: ', error)
+      toast.warn(error.toString())
     }
   }
 
@@ -150,7 +165,7 @@ const PropertyListing = () => {
         </div>
         {page === 1 && <PropertyInfo property={property} setProperty={setProperty} onChangingPage={onChangingPage} />}
         {page === 2 && <ListedInfo property={property} setProperty={setProperty} onChangingPage={onChangingPage} />}
-        {page === 3 && <AdditionalInfo property={property} setProperty={setProperty} onSubmit={submit} />}
+        {page === 3 && <AdditionalInfo property={property} setProperty={setProperty} onSubmit={submit} loading={loading} />}
       </div>
     </>
   )
