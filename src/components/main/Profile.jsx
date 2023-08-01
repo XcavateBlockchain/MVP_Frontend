@@ -24,10 +24,6 @@ const Profile = () => {
   const [tab, setTab] = useState('profile')
   const [properties, setProperties] = useState([])
   const { api, keyring, polkadotAccount } = useSubstrateState()
-  const [collectionData, setCollectionData] = useState({
-    id: 0,
-    owner: '',
-  })
 
   const getProperties = async () => {
     try {
@@ -74,50 +70,6 @@ const Profile = () => {
     return [address, { signer: injector.signer }]
   }
 
-  const txResHandler = ({ events = [], status, txHash }) =>{
-    status.isFinalized
-      ? toast.success(`😉 Finalized. Block hash: ${status.asFinalized.toString()}`)
-      : toast.info(`Current transaction status: ${status.type}`)
-
-      // Loop through Vec<EventRecord> to display all events
-      events.forEach(async ({ _, event: { data, method, section } }) => {
-        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-          // extract the data for this event
-          const [dispatchError, dispatchInfo] = data;
-          console.log(`dispatchinfo: ${dispatchInfo}`)
-          let errorInfo;
-          
-          // decode the error
-          if (dispatchError.isModule) {
-            // for module errors, we have the section indexed, lookup
-            // (For specific known errors, we can also do a check against the
-            // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
-            const mod = dispatchError.asModule
-            const error = api.registry.findMetaError(
-                new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
-            )
-            let message = `${error.section}.${error.name}${
-                Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
-            }`
-            
-            errorInfo = `${message}`;
-            console.log(`Error-info::${JSON.stringify(error)}`)
-          } else {
-            // Other, CannotLookup, BadOrigin, no extra info
-            errorInfo = dispatchError.toString();
-          }
-          toast.warn(`😞 Transaction Failed! ${section}.${method}::${errorInfo}`)
-        } else if (section + ":" + method === 'system:ExtrinsicSuccess' ) {
-          toast.success(`❤️️ Transaction successful! tx hash: ${txHash} , Block hash: ${status.asFinalized.toString()}`)
-          const addCollectionResult = await create(collectionData)
-  
-          if (addCollectionResult?.status === 201) {
-            toast.success('Successfully listed')
-          }
-        }
-      });
-  }
-
   const listProperty = async (item) => {
     try {
       let collection = 1
@@ -126,11 +78,6 @@ const Profile = () => {
         const lastId = lastIdResult?.data?.data
         collection = lastId + 1
       }
-
-      setCollectionData({
-        id: collection,
-        owner: polkadotAccount,
-      })
       
       const fromAcct = await getFromAcct()
       let txs = []
@@ -146,7 +93,50 @@ const Profile = () => {
         }
       }
 
-      await api.tx.utility.batch(txs).signAndSend(...fromAcct, txResHandler)      
+      await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+        status.isFinalized
+          ? toast.success(`😉 Finalized. Block hash: ${status.asFinalized.toString()}`)
+          : toast.info(`Current transaction status: ${status.type}`)
+    
+          // Loop through Vec<EventRecord> to display all events
+          events.forEach(async ({ _, event: { data, method, section } }) => {
+            if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+              // extract the data for this event
+              const [dispatchError, dispatchInfo] = data
+              console.log(`dispatchinfo: ${dispatchInfo}`)
+              let errorInfo
+              
+              // decode the error
+              if (dispatchError.isModule) {
+                // for module errors, we have the section indexed, lookup
+                // (For specific known errors, we can also do a check against the
+                // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+                const mod = dispatchError.asModule
+                const error = api.registry.findMetaError(
+                    new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+                )
+                let message = `${error.section}.${error.name}${
+                    Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+                }`
+                
+                errorInfo = `${message}`
+                console.log(`Error-info::${JSON.stringify(error)}`)
+              } else {
+                // Other, CannotLookup, BadOrigin, no extra info
+                errorInfo = dispatchError.toString()
+              }
+              toast.warn(`😞 Transaction Failed! ${section}.${method}::${errorInfo}`)
+            } else if (section + ":" + method === 'system:ExtrinsicSuccess' ) {
+              toast.success(`❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+
+              // add to the database
+              await create({
+                id: collection,
+                owner: polkadotAccount,
+              })
+            }
+          })
+      })      
     } catch (error) {
       console.log('error :: ', error)
     }

@@ -1,11 +1,12 @@
 import React from 'react'
+import { LoadingSvgIcon } from '../../assets/icons'
 
 const styles = {
   label: 'font-graphik-medium text-headers text-lg tracking-[0.45px]',
   input: 'border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]',
 }
 
-const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
+const AdditionalInfo = ({ property, setProperty, onSubmit, loading }) => {
   const onFormChange = (e) => {
     let name = e.target.name
     let value = e.target.value
@@ -35,6 +36,7 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
               <input
                 type='text'
                 onChange={(e) => onFormChange(e)}
+                value={property?.developmentNumber || ''}
                 id='developmentNumber'
                 name='developmentNumber'
                 className={`${styles.input}`}
@@ -52,6 +54,7 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
               <input
                 type='text'
                 onChange={(e) => onFormChange(e)}
+                value={property?.planningPermissionNumber || ''}
                 id='planningPermissionNumber'
                 name='planningPermissionNumber'
                 className={`${styles.input}`}
@@ -71,6 +74,7 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
               <input
                 type='text'
                 onChange={(e) => onFormChange(e)}
+                value={property?.localAuthority || ''}
                 id='localAuthority'
                 name='localAuthority'
                 className={`${styles.input}`}
@@ -88,6 +92,7 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
               <input
                 type='text'
                 onChange={(e) => onFormChange(e)}
+                value={property?.titleDeadNumber || ''}
                 id='titleDeadNumber'
                 name='titleDeadNumber'
                 className={`${styles.input}`}
@@ -107,6 +112,7 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
               <input
                 type='text'
                 onChange={(e) => onFormChange(e)}
+                value={property?.googleMapLink || ''}
                 id='googleMapLink'
                 name='googleMapLink'
                 className={`${styles.input}`}
@@ -118,11 +124,12 @@ const AdditionalInfo = ({ property, setProperty, onSubmit }) => {
           <button
             type='button'
             onClick={handleSubmit}
+            disabled={loading}
             className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
           >
-            <h4 className=' font-dmsans-bold text-lg text-white'>
+            {loading? <LoadingSvgIcon /> : <h4 className=' font-dmsans-bold text-lg text-white'>
               {`Send for verification`}
-            </h4>
+            </h4>}
           </button>
         </div>
       </div>

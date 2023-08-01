@@ -71,6 +71,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='name'
                 name='name'
                 onChange={(e) => onFormChange(e)}
+                value={property?.name || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Briks and blocks'
                 required
@@ -88,6 +89,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='number'
                 name='number'
                 onChange={(e) => onFormChange(e)}
+                value={property?.number || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='3/22/1700/HH'
                 required
@@ -107,6 +109,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='street'
                 name='street'
                 onChange={(e) => onFormChange(e)}
+                value={property?.address?.street || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Street'
                 required
@@ -116,6 +119,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='city'
                 name='city'
                 onChange={(e) => onFormChange(e)}
+                value={property?.address?.city || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='City'
                 required
@@ -125,6 +129,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='zipcode'
                 name='zipcode'
                 onChange={(e) => onFormChange(e)}
+                value={property?.address?.zipcode || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Zip code/ postal code'
                 required
@@ -143,6 +148,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
               name='description'
               rows='4'
               onChange={(e) => onFormChange(e)}
+              value={property?.description || ''}
               className=' border-2 border-solid border-form border-opacity-[0.5] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
               placeholder='Give a brief detail about this property'
             ></textarea>
@@ -160,6 +166,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_internal_area'
                 name='f_internal_area'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_internal_area || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Internal area'
                 required
@@ -169,6 +176,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_finish_quality'
                 name='f_finish_quality'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_finish_quality || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Finish quality'
                 required
@@ -178,6 +186,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_property_type'
                 name='f_property_type'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_property_type || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Property type'
                 required
@@ -187,6 +196,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_number_of_bedrooms'
                 name='f_number_of_bedrooms'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_number_of_bedrooms || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Number of bedrooms'
                 required
@@ -196,6 +206,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_out_door_space'
                 name='f_out_door_space'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_out_door_space || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Out door space'
                 required
@@ -205,6 +216,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_construction_date'
                 name='f_construction_date'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_construction_date || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Construction date'
                 required
@@ -214,6 +226,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_number_of_bathrooms'
                 name='f_number_of_bathrooms'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_number_of_bathrooms || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Number of bathrooms'
                 required
@@ -223,6 +236,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                 id='f_off_street_parking'
                 name='f_off_street_parking'
                 onChange={(e) => onFormChange(e)}
+                value={property?.features.f_off_street_parking || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Off street parking'
                 required
@@ -257,7 +271,6 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   </div>
                   <input
                     type='file'
-                    accept='image/*'
                     id='floorPlanImage'
                     className='hidden'
                     name='floorPlanImage'
@@ -287,7 +300,6 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   </div>
                   <input
                     id='assignmentImage'
-                    accept='image/*'
                     onChange={(e) => handleFileChange(e)}
                     type='file'
                     className='hidden'

@@ -31,6 +31,7 @@ const ListedInfo = ({ property, setProperty, onChangingPage }) => {
                 id='type'
                 name='type'
                 onChange={(e) => onFormChange(e)}
+                value={property?.type || ''}
                 className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                 placeholder='Sale'
                 required
@@ -50,6 +51,7 @@ const ListedInfo = ({ property, setProperty, onChangingPage }) => {
                     id='price'
                     name='price'
                     onChange={(e) => onFormChange(e)}
+                    value={property?.price || ''}
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
@@ -79,6 +81,7 @@ const ListedInfo = ({ property, setProperty, onChangingPage }) => {
                     id='rentalIncome'
                     name='rentalIncome'
                     onChange={(e) => onFormChange(e)}
+                    value={property?.rentalIncome || ''}
                     className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
                     placeholder='0.00'
                     required
