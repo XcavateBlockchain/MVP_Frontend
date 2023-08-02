@@ -2,8 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getPropertyById } from '../../api/property'
 import { DoubleBathSvgIcon, DoubleBedSvgIcon, MapTagSvgIcon } from '../../assets/icons'
+import { useSubstrateState } from '../../contexts/SubstrateContext'
+import { web3FromSource } from '@polkadot/extension-dapp'
+import { bnFromHex } from '@polkadot/util'
+import { create, getLastId } from '../../api/collection'
+import { toast } from 'react-toastify'
+
 const PropertyDetail = () => {
   const params = useParams()
+  const { api, keyring, polkadotAccount } = useSubstrateState()
   const [property, setProperty] = useState(null)
 
   const getProperty = async (propertyId) => {
@@ -18,6 +25,146 @@ const PropertyDetail = () => {
       getProperty(params.id)
     }
   }, [params])
+
+  const getFromAcct = async () => {
+    const currentAccount = keyring.getPair(polkadotAccount)
+    const {
+      address,
+      meta: { source, isInjected },
+    } = currentAccount
+
+    if (!isInjected) {
+      return [currentAccount]
+    }
+
+    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
+    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
+    const injector = await web3FromSource(source)
+    return [address, { signer: injector.signer }]
+  }
+
+  const listProperty = async () => {
+    try {
+      let collection = 1
+      const lastIdResult = await getLastId()
+      if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
+        const lastId = lastIdResult?.data?.data
+        collection = lastId + 1
+      }
+      
+      const fromAcct = await getFromAcct()
+      // collection creation
+      await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
+        status.isFinalized
+          ? toast.success(`😉 Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+          : toast.info(`Collection creation: ${status.type}`)
+        
+        events.forEach(async ({ _, event: { data, method, section } }) => {
+          if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+            errorHandle({ data, method, section, target: 'Collection creation' })
+          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
+            console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+            // add collection data to the database
+            await create({
+              id: collection,
+              owner: polkadotAccount,
+            })
+      
+            let txs = []
+      
+            const nftAmount = 100
+            const price = nftAmount > 0? Math.round(Number(property?.price) / nftAmount) : 0
+      
+            if (price > 0) {
+              for (let index = 0; index < 100; index++) {
+                txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
+              }
+              
+              // nft minting
+              await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+                status.isFinalized
+                  ? toast.success(`😉 NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+                  : toast.info(`NFT minting: ${status.type}`)
+                
+                events.forEach(async ({ _, event: { data, method, section } }) => {
+                  if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+                    errorHandle({ data, method, section, target: 'NFT minting' })
+                  } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+                    console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+      
+                    txs = []
+      
+                    for (let index = 0; index < 100; index++) {
+                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
+                    }
+                    
+                    // setting price
+                    await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+                      status.isFinalized
+                        ? toast.success(`😉 Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+                        : toast.info(`Setting price: ${status.type}`)
+                      
+                      events.forEach(async ({ _, event: { data, method, section } }) => {
+                        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+                          errorHandle({ data, method, section, target: 'Setting price' })
+                        } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+                          toast.success(`❤️️ Listing successful!`)
+                          console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+                        }
+                      })
+                    })
+                  }
+                })
+              })
+            }
+          }
+        })
+      })
+    } catch (error) {
+      console.log('error :: ', error)
+    }
+  }
+
+  const errorHandle = ({ data, method, section, target }) => {
+    // extract the data for this event
+    const [dispatchError, dispatchInfo] = data
+    console.log(`dispatchinfo: ${dispatchInfo}`)
+    let errorInfo
+    
+    // decode the error
+    if (dispatchError.isModule) {
+      // for module errors, we have the section indexed, lookup
+      // (For specific known errors, we can also do a check against the
+      // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+      const mod = dispatchError.asModule
+      const error = api.registry.findMetaError(
+          new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+      )
+      let message = `${error.section}.${error.name}${
+          Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+      }`
+      
+      errorInfo = `${message}`
+      console.log(`Error-info::${JSON.stringify(error)}`)
+    } else {
+      // Other, CannotLookup, BadOrigin, no extra info
+      errorInfo = dispatchError.toString()
+    }
+    toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+  }
+
+  const checkTransactions = async () => {
+    try {
+      const collection = 3
+      // const result = await api.query.uniques.account(polkadotAccount, 1, 1)
+      const result = await api.query.uniques.account.entries(polkadotAccount, collection)
+      // const result = await api.query.timestamp.now()
+      console.log('result :: ', result)
+    } catch (error) {
+      console.log('checking transaction error :: ', error)
+    }
+  }
+
   return (
     <>
       <div className='container mt-[7rem] mx-auto px-5'>
@@ -29,6 +176,7 @@ const PropertyDetail = () => {
           | {property?.features?.f_number_of_bathrooms} bathroom
         </p>
       </div>
+      {/* left side */}
       <div className='flex mt-5 container mx-auto'>
         <div className=' w-2/3 mx-5 flex flex-col'>
           <img
@@ -89,15 +237,16 @@ const PropertyDetail = () => {
               {`Map| property location`}
             </h1>
             <div className='h-[100%] mt-4'>
-              <iframe
+              {/* <iframe
                 width='100%'
                 height='100%'
                 title='map'
                 src={property?.googleMapLink || ''}
-              ></iframe>
+              ></iframe> */}
             </div>
           </div>
         </div>
+        {/* right side */}
         <div className='w-1/3 flex flex-col'>
           <div className='p-4 grid grid-cols-2 gap-x-4 bg-white rounded'>
             <div className='flex flex-col'>
@@ -155,6 +304,7 @@ const PropertyDetail = () => {
           </div>
           <div className='grid grid-cols-2 gap-x-4 mt-4'>
             <button
+              onClick={listProperty}
               className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
             >
               <h5 className=' font-dmsans-bold text-base text-white uppercase'>
@@ -162,6 +312,7 @@ const PropertyDetail = () => {
               </h5>
             </button>
             <button
+              onClick={checkTransactions}
               className=' flex h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
               <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
                 <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
