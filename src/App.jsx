@@ -31,7 +31,7 @@ function App() {
         <Route path='/did-payment' element={<DidPayment />} />
         <Route path='/link-credentail' element={<LinkCredential />} />
         <Route path='/terms-and-conditions' element={<TermsAndCondition />} />
-        <Route path='/property-detail' element={<PropertyDetail />} />
+        <Route path='/property-detail/:id' element={<PropertyDetail />} />
       </Routes>
       <ToastContainer />      
       <Footer /> 
