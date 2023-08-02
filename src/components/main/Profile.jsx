@@ -126,7 +126,7 @@ const Profile = () => {
                 errorInfo = dispatchError.toString()
               }
               toast.warn(`😞 Transaction Failed! ${section}.${method}::${errorInfo}`)
-            } else if (section + ":" + method === 'system:ExtrinsicSuccess' ) {
+            } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
               toast.success(`❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
 
               // add to the database

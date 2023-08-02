@@ -1,7 +1,15 @@
 import React from 'react'
 import { BathAndShowerSvgIcon, BedSvgIcon, LocationSvgIcon, StatusSvgIcon } from '../../assets/icons'
 import { abbreviation } from '../../utils'
+import { useNavigate } from 'react-router-dom'
+
 const EstateAssetCard = ({ item, listProperty }) => {
+  const navigate = useNavigate()
+
+  const detail = () => {
+    navigate(`/property-detail/${item?._id}`)
+  }
+
   return (
     <>
       <div className='max-w-sm mt-2 bg-[#FEFEFE] relative rounded-lg shadow'>
@@ -89,6 +97,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
               </button>
             )}
             <button
+              onClick={detail}
               className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
               <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
                 <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>

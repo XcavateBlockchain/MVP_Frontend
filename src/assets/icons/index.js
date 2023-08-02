@@ -16,6 +16,9 @@ import TransactionSvgIcon from './transaction.svg'
 import BellSvgIcon from './bell.svg'
 import StatusSvgIcon from './status.svg'
 import LocationSvgIcon from './location.svg'
+import DoubleBedSvgIcon from './double-bed.svg'
+import DoubleBathSvgIcon from './double-bath.svg'
+import MapTagSvgIcon from './map-tag.svg'
 
 export {
   WalletSvgIcon,
@@ -36,4 +39,7 @@ export {
   TransactionSvgIcon,
   StatusSvgIcon,
   LocationSvgIcon,
+  DoubleBedSvgIcon,
+  DoubleBathSvgIcon,
+  MapTagSvgIcon,
 }

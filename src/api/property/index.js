@@ -30,3 +30,11 @@ export const getAllProperties = () => {
     },
   })
 }
+
+export const getPropertyById = (propertyId) => {
+  return client.get(`/property/getPropertyById/${propertyId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
