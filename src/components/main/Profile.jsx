@@ -80,66 +80,104 @@ const Profile = () => {
       }
       
       const fromAcct = await getFromAcct()
-      let txs = []
-      txs.push(api.tx.uniques.create(collection, polkadotAccount))
-
-      const nftAmount = 100
-      const price = nftAmount > 0? Math.round(Number(item?.price) / nftAmount) : 0
-
-      if (price > 0) {
-        for (let index = 0; index < 100; index++) {
-          txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
-          txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
-        }
-      }
-
-      await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+      // collection creation
+      await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
         status.isFinalized
-          ? toast.success(`😉 Finalized. Block hash: ${status.asFinalized.toString()}`)
-          : toast.info(`Current transaction status: ${status.type}`)
-    
-          // Loop through Vec<EventRecord> to display all events
-          events.forEach(async ({ _, event: { data, method, section } }) => {
-            if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-              // extract the data for this event
-              const [dispatchError, dispatchInfo] = data
-              console.log(`dispatchinfo: ${dispatchInfo}`)
-              let errorInfo
-              
-              // decode the error
-              if (dispatchError.isModule) {
-                // for module errors, we have the section indexed, lookup
-                // (For specific known errors, we can also do a check against the
-                // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
-                const mod = dispatchError.asModule
-                const error = api.registry.findMetaError(
-                    new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
-                )
-                let message = `${error.section}.${error.name}${
-                    Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
-                }`
-                
-                errorInfo = `${message}`
-                console.log(`Error-info::${JSON.stringify(error)}`)
-              } else {
-                // Other, CannotLookup, BadOrigin, no extra info
-                errorInfo = dispatchError.toString()
+          ? toast.success(`😉 Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+          : toast.info(`Collection creation: ${status.type}`)
+        
+        events.forEach(async ({ _, event: { data, method, section } }) => {
+          if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+            errorHandle({ data, method, section, target: 'Collection creation' })
+          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
+            console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+            // add collection data to the database
+            await create({
+              id: collection,
+              owner: polkadotAccount,
+            })
+      
+            let txs = []
+      
+            const nftAmount = 100
+            const price = nftAmount > 0? Math.round(Number(item?.price) / nftAmount) : 0
+      
+            if (price > 0) {
+              for (let index = 0; index < 100; index++) {
+                txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
               }
-              toast.warn(`😞 Transaction Failed! ${section}.${method}::${errorInfo}`)
-            } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
-              toast.success(`❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-
-              // add to the database
-              await create({
-                id: collection,
-                owner: polkadotAccount,
+              
+              // nft minting
+              await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+                status.isFinalized
+                  ? toast.success(`😉 NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+                  : toast.info(`NFT minting: ${status.type}`)
+                
+                events.forEach(async ({ _, event: { data, method, section } }) => {
+                  if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+                    errorHandle({ data, method, section, target: 'NFT minting' })
+                  } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+                    console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+      
+                    txs = []
+      
+                    for (let index = 0; index < 100; index++) {
+                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
+                    }
+                    
+                    // setting price
+                    await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+                      status.isFinalized
+                        ? toast.success(`😉 Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+                        : toast.info(`Setting price: ${status.type}`)
+                      
+                      events.forEach(async ({ _, event: { data, method, section } }) => {
+                        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+                          errorHandle({ data, method, section, target: 'Setting price' })
+                        } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+                          toast.success(`❤️️ Listing successful!`)
+                          console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+                        }
+                      })
+                    })
+                  }
+                })
               })
             }
-          })
-      })      
+          }
+        })
+      })
     } catch (error) {
       console.log('error :: ', error)
     }
+  }
+
+  const errorHandle = ({ data, method, section, target }) => {
+    // extract the data for this event
+    const [dispatchError, dispatchInfo] = data
+    console.log(`dispatchinfo: ${dispatchInfo}`)
+    let errorInfo
+    
+    // decode the error
+    if (dispatchError.isModule) {
+      // for module errors, we have the section indexed, lookup
+      // (For specific known errors, we can also do a check against the
+      // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+      const mod = dispatchError.asModule
+      const error = api.registry.findMetaError(
+          new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+      )
+      let message = `${error.section}.${error.name}${
+          Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+      }`
+      
+      errorInfo = `${message}`
+      console.log(`Error-info::${JSON.stringify(error)}`)
+    } else {
+      // Other, CannotLookup, BadOrigin, no extra info
+      errorInfo = dispatchError.toString()
+    }
+    toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
   return (
