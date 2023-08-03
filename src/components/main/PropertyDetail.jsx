@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getPropertyById } from '../../api/property'
 import { DoubleBathSvgIcon, DoubleBedSvgIcon, MapTagSvgIcon } from '../../assets/icons'
@@ -7,24 +7,46 @@ import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
 import { create, getLastId } from '../../api/collection'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 const PropertyDetail = () => {
   const params = useParams()
   const { api, keyring, polkadotAccount } = useSubstrateState()
+  const user = useSelector((state) => state.user)
   const [property, setProperty] = useState(null)
+  const [totalNFTs, setTotalNFTs] = useState(0)
+  const [availableNFTs, setAvailableNFTs] = useState(0)
 
-  const getProperty = async (propertyId) => {
+  const getProperty = useCallback( async (propertyId) => {
     const result = await getPropertyById(propertyId)
     if (result?.status === 200) {
+      const _property = result?.data?.data
       setProperty(result?.data?.data)
+
+      if (_property?.collect) {
+        const collection = _property?.collect
+        
+        if (api && collection?.owner && collection?.id) {
+          const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
+          setTotalNFTs(result.length)
+      
+          if (result.length > 0) {
+            const soldNFTs = result.filter(([key]) => {
+              const [address] = key.args
+              return address.toString() !== collection?.owner?.toString()
+            })
+            setAvailableNFTs(result.length - soldNFTs.length)
+          }
+        }
+      }
     }
-  }
+  }, [api])
 
   useEffect(() => {
     if (params?.id) {
       getProperty(params.id)
     }
-  }, [params])
+  }, [params, getProperty])
 
   const getFromAcct = async () => {
     const currentAccount = keyring.getPair(polkadotAccount)
@@ -64,11 +86,6 @@ const PropertyDetail = () => {
             errorHandle({ data, method, section, target: 'Collection creation' })
           } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
             console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-            // add collection data to the database
-            await create({
-              id: collection,
-              owner: polkadotAccount,
-            })
       
             let txs = []
       
@@ -108,8 +125,19 @@ const PropertyDetail = () => {
                         if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
                           errorHandle({ data, method, section, target: 'Setting price' })
                         } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                          toast.success(`❤️️ Listing successful!`)
                           console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+                          // add collection data to the database
+                          const result = await create({
+                            id: collection,
+                            owner: polkadotAccount,
+                            propertyId: property?._id,
+                            page: 'Detail',
+                          })
+                          if (result?.status === 201) {
+                            const data = result?.data?.data
+                            setProperty(data)
+                            toast.success(`❤️️ Listing successful!`)
+                          }
                         }
                       })
                     })
@@ -153,13 +181,12 @@ const PropertyDetail = () => {
     toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
+  const buy = async () => {
+
+  }
+
   const checkTransactions = async () => {
     try {
-      const collection = 3
-      // const result = await api.query.uniques.account(polkadotAccount, 1, 1)
-      const result = await api.query.uniques.account.entries(polkadotAccount, collection)
-      // const result = await api.query.timestamp.now()
-      console.log('result :: ', result)
     } catch (error) {
       console.log('checking transaction error :: ', error)
     }
@@ -234,7 +261,7 @@ const PropertyDetail = () => {
           </div>
           <div className=' flex flex-col w-full h-[30rem] bg-white p-6 mt-4 rounded'>
             <h1 className=' font-graphik-medium text-xl tracking-[0.5px] text-body opacity-80'>
-              {`Map| property location`}
+              {`Map | property location`}
             </h1>
             <div className='h-[100%] mt-4'>
               {/* <iframe
@@ -268,10 +295,10 @@ const PropertyDetail = () => {
               </div>
               <div className='block max-w-sm mt-10'>
                 <h1 className=' font-graphik-medium text-xl text-body opacity-80'>
-                  {`NFTs Minted (100)`}
+                  {`NFTs Minted (${totalNFTs || 0})`}
                 </h1>
                 <p className=' font-graphik-regular text-xl text-body opacity-60 mt-6'>
-                  {`Available (56)`}
+                  {`Available (${availableNFTs || 0})`}
                 </p>
               </div>
             </div>
@@ -303,14 +330,22 @@ const PropertyDetail = () => {
             </div>
           </div>
           <div className='grid grid-cols-2 gap-x-4 mt-4'>
-            <button
+            {!property?.isListed && user?.userData?._id === property?.user?._id && <button
               onClick={listProperty}
               className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
             >
               <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                 {`List now`}
               </h5>
-            </button>
+            </button>}
+            {property?.isListed && user?.userData._id !== property?.user?._id && <button
+              onClick={buy}
+              className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
+            >
+              <h5 className=' font-dmsans-bold text-base text-white uppercase'>
+                {`Buy`}
+              </h5>
+            </button>}
             <button
               onClick={checkTransactions}
               className=' flex h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>

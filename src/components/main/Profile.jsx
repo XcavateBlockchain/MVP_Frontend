@@ -91,11 +91,6 @@ const Profile = () => {
             errorHandle({ data, method, section, target: 'Collection creation' })
           } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
             console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-            // add collection data to the database
-            await create({
-              id: collection,
-              owner: polkadotAccount,
-            })
       
             let txs = []
       
@@ -135,8 +130,19 @@ const Profile = () => {
                         if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
                           errorHandle({ data, method, section, target: 'Setting price' })
                         } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                          toast.success(`❤️️ Listing successful!`)
                           console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+                          // add collection data to the database
+                          const result = await create({
+                            id: collection,
+                            owner: polkadotAccount,
+                            propertyId: item?._id,
+                            page: 'Profile',
+                          })
+                          if (result?.status === 201) {
+                            const data = result?.data?.data
+                            setProperties(data)
+                            toast.success(`❤️️ Listing successful!`)
+                          }
                         }
                       })
                     })
