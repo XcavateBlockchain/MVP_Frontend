@@ -8,9 +8,11 @@ import { bnFromHex } from '@polkadot/util'
 import { create, getLastId } from '../../api/collection'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const PropertyDetail = () => {
   const params = useParams()
+  const navigate = useNavigate()
   const { api, keyring, polkadotAccount } = useSubstrateState()
   const user = useSelector((state) => state.user)
   const [property, setProperty] = useState(null)
@@ -181,8 +183,8 @@ const PropertyDetail = () => {
     toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
-  const buy = async () => {
-
+  const buy = () => {
+    navigate(`/buy-process/${property?._id}`)
   }
 
   const checkTransactions = async () => {
