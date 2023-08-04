@@ -50,7 +50,11 @@ const Profile = () => {
   }, [user])
 
   const addProperty = () => {
-    navigate('/list-property')
+    if (user?.userData?.isVerified) {
+      navigate('/list-property')
+    } else {
+      toast.info('Your credentials are under reivew, please contact the admin if you need')
+    }
   }
 
   const getFromAcct = async () => {
@@ -117,7 +121,7 @@ const Profile = () => {
                     txs = []
       
                     for (let index = 0; index < 100; index++) {
-                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
+                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
                     }
                     
                     // setting price
@@ -210,7 +214,7 @@ const Profile = () => {
                 <h4 className=' font-graphik-bold text-2xl text-headers opacity-[0.8] mr-2 tracking-[0.6px]'>
                   {user?.userData?.fullName || 'Unnamed'}
                 </h4>
-                <VerifiedSvgIcon />
+                {user?.userData?.isVerified && <VerifiedSvgIcon />}
                 <h4 className=' font-graphik-medium text-2xl text-headers opacity-[0.8] tracking-[0.6px] ml-5'>
                   {userRole?.label || ''}
                 </h4>
