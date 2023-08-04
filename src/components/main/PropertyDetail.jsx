@@ -114,7 +114,7 @@ const PropertyDetail = () => {
                     txs = []
       
                     for (let index = 0; index < 100; index++) {
-                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, polkadotAccount))
+                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
                     }
                     
                     // setting price

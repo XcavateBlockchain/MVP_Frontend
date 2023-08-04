@@ -6,7 +6,7 @@ import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
 import { toast } from 'react-toastify'
 
-const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, collectionId}) => {
+const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, collectionId, setSuccessOpen}) => {
   const modalRef = useRef(null)
   const { api, keyring, polkadotAccount } = useSubstrateState()
   const [count, setCount] = useState(1)
@@ -86,13 +86,13 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
       let txs = []
       const firstItemId = 100 - Number(availableNFTs) + 1
 
-      for (let index = firstItemId; index < firstItemId + count + 1; index++) {
+      for (let index = firstItemId; index < firstItemId + count; index++) {
         txs.push(api.tx.uniques.buyItem(collectionId, index, nftPrice))
       }
 
       await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
         status.isFinalized
-          ? toast.success(`😉 Purchasing price finalized. Block hash: ${status.asFinalized.toString()}`)
+          ? toast.success(`😉 Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Purchasing: ${status.type}`)
         
         events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -100,6 +100,8 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
             errorHandle({ data, method, section, target: 'Setting price' })
           } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
             setLoading(false)
+            setIsOpen(false)
+            setSuccessOpen(true)
             console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
           }
         })

@@ -5,6 +5,7 @@ import { ArrowPrevSvgIcon } from '../../assets/icons'
 import PropertyItem from '../partials/buy/PropertyItem'
 import BuyProceedModal from '../modals/BuyProceedModal'
 import { useSubstrateState } from '../../contexts/SubstrateContext'
+import PaymentSuccessModal from '../modals/PaymentSuccessModal'
 
 const BuyProcess = () => {
   const params = useParams()
@@ -16,6 +17,7 @@ const BuyProcess = () => {
   const [owner, setOwner] = useState('')
   const [nftPrice, setNftPrice] = useState('')
   const [collectionId, setCollectionId] = useState('')
+  const [successOpen, setSuccessOpen] = useState(false)
 
   const getProperty = useCallback( async (propertyId) => {
     const result = await getPropertyById(propertyId)
@@ -105,6 +107,11 @@ const BuyProcess = () => {
         owner={owner}
         nftPrice={nftPrice}
         collectionId={collectionId}
+        setSuccessOpen={setSuccessOpen}
+      />
+      <PaymentSuccessModal
+        successOpen={successOpen}
+        setSuccessOpen={setSuccessOpen}
       />
     </section>
   )
