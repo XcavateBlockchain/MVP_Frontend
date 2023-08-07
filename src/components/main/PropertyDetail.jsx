@@ -80,7 +80,7 @@ const PropertyDetail = () => {
       // collection creation
       await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
         status.isFinalized
-          ? toast.success(`😉 Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+          ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Collection creation: ${status.type}`)
         
         events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -102,7 +102,7 @@ const PropertyDetail = () => {
               // nft minting
               await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
                 status.isFinalized
-                  ? toast.success(`😉 NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+                  ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
                   : toast.info(`NFT minting: ${status.type}`)
                 
                 events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -120,7 +120,7 @@ const PropertyDetail = () => {
                     // setting price
                     await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
                       status.isFinalized
-                        ? toast.success(`😉 Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+                        ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
                         : toast.info(`Setting price: ${status.type}`)
                       
                       events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -138,7 +138,7 @@ const PropertyDetail = () => {
                           if (result?.status === 201) {
                             const data = result?.data?.data
                             setProperty(data)
-                            toast.success(`❤️️ Listing successful!`)
+                            toast.success(`Listing successful!`)
                           }
                         }
                       })
@@ -180,7 +180,7 @@ const PropertyDetail = () => {
       // Other, CannotLookup, BadOrigin, no extra info
       errorInfo = dispatchError.toString()
     }
-    toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+    toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
   const buy = () => {
@@ -340,7 +340,7 @@ const PropertyDetail = () => {
                 {`List now`}
               </h5>
             </button>}
-            {property?.isListed && user?.userData._id !== property?.user?._id && <button
+            {property?.isListed && user?.userData?._id !== property?.user?._id && <button
               onClick={buy}
               className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
             >

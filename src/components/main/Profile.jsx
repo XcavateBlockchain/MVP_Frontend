@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import ProfileTab from '../tabs/ProfileTab'
 import ProfileDatailTab from '../partials/profile/DetailTab'
 import ListedTab from '../partials/profile/ListedTab'
-import { getAllProperties } from '../../api/property'
+import { getAllPropertiesByUser } from '../../api/property'
 import { useSubstrateState } from '../../contexts/SubstrateContext'
 import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
@@ -27,7 +27,7 @@ const Profile = () => {
 
   const getProperties = async () => {
     try {
-      const result = await getAllProperties()
+      const result = await getAllPropertiesByUser()
       if (result?.status === 200) {
         setProperties(result?.data?.data)
       }
@@ -87,7 +87,7 @@ const Profile = () => {
       // collection creation
       await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
         status.isFinalized
-          ? toast.success(`😉 Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+          ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Collection creation: ${status.type}`)
         
         events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -109,7 +109,7 @@ const Profile = () => {
               // nft minting
               await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
                 status.isFinalized
-                  ? toast.success(`😉 NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+                  ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
                   : toast.info(`NFT minting: ${status.type}`)
                 
                 events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -127,7 +127,7 @@ const Profile = () => {
                     // setting price
                     await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
                       status.isFinalized
-                        ? toast.success(`😉 Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+                        ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
                         : toast.info(`Setting price: ${status.type}`)
                       
                       events.forEach(async ({ _, event: { data, method, section } }) => {
@@ -145,7 +145,7 @@ const Profile = () => {
                           if (result?.status === 201) {
                             const data = result?.data?.data
                             setProperties(data)
-                            toast.success(`❤️️ Listing successful!`)
+                            toast.success(`Listing successful!`)
                           }
                         }
                       })

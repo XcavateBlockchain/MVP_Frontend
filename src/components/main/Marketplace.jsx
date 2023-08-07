@@ -1,22 +1,51 @@
-import React from "react";
-import { data } from "../../utils/assets";
-import AssetCard from "../cards/AssetCard";
+import React, { useState, useEffect, useCallback } from 'react'
+import { getAllProperties } from '../../api/property'
+import EstateAssetCard from '../cards/EstateAssetCard'
+import { useSelector } from 'react-redux'
+
 const Marketplace = () => {
+  const [properties, setProperties] = useState([])
+  const user = useSelector((state) => state.user)
+
+  const getProperties = useCallback( async () => {
+    try {
+      const result = await getAllProperties()
+      if (result.status === 200) {
+        const _properties = result.data.data
+
+        if (user?.userData?._id) {
+          const _ps = _properties.filter(_p => {
+            return _p.user?._id !== user?.userData?._id
+          })
+
+          setProperties(_ps)
+        } else {
+          setProperties(_properties)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [user])
+
+  useEffect(() => {
+    getProperties()
+  }, [getProperties])
+
   return (
     <>
-      {/* <div className="container banner h-[14rem] border w-[100%] relative p-4 mx-auto mb-5">
-      <div className="w-[120px] h-[120px] left-10 p-1 absolute bottom-[-50px] rounded-full  profile-banner"/>
-      </div> */}
-      <div className="text-center w-full mt-40">
-        <h2 className="text-3xl text-black">Explore The Marketplace</h2>
+      <div className='text-center w-full mt-32'>
+        <h2 className=' font-graphik-bold text-2xl text-body opacity-80'>
+          {`Explore The Marketplace`}
+        </h2>
       </div>
-      <div className="px-4  py-10 grid grid-cols-3 gap-2 container mx-auto">
-       {data.map((item)=>{
-         return <AssetCard item={item} key={item._id} />
-       })}
+      <div className='px-4  py-10 grid grid-cols-3 gap-4 container mx-auto'>
+        {properties.length > 0 && properties.map((item, index) => {
+          return <EstateAssetCard key={index} item={item} />
+        })}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Marketplace;
+export default Marketplace

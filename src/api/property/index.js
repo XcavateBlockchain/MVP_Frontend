@@ -21,9 +21,9 @@ export const create = (data) => {
   })
 }
 
-export const getAllProperties = () => {
+export const getAllPropertiesByUser = () => {
   const token = getToken()
-  return client.get('/property', {
+  return client.get('/property/getPropertiesByUser', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -33,6 +33,14 @@ export const getAllProperties = () => {
 
 export const getPropertyById = (propertyId) => {
   return client.get(`/property/getPropertyById/${propertyId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export const getAllProperties = () => {
+  return client.get('/property', {
     headers: {
       'Content-Type': 'application/json',
     },
