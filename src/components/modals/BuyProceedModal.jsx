@@ -75,7 +75,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
       // Other, CannotLookup, BadOrigin, no extra info
       errorInfo = dispatchError.toString()
     }
-    toast.warn(`😞 ${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+    toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
   const payment = async () => {
@@ -92,7 +92,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
 
       await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
         status.isFinalized
-          ? toast.success(`😉 Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
+          ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Purchasing: ${status.type}`)
         
         events.forEach(async ({ _, event: { data, method, section } }) => {
