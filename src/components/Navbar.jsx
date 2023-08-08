@@ -1,13 +1,12 @@
 import React from 'react'
 import logo from '../assets/common/logo.png'
 import { Link } from 'react-router-dom'
-import { BsFillMoonFill } from 'react-icons/bs'
-import { BiBell } from 'react-icons/bi'
 import WalletConnectModal from './modals/WalletConnectModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAddWalletModal } from '../redux/features/userSlice'
 import WalletConnectSuccessModal from './modals/WalletConnectSuccessModal'
 import { getDidAbbreviation } from '../utils'
+import { BellSvgIcon, MoonSvgIcon, WalletSvgIcon } from '../assets/icons'
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -24,19 +23,23 @@ const Navbar = () => {
           <a href='/' className='flex items-center'>
             <img src={logo} className='h-12 mr-3' alt='Flowbite Logo' />
           </a>
-          <div className='flex md:order-2'>
-            <BsFillMoonFill color='black' className='mt-3 mx-3' size={20} />
-            <BiBell color='black' className='mt-3 mr-10' size={24} />
+          <div className='flex flex-row items-center md:order-2'>
+            <span className=' mr-3'>
+              <MoonSvgIcon />
+            </span>
+            <span className=' mr-10'>
+              <BellSvgIcon opacity={1} />
+            </span>
             <button
               type='button'
               onClick={() => toggleWalletModal()}
-              className=' connect-wallet-button rounded-lg px-4 py-3 text-center mr-3 md:mr-0'
+              className=' flex flex-row items-center justify-center w-40 h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
             >
-              <h5 className=' font-graphik-medium text-base text-white'>
-                {user?.did? getDidAbbreviation(user?.did) : `Connect wallet`}
+              <h5 className=' font-graphik-semibold text-base text-white mr-2'>
+                {user?.did ? getDidAbbreviation(user?.did) : `CONNECT`}
               </h5>
+              <WalletSvgIcon color='white' width={18} height={18} />
             </button>
-
             <button
               data-collapse-toggle='navbar-sticky'
               type='button'

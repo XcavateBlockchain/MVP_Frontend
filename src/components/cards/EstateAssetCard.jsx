@@ -92,11 +92,20 @@ const EstateAssetCard = ({ item, listProperty }) => {
             />
           </div>
           <div className='flex mt-7'>
+            <button
+              onClick={detail}
+              className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm mr-4'>
+              <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
+                <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+                  {`View details`}
+                </h5>
+              </div>
+            </button>
             {item.isVerified ? (
               <>
                 {!item.isListed && user?.userData?._id === item?.user?._id && <button
                   onClick={() => listProperty(item)}
-                  className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mr-4'
+                  className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
                 >
                   <h5 className=' font-dmsans-bold text-base text-white'>
                     {`List`}
@@ -104,7 +113,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
                 </button>}
                 {item?.isListed && user?.userData?._id !== item?.user?._id && <button
                   onClick={() => buy()}
-                  className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mr-4'
+                  className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
                 >
                   <h5 className=' font-dmsans-bold text-base text-white'>
                     {`Buy`}
@@ -113,22 +122,13 @@ const EstateAssetCard = ({ item, listProperty }) => {
               </>
             ) : (
               <button
-                className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mr-4'
+                className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
               >
                 <h5 className=' font-dmsans-bold text-base text-white'>
                   {`Verify`}
                 </h5>
               </button>
             )}
-            <button
-              onClick={detail}
-              className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
-              <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-                <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
-                  {`View details`}
-                </h5>
-              </div>
-            </button>
           </div>
         </div>
       </div>
