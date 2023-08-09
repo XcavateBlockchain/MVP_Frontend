@@ -164,9 +164,9 @@ const LinkCredential = () => {
       <div className="container m-auto flex justify-center items-center flex-col h-[100%]">
         <div className=" flex flex-row items-center w-[60%] h-[68px] bg-white rounded-t-lg px-6 mb-4 mt-10">
           {/* radio button */}
-          <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] mr-2'>
+          <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] mr-2'>
             <div className='flex flex-row items-center justify-center w-full h-full rounded-full bg-white'>
-              <div className='w-[8px] h-[8px] rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+              <div className='w-[8px] h-[8px] rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>
               </div>
             </div>
           </div>
@@ -364,7 +364,7 @@ const LinkCredential = () => {
             type="button"
             onClick={handleClaim}
             disabled={loading}
-            className=" flex flex-row items-center justify-center w-full h-[60px] mt-10 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]"
+            className=" flex flex-row items-center justify-center w-full h-[60px] mt-10 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]"
           >
             {loading? <LoadingSvgIcon /> : <h5 className=" font-graphik-bold text-lg text-white">
               {`Verify`}

@@ -67,9 +67,9 @@ const PaymentSuccessModal = ({ successOpen, setSuccessOpen }) => {
                   <div className=' flex flex-row justify-center'>
                     <button
                       onClick={() => setSuccessOpen(false)}
-                      className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm my-10'>
+                      className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm my-10'>
                       <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-                        <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] uppercase'>
+                        <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] uppercase'>
                           {`Okay`}
                         </h5>
                       </div>

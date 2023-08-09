@@ -227,9 +227,9 @@ const Profile = () => {
             </div>
             <div className='flex flex-row items-center justify-end'>
               <button
-                className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm mr-4'>
+                className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm mr-4'>
                 <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-                  <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mr-2 uppercase'>
+                  <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] mr-2 uppercase'>
                     {`Share`}
                   </h5>
                   <ShareSvgIcon />
@@ -237,7 +237,7 @@ const Profile = () => {
               </button>
               <button
                 onClick={addProperty}
-                className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
+                className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
               >
                 <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                   {`Add property`}

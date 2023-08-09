@@ -100,7 +100,7 @@ const ListedInfo = ({ property, setProperty, onChangingPage }) => {
             <button
               type='button'
               onClick={next}
-              className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
+              className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
             >
               <h4 className=' font-dmsans-bold text-lg text-white'>
                 {`Next`}

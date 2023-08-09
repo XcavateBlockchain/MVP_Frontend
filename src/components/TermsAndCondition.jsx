@@ -65,7 +65,7 @@ export const TermsAndCondition = () => {
                 <h5 className=" mr-4">
                   {`By clicking 'Accept' you are agreeing to our terms and conditions.`}
                 </h5>
-                <button className=" flex flex-row items-center justify-center w-[120px] h-[40px] rounded bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]">
+                <button className=" flex flex-row items-center justify-center w-[120px] h-[40px] rounded bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]">
                   <h5 className=" font-graphik-regualar text-white text-base">
                     {`Accept`}
                   </h5>

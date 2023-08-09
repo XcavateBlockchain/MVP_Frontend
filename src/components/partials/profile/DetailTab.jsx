@@ -24,10 +24,10 @@ const ProfileDatailTab = () => {
             }
           </div>
           <button
-            className=' flex w-[159px] h-[59px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'
+            className=' flex w-[159px] h-[59px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'
           >
             <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-              <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] uppercase'>
+              <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] uppercase'>
                 {`Add Company`}
               </h5>
             </div>
@@ -37,7 +37,7 @@ const ProfileDatailTab = () => {
         <h3 className=' font-graphik-bold text-headers text-2xl opacity-80 tracking-[0.6px] mt-10'>
           {`Personal  Information`}
         </h3>
-        <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'></div>
+        <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'></div>
         <div className=' flex flex-row w-full mt-6'>
           <div className=' flex flex-col w-1/2 lg:w-1/3'>
             <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px]'>
@@ -72,7 +72,7 @@ const ProfileDatailTab = () => {
         <h3 className=' font-graphik-bold text-headers text-2xl opacity-80 tracking-[0.6px] mt-10'>
           {`Identification  Documents`}
         </h3>
-        <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'></div>
+        <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'></div>
         <div className=' flex flex-row w-full mt-6'>
           <div className=' flex flex-col w-1/2 lg:w-1/3'>
             <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px]'>
