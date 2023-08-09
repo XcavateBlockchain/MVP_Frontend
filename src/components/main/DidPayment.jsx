@@ -39,9 +39,9 @@ const DidPayment = () => {
           <div className='flex flex-col w-full border-2 border-solid border-[#FAFAFA] bg-[rgba(250,250,250,0.10)] mt-2 p-4 rounded-lg'>
             <div className='flex flex-row items-center'>
               {/* radio button */}
-              <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] mr-2'>
+              <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] mr-2'>
                 <div className='flex flex-row items-center justify-center w-full h-full rounded-full bg-white'>
-                  <div className='w-[10px] h-[10px] rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+                  <div className='w-[10px] h-[10px] rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>
                   </div>
                 </div>
               </div>
@@ -53,7 +53,7 @@ const DidPayment = () => {
               {`To use this option you would have to have at least 2.0582 KILTs as Fee`}
             </h5>
           </div>
-          <button className='flex flex-row justify-center items-center w-full h-[60px] bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] rounded-lg mt-4' onClick={() => goLinkCredentails()}>
+          <button className='flex flex-row justify-center items-center w-full h-[60px] bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] rounded-lg mt-4' onClick={() => goLinkCredentails()}>
             <h5 className=' font-graphik-medium text-lg text-white'>
               {`Continue to payment`}
             </h5>

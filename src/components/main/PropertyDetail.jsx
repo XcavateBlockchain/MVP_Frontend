@@ -334,7 +334,7 @@ const PropertyDetail = () => {
           <div className='grid grid-cols-2 gap-x-4 mt-4'>
             {!property?.isListed && user?.userData?._id === property?.user?._id && <button
               onClick={listProperty}
-              className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
+              className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
             >
               <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                 {`List now`}
@@ -342,7 +342,7 @@ const PropertyDetail = () => {
             </button>}
             {property?.isListed && user?.userData?._id !== property?.user?._id && <button
               onClick={buy}
-              className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'
+              className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
             >
               <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                 {`Buy`}
@@ -350,9 +350,9 @@ const PropertyDetail = () => {
             </button>}
             <button
               onClick={checkTransactions}
-              className=' flex h-[53px] rounded-lg bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
+              className=' flex h-[53px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
               <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-                <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+                <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>
                   {`Share`}
                 </h5>
               </div>

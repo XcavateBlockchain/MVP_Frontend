@@ -82,7 +82,7 @@ const BuyProcess = () => {
                 <PropertyItem className=' mt-6' label={`Price per NFTs`} value={`${Math.round(Number(property?.price) / 100)} XCAV`} />
                 <button
                   onClick={() => setIsOpen(true)}
-                  className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] my-10'
+                  className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] my-10'
                 >
                   <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                     {`Proceed`}

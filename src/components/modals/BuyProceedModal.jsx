@@ -200,7 +200,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
                   <button
                     onClick={payment}
                     disabled={loading}
-                    className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] mt-10'
+                    className=' flex flex-row items-center justify-center h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] mt-10'
                   >
                     {loading? <LoadingSvgIcon /> : <h5 className=' font-dmsans-bold text-base text-white uppercase'>
                       {`Make payment`}
