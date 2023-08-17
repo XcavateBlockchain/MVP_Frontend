@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import LoanRequestModal from '../../modals/LoanRequestModal'
+import LoanRequestDetailModal from '../../modals/LoanRequestDetailModal'
 
 const DevelopmentLoan = () => {
   const [active, setActive] = useState('request')
   const [isOpen, setIsOpen] = useState(false)
+  const [detailIsOpen, setDetailIsOpen] = useState(false)
 
   return (
     <div className='px-4 py-10 container'>
@@ -36,7 +38,8 @@ const DevelopmentLoan = () => {
           </div>
         </button>
       </div>
-      <LoanRequestModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <LoanRequestModal isOpen={isOpen} setIsOpen={setIsOpen} setDetailIsOpen={setDetailIsOpen} />
+      <LoanRequestDetailModal isOpen={detailIsOpen} setIsOpen={setDetailIsOpen} />
     </div>
   )
 }
