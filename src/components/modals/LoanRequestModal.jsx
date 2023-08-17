@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { CloseSvgIcon, SearchSvgIcon } from '../../assets/icons'
 
-const LoanRequestModal = ({ isOpen, setIsOpen }) => {
+const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
   const modalRef = useRef(null)
 
   useEffect(() => {
@@ -16,6 +16,11 @@ const LoanRequestModal = ({ isOpen, setIsOpen }) => {
       window.removeEventListener('mousedown', handler)
     }
   }, [setIsOpen])
+
+  const confirmDetail = () => {
+    setIsOpen(false)
+    setDetailIsOpen(true)
+  }
 
   return (
     <>
@@ -86,6 +91,7 @@ const LoanRequestModal = ({ isOpen, setIsOpen }) => {
                     />
                   </div>
                   <button
+                    onClick={confirmDetail}
                     className=' flex flex-row items-center justify-center w-full h-[56px] rounded-md mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
                   >
                     <h5 className=' font-graphik-semibold text-lg text-white uppercase'>
