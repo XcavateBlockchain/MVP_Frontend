@@ -3,7 +3,7 @@ import SummaryCard from '../cards/SummaryCard'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { USER_ROLES } from '../../data/mockData'
-import { ShareSvgIcon, VerifiedSvgIcon } from '../../assets/icons'
+import { HomeSvgIcon, ShareSvgIcon, VerifiedSvgIcon } from '../../assets/icons'
 import BannerPlaceholderImage from '../../assets/webp/placeholder.webp'
 import MalePlaceholderImage from '../../assets/webp/male_placeholder_image.webp'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +16,7 @@ import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
 import { create, getLastId } from '../../api/collection'
 import { toast } from 'react-toastify'
+import DevelopmentLoan from '../partials/profile/DevelopmentLoan'
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -239,9 +240,10 @@ const Profile = () => {
                 onClick={addProperty}
                 className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
               >
-                <h5 className=' font-dmsans-bold text-base text-white uppercase'>
-                  {`Add property`}
+                <h5 className=' font-dmsans-bold text-base text-white uppercase mr-2'>
+                  {`Add`}
                 </h5>
+                <HomeSvgIcon />
               </button>
             </div>
           </div>
@@ -261,6 +263,7 @@ const Profile = () => {
       {/* contents */}
       {tab === 'profile' && <ProfileDatailTab />}
       {tab === 'properties' && properties.length > 0 && <ListedTab properties={properties} listProperty={listProperty} />}
+      {tab === 'development-loan' && <DevelopmentLoan />}
     </section>
   )
 }

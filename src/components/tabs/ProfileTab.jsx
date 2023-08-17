@@ -17,10 +17,10 @@ const ProfileTab = ({ tab, setTab }) => {
             {`Properties`}
           </h4>
         </div>
-        <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('sold')}>
-          <FolderShareSvgIcon opacity={tab === 'sold' ? 0.8 : 0.6} />
-          <h4 className={` ${tab === 'sold' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
-            {`Sold properties`}
+        <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('development-loan')}>
+          <FolderShareSvgIcon opacity={tab === 'development-loan' ? 0.8 : 0.6} />
+          <h4 className={` ${tab === 'development-loan' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
+            {`Development loan`}
           </h4>
         </div>
         <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('transactions')}>
@@ -35,10 +35,10 @@ const ProfileTab = ({ tab, setTab }) => {
             {`Wallet access`}
           </h4>
         </div>
-        <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('notification')}>
-          <BellSvgIcon opacity={tab === 'notification' ? 0.8 : 0.6} />
-          <h4 className={` ${tab === 'notification' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
-            {`Notification`}
+        <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('messages')}>
+          <BellSvgIcon opacity={tab === 'messages' ? 0.8 : 0.6} />
+          <h4 className={` ${tab === 'messages' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
+            {`Messages`}
           </h4>
         </div>
       </div>

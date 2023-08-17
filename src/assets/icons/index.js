@@ -21,6 +21,8 @@ import DoubleBathSvgIcon from './double-bath.svg'
 import MapTagSvgIcon from './map-tag.svg'
 import MoonSvgIcon from './moon.svg'
 import DoubleArrowSvgIcon from './double-arrow.svg'
+import HomeSvgIcon from './home.svg'
+import SearchSvgIcon from './search.svg'
 
 export {
   WalletSvgIcon,
@@ -46,4 +48,6 @@ export {
   MapTagSvgIcon,
   MoonSvgIcon,
   DoubleArrowSvgIcon,
+  HomeSvgIcon,
+  SearchSvgIcon,
 }
