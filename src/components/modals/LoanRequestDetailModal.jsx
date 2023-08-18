@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const LoanRequestDetailModal = ({ isOpen, setIsOpen }) => {
+const LoanRequestDetailModal = ({ isOpen, setIsOpen, setSubmitIsOpen }) => {
   const modalRef = useRef(null)
 
   useEffect(() => {
@@ -15,6 +15,11 @@ const LoanRequestDetailModal = ({ isOpen, setIsOpen }) => {
       window.removeEventListener('mousedown', handler)
     }
   }, [setIsOpen])
+
+  const submit = () => {
+    setIsOpen(false)
+    setSubmitIsOpen(true)
+  }
 
   return (
     <>
@@ -57,6 +62,7 @@ const LoanRequestDetailModal = ({ isOpen, setIsOpen }) => {
                       </div>
                     </div>
                     <button
+                      onClick={submit}
                       className=' flex w-full h-14 rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[1px] hover:scale-[1.01] active:scale-100 hover:shadow-sm mt-6'>
                       <div className=' flex flex-row items-center justify-center w-full h-full rounded-lg bg-white'>
                         <h5 className=' font-graphik-semibold text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] uppercase'>
