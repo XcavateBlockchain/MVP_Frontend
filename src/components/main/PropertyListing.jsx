@@ -62,8 +62,8 @@ const PropertyListing = () => {
       formData.append('floorPlanImage', property.floorPlanImage)
       formData.append('assignmentImage', property.assignmentImage)
       Array.from(property.images).forEach(image => {
-        formData.append("images", image);
-      });
+        formData.append("images", image)
+      })
       formData.append('type', property.type)
       formData.append('price', property.price)
       formData.append('rentalIncome', property.rentalIncome)
