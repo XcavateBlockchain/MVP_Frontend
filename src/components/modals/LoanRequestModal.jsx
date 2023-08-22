@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { CloseSvgIcon, SearchSvgIcon } from '../../assets/icons'
 
-const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
+const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen, loan, setLoan }) => {
   const modalRef = useRef(null)
 
   useEffect(() => {
@@ -20,6 +20,16 @@ const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
   const confirmDetail = () => {
     setIsOpen(false)
     setDetailIsOpen(true)
+  }
+
+  const handleForm = (e) => {
+    const name = e.target.name
+    const value = e.target.value
+
+    setLoan({
+      ...loan,
+      [name]: value,
+    })
   }
 
   return (
@@ -61,6 +71,9 @@ const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
                     </label>
                     <input
                       type='text'
+                      value={loan?.planningPermissionCode || ''}
+                      name='planningPermissionCode'
+                      onChange={(e) => handleForm(e)}
                       placeholder='UK1085745222'
                       className=' w-full h-[51px] items-center font-dmsans-regular text-base text-body opacity-[0.85] border border-solid border-[var(--color-white-200,#E0DCDC)] rounded-lg outline-none pl-4 mt-2'
                     />
@@ -75,6 +88,9 @@ const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
                       </span>
                       <input
                         type='text'
+                        value={loan?.planningAuthority || ''}
+                        name='planningAuthority'
+                        onChange={(e) => handleForm(e)}
                         placeholder='Search'
                         className=' w-full h-[51px] items-center font-dmsans-regular text-base text-body opacity-[0.85] outline-none rounded-lg'
                       />
@@ -86,6 +102,9 @@ const LoanRequestModal = ({ isOpen, setIsOpen, setDetailIsOpen }) => {
                     </label>
                     <input
                       type='text'
+                      value={loan?.landTitleDeedCode || ''}
+                      name='landTitleDeedCode'
+                      onChange={(e) => handleForm(e)}
                       placeholder='BHR111-AB-01'
                       className=' w-full h-[51px] items-center font-dmsans-regular text-base text-body opacity-[0.85] border border-solid border-[var(--color-white-200,#E0DCDC)] rounded-lg outline-none pl-4 mt-2'
                     />
