@@ -20,3 +20,13 @@ export const create = (data) => {
     },
   })
 }
+
+export const getLoansByUser = () => {
+  const token = getToken()
+  return client.get('/loan', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+}
