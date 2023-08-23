@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import LoanRequestModal from '../../modals/LoanRequestModal'
 import LoanRequestDetailModal from '../../modals/LoanRequestDetailModal'
 import LoanRequestSubmitModal from '../../modals/LoanRequestSubmitModal'
-import { create } from '../../../api/loan'
+import { create, getLoansByUser } from '../../../api/loan'
 import { toast } from 'react-toastify'
+import { useEffect } from 'react'
+import LoanRequestItem from './LoanRequestItem'
 
 const DevelopmentLoan = () => {
   const [active, setActive] = useState('request')
@@ -30,6 +32,23 @@ const DevelopmentLoan = () => {
     pricingSchedule: null,
   })
   const [loading, setLoading] = useState(false)
+  const [loans, setLoans] = useState([])
+
+  const getLoans = async () => {
+    try {
+      const result = await getLoansByUser()
+      console.log('result :: ', result)
+      if (result.status === 200) {
+        setLoans(result.data.data)
+      }
+    } catch (error) {
+      console.log('error :: ', error)
+    }
+  }
+
+  useEffect(() => {
+    getLoans()
+  }, [])
 
   const submit = async () => {
     try {
@@ -73,6 +92,7 @@ const DevelopmentLoan = () => {
 
   return (
     <div className='px-4 py-10 container'>
+      {/* buttons */}
       <div className='flex flex-row justify-between items-center mt-6'>
         <div className='flex flex-row items-center'>
           <button
@@ -102,6 +122,12 @@ const DevelopmentLoan = () => {
           </div>
         </button>
       </div>
+      {/* loan request */}
+      {active === 'request' && <div className=' mt-12'>
+        {loans.length > 0 && loans.map((loan, index) => (
+          <LoanRequestItem key={index} loan={loan} />
+        ))}
+      </div>}
       <LoanRequestModal isOpen={isOpen} setIsOpen={setIsOpen} setDetailIsOpen={setDetailIsOpen} loan={loan} setLoan={setLoan} />
       <LoanRequestDetailModal isOpen={detailIsOpen} setIsOpen={setDetailIsOpen} setSubmitIsOpen={setSubmitIsOpen} />
       <LoanRequestSubmitModal isOpen={submistIsOpen} setIsOpen={setSubmitIsOpen} loan={loan} setLoan={setLoan} submit={submit} loading={loading} />

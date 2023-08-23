@@ -1,5 +1,5 @@
 import React from 'react'
-import { BellSvgIcon, FolderShareSvgIcon, FolderSvgIcon, UserSvgIcon, WalletSvgIcon, TransactionSvgIcon } from '../../assets/icons'
+import { BellSvgIcon, FolderShareSvgIcon, FolderSvgIcon, UserSvgIcon, WalletSvgIcon, TransactionSvgIcon } from '../../../assets/icons'
 
 const ProfileTab = ({ tab, setTab }) => {
   return (
