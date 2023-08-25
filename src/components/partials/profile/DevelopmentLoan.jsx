@@ -125,7 +125,7 @@ const DevelopmentLoan = () => {
       {/* loan request */}
       {active === 'request' && <div className=' mt-12'>
         {loans.length > 0 && loans.map((loan, index) => (
-          <LoanRequestItem key={index} loan={loan} />
+          <LoanRequestItem key={index} loan={loan} setLoans={setLoans} />
         ))}
       </div>}
       <LoanRequestModal isOpen={isOpen} setIsOpen={setIsOpen} setDetailIsOpen={setDetailIsOpen} loan={loan} setLoan={setLoan} />

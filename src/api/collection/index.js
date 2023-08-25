@@ -28,3 +28,13 @@ export const getLastId = () => {
     },
   })
 }
+
+export const createLoanCollection = (data) => {
+  const token = getToken()
+  return client.post('/collection/createLoanCollection', data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+}
