@@ -44,7 +44,7 @@ const WalletDownload = () => {
             {`and downloading the browser app.`}
           </h5>
         </div>
-        <a href='https://www.sporran.org' target='_blank'>
+        <a href='https://www.sporran.org' target='_blank' rel="noreferrer">
           <h4 className=' font-graphik-light text-lg text-[#2454DA] opacity-[0.8] mt-10'>
             {`https://www.sporran.org`}
           </h4>
