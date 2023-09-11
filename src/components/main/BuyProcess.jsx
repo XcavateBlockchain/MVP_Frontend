@@ -4,13 +4,13 @@ import { getPropertyById } from '../../api/property'
 import { ArrowPrevSvgIcon } from '../../assets/icons'
 import PropertyItem from '../partials/buy/PropertyItem'
 import BuyProceedModal from '../modals/BuyProceedModal'
-import { useSubstrateState } from '../../contexts/SubstrateContext'
+// import { useSubstrateState } from '../../contexts/SubstrateContext'
 import PaymentSuccessModal from '../modals/PaymentSuccessModal'
 
 const BuyProcess = () => {
   const params = useParams()
   const navigate = useNavigate()
-  const { api } = useSubstrateState()
+  // const { api } = useSubstrateState()
   const [property, setProperty] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
   const [availableNFTs, setAvailableNFTs] = useState(0)
@@ -27,24 +27,25 @@ const BuyProcess = () => {
       setProperty(_property)
 
       if (_property?.collect) {
-        const collection = _property?.collect
+        // const collection = _property?.collect
         
-        if (api && collection?.owner && collection?.id) {
-          setOwner(collection?.owner)
-          setCollectionId(collection?.id)
-          const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
+        // if (api && collection?.owner && collection?.id) {
+        //   setOwner(collection?.owner)
+        //   setCollectionId(collection?.id)
+        //   const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
       
-          if (result.length > 0) {
-            const soldNFTs = result.filter(([key]) => {
-              const [address] = key.args
-              return address.toString() !== collection?.owner?.toString()
-            })
-            setAvailableNFTs(result.length - soldNFTs.length)
-          }
-        }
+        //   if (result.length > 0) {
+        //     const soldNFTs = result.filter(([key]) => {
+        //       const [address] = key.args
+        //       return address.toString() !== collection?.owner?.toString()
+        //     })
+        //     setAvailableNFTs(result.length - soldNFTs.length)
+        //   }
+        // }
       }
     }
-  }, [api])
+  // }, [api])
+  }, [])
 
   useEffect(() => {
     if (params?.id) {

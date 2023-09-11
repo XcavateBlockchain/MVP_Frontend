@@ -13,15 +13,15 @@ const Marketplace = () => {
       if (result.status === 200) {
         const _properties = result.data.data
 
-        if (user?.userData?._id) {
-          const _ps = _properties.filter(_p => {
-            return _p.user?._id !== user?.userData?._id
-          })
+        // if (user?.userData?._id) {
+        //   const _ps = _properties.filter(_p => {
+        //     return _p.user?._id !== user?.userData?._id
+        //   })
 
-          setProperties(_ps)
-        } else {
+        //   setProperties(_ps)
+        // } else {
           setProperties(_properties)
-        }
+        // }
       }
     } catch (error) {
       console.log(error)

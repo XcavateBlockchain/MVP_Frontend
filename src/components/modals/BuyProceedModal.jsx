@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CloseSvgIcon, LoadingSvgIcon } from '../../assets/icons'
 import { abbreviationFormat } from '../../utils'
-import { useSubstrateState } from '../../contexts/SubstrateContext'
-import { web3FromSource } from '@polkadot/extension-dapp'
-import { bnFromHex } from '@polkadot/util'
-import { toast } from 'react-toastify'
+// import { useSubstrateState } from '../../contexts/SubstrateContext'
+// import { web3FromSource } from '@polkadot/extension-dapp'
+// import { bnFromHex } from '@polkadot/util'
+// import { toast } from 'react-toastify'
 
 const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, collectionId, setSuccessOpen}) => {
   const modalRef = useRef(null)
-  const { api, keyring, polkadotAccount } = useSubstrateState()
+  // const { api, keyring, polkadotAccount } = useSubstrateState()
   const [count, setCount] = useState(1)
   const [loading, setLoading] = useState(false)
 
@@ -33,82 +33,82 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
     setCount(c => c > 1? c - 1 : c)
   }
 
-  const getFromAcct = async () => {
-    const currentAccount = keyring.getPair(polkadotAccount)
-    const {
-      address,
-      meta: { source, isInjected },
-    } = currentAccount
+  // const getFromAcct = async () => {
+  //   const currentAccount = keyring.getPair(polkadotAccount)
+  //   const {
+  //     address,
+  //     meta: { source, isInjected },
+  //   } = currentAccount
 
-    if (!isInjected) {
-      return [currentAccount]
-    }
+  //   if (!isInjected) {
+  //     return [currentAccount]
+  //   }
 
-    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
-    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
-    const injector = await web3FromSource(source)
-    return [address, { signer: injector.signer }]
-  }
+  //   // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
+  //   // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
+  //   const injector = await web3FromSource(source)
+  //   return [address, { signer: injector.signer }]
+  // }
 
-  const errorHandle = ({ data, method, section, target }) => {
-    // extract the data for this event
-    const [dispatchError, dispatchInfo] = data
-    console.log(`dispatchinfo: ${dispatchInfo}`)
-    let errorInfo
+  // const errorHandle = ({ data, method, section, target }) => {
+  //   // extract the data for this event
+  //   const [dispatchError, dispatchInfo] = data
+  //   console.log(`dispatchinfo: ${dispatchInfo}`)
+  //   let errorInfo
     
-    // decode the error
-    if (dispatchError.isModule) {
-      // for module errors, we have the section indexed, lookup
-      // (For specific known errors, we can also do a check against the
-      // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
-      const mod = dispatchError.asModule
-      const error = api.registry.findMetaError(
-          new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
-      )
-      let message = `${error.section}.${error.name}${
-          Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
-      }`
+  //   // decode the error
+  //   if (dispatchError.isModule) {
+  //     // for module errors, we have the section indexed, lookup
+  //     // (For specific known errors, we can also do a check against the
+  //     // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+  //     const mod = dispatchError.asModule
+  //     const error = api.registry.findMetaError(
+  //         new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+  //     )
+  //     let message = `${error.section}.${error.name}${
+  //         Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+  //     }`
       
-      errorInfo = `${message}`
-      console.log(`Error-info::${JSON.stringify(error)}`)
-    } else {
-      // Other, CannotLookup, BadOrigin, no extra info
-      errorInfo = dispatchError.toString()
-    }
-    toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
-  }
+  //     errorInfo = `${message}`
+  //     console.log(`Error-info::${JSON.stringify(error)}`)
+  //   } else {
+  //     // Other, CannotLookup, BadOrigin, no extra info
+  //     errorInfo = dispatchError.toString()
+  //   }
+  //   toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+  // }
 
   const payment = async () => {
-    try {
-      setLoading(true)
-      const fromAcct = await getFromAcct()
+    // try {
+    //   setLoading(true)
+    //   const fromAcct = await getFromAcct()
       
-      let txs = []
-      const firstItemId = 100 - Number(availableNFTs) + 1
+    //   let txs = []
+    //   const firstItemId = 100 - Number(availableNFTs) + 1
 
-      for (let index = firstItemId; index < firstItemId + count; index++) {
-        txs.push(api.tx.uniques.buyItem(collectionId, index, nftPrice))
-      }
+    //   for (let index = firstItemId; index < firstItemId + count; index++) {
+    //     txs.push(api.tx.uniques.buyItem(collectionId, index, nftPrice))
+    //   }
 
-      await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-        status.isFinalized
-          ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
-          : toast.info(`Purchasing: ${status.type}`)
+    //   await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+    //     status.isFinalized
+    //       ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
+    //       : toast.info(`Purchasing: ${status.type}`)
         
-        events.forEach(async ({ _, event: { data, method, section } }) => {
-          if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-            errorHandle({ data, method, section, target: 'Setting price' })
-          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-            setLoading(false)
-            setIsOpen(false)
-            setSuccessOpen(true)
-            console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-          }
-        })
-      })
-    } catch (error) {
-      console.log('error :: ', error)
-    }
+    //     events.forEach(async ({ _, event: { data, method, section } }) => {
+    //       if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+    //         errorHandle({ data, method, section, target: 'Setting price' })
+    //       } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+    //         setLoading(false)
+    //         setIsOpen(false)
+    //         setSuccessOpen(true)
+    //         console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+    //       }
+    //     })
+    //   })
+    // } catch (error) {
+    //   console.log('error :: ', error)
+    // }
   }
 
   return (
@@ -183,7 +183,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
                     </label>
                     <div className='flex flex-row items-center w-full h-[52px] bg-label rounded mt-1 px-4'>
                       <h4 className=' font-graphik-regular text-lg text-placeholder opacity-50'>
-                        {abbreviationFormat(polkadotAccount, 30, 1)}
+                        {/* {abbreviationFormat(polkadotAccount, 30, 1)} */}
                       </h4>
                     </div>
                   </div>
