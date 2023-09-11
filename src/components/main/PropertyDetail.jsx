@@ -2,18 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getPropertyById } from '../../api/property'
 import { DoubleBathSvgIcon, DoubleBedSvgIcon, MapTagSvgIcon } from '../../assets/icons'
-import { useSubstrateState } from '../../contexts/SubstrateContext'
-import { web3FromSource } from '@polkadot/extension-dapp'
-import { bnFromHex } from '@polkadot/util'
-import { create, getLastId } from '../../api/collection'
-import { toast } from 'react-toastify'
+// import { useSubstrateState } from '../../contexts/SubstrateContext'
+// import { web3FromSource } from '@polkadot/extension-dapp'
+// import { bnFromHex } from '@polkadot/util'
+// import { create, getLastId } from '../../api/collection'
+// import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const PropertyDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
-  const { api, keyring, polkadotAccount } = useSubstrateState()
+  // const { api, keyring, polkadotAccount } = useSubstrateState()
   const user = useSelector((state) => state.user)
   const [property, setProperty] = useState(null)
   const [totalNFTs, setTotalNFTs] = useState(0)
@@ -26,23 +26,24 @@ const PropertyDetail = () => {
       setProperty(result?.data?.data)
 
       if (_property?.collect) {
-        const collection = _property?.collect
+        // const collection = _property?.collect
         
-        if (api && collection?.owner && collection?.id) {
-          const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
-          setTotalNFTs(result.length)
+        // if (api && collection?.owner && collection?.id) {
+        //   const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
+        //   setTotalNFTs(result.length)
       
-          if (result.length > 0) {
-            const soldNFTs = result.filter(([key]) => {
-              const [address] = key.args
-              return address.toString() !== collection?.owner?.toString()
-            })
-            setAvailableNFTs(result.length - soldNFTs.length)
-          }
-        }
+        //   if (result.length > 0) {
+        //     const soldNFTs = result.filter(([key]) => {
+        //       const [address] = key.args
+        //       return address.toString() !== collection?.owner?.toString()
+        //     })
+        //     setAvailableNFTs(result.length - soldNFTs.length)
+        //   }
+        // }
       }
     }
-  }, [api])
+  // }, [api])
+  }, [])
 
   useEffect(() => {
     if (params?.id) {
@@ -50,138 +51,138 @@ const PropertyDetail = () => {
     }
   }, [params, getProperty])
 
-  const getFromAcct = async () => {
-    const currentAccount = keyring.getPair(polkadotAccount)
-    const {
-      address,
-      meta: { source, isInjected },
-    } = currentAccount
+  // const getFromAcct = async () => {
+  //   const currentAccount = keyring.getPair(polkadotAccount)
+  //   const {
+  //     address,
+  //     meta: { source, isInjected },
+  //   } = currentAccount
 
-    if (!isInjected) {
-      return [currentAccount]
-    }
+  //   if (!isInjected) {
+  //     return [currentAccount]
+  //   }
 
-    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
-    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
-    const injector = await web3FromSource(source)
-    return [address, { signer: injector.signer }]
-  }
+  //   // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
+  //   // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
+  //   const injector = await web3FromSource(source)
+  //   return [address, { signer: injector.signer }]
+  // }
 
   const listProperty = async () => {
-    try {
-      let collection = 1
-      const lastIdResult = await getLastId()
-      if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
-        const lastId = lastIdResult?.data?.data
-        collection = lastId + 1
-      }
+    // try {
+    //   let collection = 1
+    //   const lastIdResult = await getLastId()
+    //   if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
+    //     const lastId = lastIdResult?.data?.data
+    //     collection = lastId + 1
+    //   }
       
-      const fromAcct = await getFromAcct()
-      // collection creation
-      await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
-        status.isFinalized
-          ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
-          : toast.info(`Collection creation: ${status.type}`)
+    //   const fromAcct = await getFromAcct()
+    //   // collection creation
+    //   await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
+    //     status.isFinalized
+    //       ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+    //       : toast.info(`Collection creation: ${status.type}`)
         
-        events.forEach(async ({ _, event: { data, method, section } }) => {
-          if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-            errorHandle({ data, method, section, target: 'Collection creation' })
-          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
-            console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+    //     events.forEach(async ({ _, event: { data, method, section } }) => {
+    //       if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+    //         errorHandle({ data, method, section, target: 'Collection creation' })
+    //       } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
+    //         console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
       
-            let txs = []
+    //         let txs = []
       
-            const nftAmount = 100
-            const price = nftAmount > 0? Math.round(Number(property?.price) / nftAmount) : 0
+    //         const nftAmount = 100
+    //         const price = nftAmount > 0? Math.round(Number(property?.price) / nftAmount) : 0
       
-            if (price > 0) {
-              for (let index = 0; index < 100; index++) {
-                txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
-              }
+    //         if (price > 0) {
+    //           for (let index = 0; index < 100; index++) {
+    //             txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
+    //           }
               
-              // nft minting
-              await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-                status.isFinalized
-                  ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
-                  : toast.info(`NFT minting: ${status.type}`)
+    //           // nft minting
+    //           await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+    //             status.isFinalized
+    //               ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+    //               : toast.info(`NFT minting: ${status.type}`)
                 
-                events.forEach(async ({ _, event: { data, method, section } }) => {
-                  if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-                    errorHandle({ data, method, section, target: 'NFT minting' })
-                  } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                    console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+    //             events.forEach(async ({ _, event: { data, method, section } }) => {
+    //               if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+    //                 errorHandle({ data, method, section, target: 'NFT minting' })
+    //               } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+    //                 console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
       
-                    txs = []
+    //                 txs = []
       
-                    for (let index = 0; index < 100; index++) {
-                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
-                    }
+    //                 for (let index = 0; index < 100; index++) {
+    //                   txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
+    //                 }
                     
-                    // setting price
-                    await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-                      status.isFinalized
-                        ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
-                        : toast.info(`Setting price: ${status.type}`)
+    //                 // setting price
+    //                 await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+    //                   status.isFinalized
+    //                     ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+    //                     : toast.info(`Setting price: ${status.type}`)
                       
-                      events.forEach(async ({ _, event: { data, method, section } }) => {
-                        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-                          errorHandle({ data, method, section, target: 'Setting price' })
-                        } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                          console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-                          // add collection data to the database
-                          const result = await create({
-                            id: collection,
-                            owner: polkadotAccount,
-                            propertyId: property?._id,
-                            page: 'Detail',
-                          })
-                          if (result?.status === 201) {
-                            const data = result?.data?.data
-                            setProperty(data)
-                            toast.success(`Listing successful!`)
-                          }
-                        }
-                      })
-                    })
-                  }
-                })
-              })
-            }
-          }
-        })
-      })
-    } catch (error) {
-      console.log('error :: ', error)
-    }
+    //                   events.forEach(async ({ _, event: { data, method, section } }) => {
+    //                     if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+    //                       errorHandle({ data, method, section, target: 'Setting price' })
+    //                     } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+    //                       console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+    //                       // add collection data to the database
+    //                       const result = await create({
+    //                         id: collection,
+    //                         owner: polkadotAccount,
+    //                         propertyId: property?._id,
+    //                         page: 'Detail',
+    //                       })
+    //                       if (result?.status === 201) {
+    //                         const data = result?.data?.data
+    //                         setProperty(data)
+    //                         toast.success(`Listing successful!`)
+    //                       }
+    //                     }
+    //                   })
+    //                 })
+    //               }
+    //             })
+    //           })
+    //         }
+    //       }
+    //     })
+    //   })
+    // } catch (error) {
+    //   console.log('error :: ', error)
+    // }
   }
 
-  const errorHandle = ({ data, method, section, target }) => {
-    // extract the data for this event
-    const [dispatchError, dispatchInfo] = data
-    console.log(`dispatchinfo: ${dispatchInfo}`)
-    let errorInfo
+  // const errorHandle = ({ data, method, section, target }) => {
+  //   // extract the data for this event
+  //   const [dispatchError, dispatchInfo] = data
+  //   console.log(`dispatchinfo: ${dispatchInfo}`)
+  //   let errorInfo
     
-    // decode the error
-    if (dispatchError.isModule) {
-      // for module errors, we have the section indexed, lookup
-      // (For specific known errors, we can also do a check against the
-      // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
-      const mod = dispatchError.asModule
-      const error = api.registry.findMetaError(
-          new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
-      )
-      let message = `${error.section}.${error.name}${
-          Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
-      }`
+  //   // decode the error
+  //   if (dispatchError.isModule) {
+  //     // for module errors, we have the section indexed, lookup
+  //     // (For specific known errors, we can also do a check against the
+  //     // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+  //     const mod = dispatchError.asModule
+  //     const error = api.registry.findMetaError(
+  //         new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+  //     )
+  //     let message = `${error.section}.${error.name}${
+  //         Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+  //     }`
       
-      errorInfo = `${message}`
-      console.log(`Error-info::${JSON.stringify(error)}`)
-    } else {
-      // Other, CannotLookup, BadOrigin, no extra info
-      errorInfo = dispatchError.toString()
-    }
-    toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
-  }
+  //     errorInfo = `${message}`
+  //     console.log(`Error-info::${JSON.stringify(error)}`)
+  //   } else {
+  //     // Other, CannotLookup, BadOrigin, no extra info
+  //     errorInfo = dispatchError.toString()
+  //   }
+  //   toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+  // }
 
   const buy = () => {
     navigate(`/buy-process/${property?._id}`)
