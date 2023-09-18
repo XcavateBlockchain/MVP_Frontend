@@ -311,7 +311,7 @@ const PropertyDetail = () => {
                   {`Price per NFT`}
                 </h1>
                 <p className=' font-graphik-regular text-xl text-body opacity-60 mt-6'>
-                  £{`${Math.round(Number(property?.price) / 100)} (1 DDED)` || ''}
+                  £{`${Math.round(Number(property?.price) / 100)}` || ''}
                 </p>
               </div>
               <div className='block max-w-sm mt-10'>
