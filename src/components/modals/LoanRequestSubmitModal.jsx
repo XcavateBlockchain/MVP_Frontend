@@ -205,8 +205,7 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                           <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                             <Upload2SvgIcon />
                             <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span> or
-                              drag and drop
+                              <span className=' font-dmsans-medium'>Click to upload</span>
                             </p>
                           </div>
                           <input
@@ -231,8 +230,7 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                           <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                             <Upload2SvgIcon />
                             <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span> or
-                              drag and drop
+                              <span className=' font-dmsans-medium'>Click to upload</span>
                             </p>
                           </div>
                           <input
@@ -257,8 +255,7 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                           <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                             <Upload2SvgIcon />
                             <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span> or
-                              drag and drop
+                              <span className=' font-dmsans-medium'>Click to upload</span>
                             </p>
                           </div>
                           <input

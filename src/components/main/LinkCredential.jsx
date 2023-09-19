@@ -301,8 +301,7 @@ const LinkCredential = () => {
                       ></path>
                     </svg>
                     <p className=" font-graphik-regular mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -344,8 +343,7 @@ const LinkCredential = () => {
                       ></path>
                     </svg>
                     <p className=" font-graphik-regular mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                   </div>
                   <input

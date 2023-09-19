@@ -10,7 +10,7 @@ const DidPayment = () => {
   }
 
   const goLinkCredentails = () => {
-    navigate('/link-credentail')
+    navigate('/link-credential')
   }
 
   return (

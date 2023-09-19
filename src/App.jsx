@@ -30,7 +30,7 @@ function App() {
         <Route path='/user-role' element={<UserRole />} />
         <Route path='/wallet-download' element={<WalletDownload />} />
         <Route path='/did-payment' element={<DidPayment />} />
-        <Route path='/link-credentail' element={<LinkCredential />} />
+        <Route path='/link-credential' element={<LinkCredential />} />
         <Route path='/terms-and-conditions' element={<TermsAndCondition />} />
         <Route path='/property-detail/:id' element={<PropertyDetail />} />
         <Route path='/buy-process/:id' element={<BuyProcess />} />

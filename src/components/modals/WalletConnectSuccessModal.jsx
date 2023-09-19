@@ -59,7 +59,7 @@ const WalletConnectSuccessModal = () => {
             const connectDidResult = await connectDid({did,})
             console.log('connect did result :: ', connectDidResult)
             if (connectDidResult?.status === 204) {
-              navigate('/link-credentail')
+              navigate('/link-credential')
             } else if (connectDidResult?.status === 202 && connectDidResult?.data?.data) {
               const data = connectDidResult?.data?.data
               const userData = data?.user || {}

@@ -265,8 +265,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload2SvgIcon />
                     <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
-                      <span className=' font-graphik-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-graphik-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -294,8 +293,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload2SvgIcon />
                     <p className=' font-graphik-regular text-base text-body leading-[161.4%]'>
-                      <span className=' font-graphik-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-graphik-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -325,8 +323,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload1SvgIcon />
                     <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                      <span className=' font-dmsans-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-dmsans-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -349,8 +346,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload1SvgIcon />
                     <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                      <span className=' font-dmsans-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-dmsans-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -373,8 +369,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload1SvgIcon />
                     <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                      <span className=' font-dmsans-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-dmsans-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -397,8 +392,7 @@ const PropertyInfo = ({ property, setProperty, onChangingPage }) => {
                   <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <Upload1SvgIcon />
                     <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                      <span className=' font-dmsans-medium'>Click to upload</span> or
-                      drag and drop
+                      <span className=' font-dmsans-medium'>Click to upload</span>
                     </p>
                   </div>
                   <input
