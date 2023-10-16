@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import BuyProcess from './components/main/BuyProcess'
+import CreateCompany from './components/main/CreateCompany'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path='/terms-and-conditions' element={<TermsAndCondition />} />
         <Route path='/property-detail/:id' element={<PropertyDetail />} />
         <Route path='/buy-process/:id' element={<BuyProcess />} />
+        <Route path='/create-company' element={<CreateCompany />} />
       </Routes>
       <ToastContainer />      
       <Footer /> 
