@@ -43,7 +43,7 @@ const LinkCredential = () => {
   }, [])
 
   useEffect(() => {
-    if (user?.did) {
+    if (user?.did && !formData.did) {
       setFormData({
         ...formData,
         did: user.did
@@ -272,7 +272,7 @@ const LinkCredential = () => {
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div className="flex justify-center flex-col">
               <h5
                 className=" font-graphik-medium block mb-[6px] text-lg text-body"

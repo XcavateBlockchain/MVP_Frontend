@@ -113,7 +113,7 @@ const DevelopmentLoan = () => {
           </button>
         </div>
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={() => setSubmitIsOpen(true)}
           className=' flex w-[159px] h-[54px] rounded bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[1px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'>
           <div className=' flex flex-row items-center justify-center w-full h-full rounded bg-white'>
             <h5 className=' font-graphik-regular text-xl text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>

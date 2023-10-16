@@ -1,11 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileDatailTab = () => {
   const user = useSelector((state) => state.user)
+  const navigate = useNavigate()
 
   const openDocument = (link) => {
     window.open(link, '_blank')
+  }
+
+  const addCompany = () => {
+    navigate(`/create-company`)
   }
 
   return (
@@ -24,6 +30,7 @@ const ProfileDatailTab = () => {
             }
           </div>
           <button
+            onClick={() => addCompany()}
             className=' flex w-[159px] h-[59px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm'
           >
             <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
