@@ -122,7 +122,7 @@ const LinkCredential = () => {
             const type = 'developerCredential'
             // define in advance how to handle the response from the extension
             await sporranSession.listen(async (message) => {
-              const attestedResult = await requestAttestation(message, sessionId)
+              const attestedResult = await requestAttestation({ ...message, type, }, sessionId)
               console.log('attestedResult :: ', attestedResult)
               if (attestedResult?.status === 201 && attestedResult?.data?.data) {
                 setLoading(false)
