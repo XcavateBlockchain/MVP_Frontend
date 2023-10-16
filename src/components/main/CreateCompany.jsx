@@ -116,7 +116,7 @@ const CreateCompany = () => {
             // define in advance how to handle the response from the extension
             await sporranSession.listen(async (message) => {
               console.log('message :: ', message)
-              const attestedResult = await requestAttestation(message, sessionId)
+              const attestedResult = await requestAttestation({ ...message, type, }, sessionId)
               console.log('attestedResult :: ', attestedResult)
               if (attestedResult?.status === 201 && attestedResult?.data?.data) {
                 setLoading(false)
