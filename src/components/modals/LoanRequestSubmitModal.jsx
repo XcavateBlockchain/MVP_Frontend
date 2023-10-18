@@ -58,70 +58,122 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
               ref={modalRef}
               className=' flex flex-col max-w-[1146px] w-full'
             >
-              {/*content 1*/}
-              <div className='flex flex-col w-full bg-white rounded-md'>
-                {/*body*/}
-                <section className='grid grid-cols-3 gap-2 px-7 py-10'>
-                  <div>
-                    <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                      {`Planning permission code`}
-                    </label>
-                    <input
-                      type='text'
-                      value={loan?.planningPermissionCode || ''}
-                      name='planningPermissionCode'
-                      onChange={(e) => handleForm(e)}
-                      className={styles.input}
-                      placeholder='UK1085745222'
-                    />
-                  </div>
-                  <div>
-                    <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                      {`Land title deed number`}
-                    </label>
-                    <input
-                      type='text'
-                      value={loan?.landTitleDeedCode || ''}
-                      name='landTitleDeedCode'
-                      onChange={(e) => handleForm(e)}
-                      className={styles.input}
-                      placeholder='BHR111-AB-01'
-                    />
-                  </div>
-                  <div>
-                    <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                      {`Address`}
-                    </label>
-                    <input
-                      type='text'
-                      value={loan?.address || ''}
-                      name='address'
-                      onChange={(e) => handleForm(e)}
-                      className={styles.input}
-                      placeholder='352 London'
-                    />
-                  </div>
-                </section>
-              </div>
-              {/*content 2*/}
-              <div className='flex flex-col w-full bg-white rounded-md mt-3'>
+              <div className='flex flex-col w-full bg-white rounded-md mt-3 h-[calc(100vh-60px)] overflow-y-scroll'>
                 {/*body*/}
                 <section className='flex flex-col justify-center px-7 py-10'>
                   <h3 className=' font-graphik-semibold text-2xl text-headers opacity-[0.85]'>
-                    {`Loan Details`}
+                    {`Loan application`}
                   </h3>
-                  <div className='grid grid-cols-3 gap-2 mt-10'>
+                  <div className='grid grid-cols-3 gap-2 mt-4'>
                     <div>
                       <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        {`Existing  land value`}
+                        {`Development company name`}
                       </label>
                       <input
                         type='text'
-                        value={loan?.landValue || ''}
-                        name='landValue'
+                        value={loan?.developmentCompanyName || ''}
+                        name='developmentCompanyName'
                         onChange={(e) => handleForm(e)}
                         className={styles.input}
-                        placeholder='£1,000,000'
+                        placeholder='GADE Lettings Limited'
+                      />
+                    </div>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Development experience (years)`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.developmentExperience || ''}
+                        name='developmentExperience'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='5'
+                      />
+                    </div>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Land owner name`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.landOwnerName || ''}
+                        name='landOwnerName'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='Jhon Doe'
+                      />
+                    </div>
+                  </div>
+                  <h3 className=' font-graphik-semibold text-2xl text-headers opacity-[0.85] mt-6'>
+                    {`Project details`}
+                  </h3>
+                  <div className='grid grid-cols-3 gap-2 mt-4'>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Project name`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.projectName || ''}
+                        name='projectName'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='Plot 5 - Lancaster House'
+                      />
+                    </div>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Project location`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.projectLocation || ''}
+                        name='projectLocation'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='394 London'
+                      />
+                    </div>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Planning permission code`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.planningPermissionCode || ''}
+                        name='planningPermissionCode'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='EILD83938DKS'
+                      />
+                    </div>
+                  </div>
+                  <div className='grid grid-cols-3 gap-2 mt-6'>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Land title deed number`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.landTitleDeedNumber || ''}
+                        name='landTitleDeedNumber'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='17646cnnn5'
+                      />
+                    </div>
+                    <div>
+                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                        {`Existing land value`}
+                      </label>
+                      <input
+                        type='text'
+                        value={loan?.existingLandValue || ''}
+                        name='existingLandValue'
+                        onChange={(e) => handleForm(e)}
+                        className={styles.input}
+                        placeholder='EER8473'
                       />
                     </div>
                     <div>
@@ -134,26 +186,116 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                         name='totalGDV'
                         onChange={(e) => handleForm(e)}
                         className={styles.input}
-                        placeholder='£3,000,000'
-                      />
-                    </div>
-                    <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        {`Loan duration`}
-                      </label>
-                      <input
-                        type='text'
-                        value={loan?.duration || ''}
-                        name='duration'
-                        onChange={(e) => handleForm(e)}
-                        className={styles.input}
-                        placeholder='6 months'
+                        placeholder='E38483'
                       />
                     </div>
                   </div>
-                  <div className='grid grid-cols-3 gap-2 mt-6'>
+                  <div className='mt-6'>
+                    <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                      {`Document`}
+                    </label>
+                    <div className='grid grid-cols-3 gap-2 mt-2'>
+                      <div>
+                        <label className=' font-graphik-regular text-base text-body opacity-[0.35]'>
+                          {`Development plan`}
+                        </label>
+                        <div className='flex items-center justify-center w-full mt-2'>
+                          <label
+                            htmlFor='developmentPlan'
+                            className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
+                          >
+                            <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                              <Upload2SvgIcon />
+                              <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                                <span className=' font-dmsans-medium'>Click to upload</span>
+                              </p>
+                            </div>
+                            <input
+                              id='developmentPlan'
+                              onChange={(e) => handleFileChange(e)}
+                              type='file'
+                              className='hidden'
+                              name='developmentPlan'
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <label className=' font-graphik-regular text-base text-body opacity-[0.35]'>
+                          {`Elevation/CGIS`}
+                        </label>
+                        <div className='flex items-center justify-center w-full mt-2'>
+                          <label
+                            htmlFor='elevationCGIS'
+                            className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
+                          >
+                            <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                              <Upload2SvgIcon />
+                              <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                                <span className=' font-dmsans-medium'>Click to upload</span>
+                              </p>
+                            </div>
+                            <input
+                              id='elevationCGIS'
+                              onChange={(e) => handleFileChange(e)}
+                              type='file'
+                              className='hidden'
+                              name='elevationCGIS'
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <label className=' font-graphik-regular text-base text-body opacity-[0.35]'>
+                          {`Estimated pricing schedule`}
+                        </label>
+                        <div className='flex items-center justify-center w-full mt-2'>
+                          <label
+                            htmlFor='estimatedPricingSchedule'
+                            className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
+                          >
+                            <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                              <Upload2SvgIcon />
+                              <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
+                                <span className=' font-dmsans-medium'>Click to upload</span>
+                              </p>
+                            </div>
+                            <input
+                              id='estimatedPricingSchedule'
+                              onChange={(e) => handleFileChange(e)}
+                              type='file'
+                              className='hidden'
+                              name='estimatedPricingSchedule'
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='mt-6'>
+                    <label className='flex flex-row items-center'>
+                      <h3 className=' font-graphik-semibold text-lg text-headers opacity-[0.85] mr-1'>
+                        {`Description`}
+                      </h3>
+                      <h4 className=' font-graphik-regular text-base text-headers opacity-[0.35]'>
+                        {`(optional)`}
+                      </h4>
+                    </label>
+                    <textarea
+                      rows={6}
+                      className=' w-full px-4 py-[15px] font-dmsans-regular text-base text-body rounded border border-solid border-[rgba(25, 26, 27, 0.16)] mt-2 placeholder:font-dmsans-regular placeholder:text-base placeholder:text-[rgba(25, 26, 27, 0.35)]'
+                      placeholder='Briefly describe the purpose and scope of the land development project.'
+                      name='description'
+                      onChange={(e) => handleForm(e)}
+                      value={loan?.description || ''}
+                    />
+                  </div>
+                  <h3 className=' font-graphik-semibold text-2xl text-headers opacity-[0.85] mt-6'>
+                    {`Loan request`}
+                  </h3>
+                  <div className='grid grid-cols-3 gap-2 mt-4'>
                     <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
+                      <label className=' font-graphik-regular text-base text-headers opacity-[0.35] mt-4'>
                         {`Loan amount`}
                       </label>
                       <input
@@ -162,111 +304,34 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                         name='amount'
                         onChange={(e) => handleForm(e)}
                         className={styles.input}
-                        placeholder='£1,000,000'
+                        placeholder='1000000000'
                       />
                     </div>
                     <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        &nbsp;
+                      <label className=' font-graphik-regular text-base text-headers opacity-[0.35] mt-4'>
+                        {`Loan term required`}
                       </label>
                       <input
                         type='text'
-                        value={loan?.currency || ''}
-                        name='currency'
+                        value={loan?.termRequired || ''}
+                        name='termRequired'
                         onChange={(e) => handleForm(e)}
                         className={styles.input}
-                        placeholder='GBP'
+                        placeholder='5'
                       />
                     </div>
                     <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        &nbsp;
+                      <label className=' font-graphik-regular text-base text-headers opacity-[0.35] mt-4'>
+                        {`Payment account or wallet address`}
                       </label>
                       <input
                         type='text'
-                        value={loan?.repaymentMethod || ''}
-                        name='repaymentMethod'
+                        value={loan?.paymentAccount || ''}
+                        name='paymentAccount'
                         onChange={(e) => handleForm(e)}
                         className={styles.input}
-                        placeholder='Repayment method'
+                        placeholder='4tchkknQ8LCQoEbt83MML3HcNCJJvsHD8vXumX18Bsy5E2f1'
                       />
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-3 gap-2 mt-6'>
-                    <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        {`Development plan`}
-                      </label>
-                      <div className='flex items-center justify-center w-full mt-2'>
-                        <label
-                          htmlFor='developmentPlan'
-                          className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
-                        >
-                          <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                            <Upload2SvgIcon />
-                            <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span>
-                            </p>
-                          </div>
-                          <input
-                            id='developmentPlan'
-                            onChange={(e) => handleFileChange(e)}
-                            type='file'
-                            className='hidden'
-                            name='developmentPlan'
-                          />
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        {`Elevation/ CGIS`}
-                      </label>
-                      <div className='flex items-center justify-center w-full mt-2'>
-                        <label
-                          htmlFor='elevationCGIS'
-                          className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
-                        >
-                          <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                            <Upload2SvgIcon />
-                            <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span>
-                            </p>
-                          </div>
-                          <input
-                            id='elevationCGIS'
-                            onChange={(e) => handleFileChange(e)}
-                            type='file'
-                            className='hidden'
-                            name='elevationCGIS'
-                          />
-                        </label>
-                      </div>
-                    </div>
-                    <div>
-                      <label className=' font-graphik-semibold text-lg text-headers opacity-[0.85]'>
-                        {`Estimated pricing schedule`}
-                      </label>
-                      <div className='flex items-center justify-center w-full mt-2'>
-                        <label
-                          htmlFor='pricingSchedule'
-                          className='flex flex-col items-center justify-center w-full h-22 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 px-5   dark:border-gray-600 dark:hover:border-gray-500 '
-                        >
-                          <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                            <Upload2SvgIcon />
-                            <p className='mb-2 text-center font-dmsans-regular text-xs text-body'>
-                              <span className=' font-dmsans-medium'>Click to upload</span>
-                            </p>
-                          </div>
-                          <input
-                            id='pricingSchedule'
-                            onChange={(e) => handleFileChange(e)}
-                            type='file'
-                            className='hidden'
-                            name='pricingSchedule'
-                          />
-                        </label>
-                      </div>
                     </div>
                   </div>
                   <div className='grid grid-cols-2 gap-4 mt-10'>
@@ -284,7 +349,7 @@ const LoanRequestSubmitModal = ({ isOpen, setIsOpen, loan, setLoan, submit, load
                       onClick={loanSubmit}
                       className=' flex flex-row items-center justify-center w-full h-14 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
                     >
-                      {loading? <LoadingSvgIcon /> : <h5 className=' font-graphik-semibold text-lg text-white uppercase'>
+                      {loading ? <LoadingSvgIcon /> : <h5 className=' font-graphik-semibold text-lg text-white uppercase'>
                         {`Submit`}
                       </h5>}
                     </button>

@@ -6,30 +6,32 @@ import { create, getLoansByUser } from '../../../api/loan'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import LoanRequestItem from './LoanRequestItem'
+import { useSubstrateState } from '../../../contexts/SubstrateContext'
+import { web3FromSource } from '@polkadot/extension-dapp'
 
 const DevelopmentLoan = () => {
+  const { api, keyring, polkadotAccount } = useSubstrateState()
   const [active, setActive] = useState('request')
   const [isOpen, setIsOpen] = useState(false)
   const [detailIsOpen, setDetailIsOpen] = useState(false)
   const [submistIsOpen, setSubmitIsOpen] = useState(false)
   const [loan, setLoan] = useState({
+    developmentCompanyName: '',
+    developmentExperience: '',
+    landOwnerName: '',
+    projectName: '',
+    projectLocation: '',
     planningPermissionCode: '',
-    planningAuthority: '',
-    landTitleDeedCode: '',
-    companyUrl: 'www.planningpermisionapplication.dev',
-    companyName: 'Briks and blocks limited',
-    companyPhoneNumber: '094523546',
-    companyDirector: 'John Deo',
-    address: '',
-    landValue: '',
+    landTitleDeedNumber: '',
+    existingLandValue: '',
     totalGDV: '',
-    duration: '',
-    amount: '',
-    currency: '',
-    repaymentMethod: '',
     developmentPlan: null,
     elevationCGIS: null,
-    pricingSchedule: null,
+    estimatedPricingSchedule: null,
+    description: '',
+    amount: '',
+    termRequired: '',
+    paymentAccount: '',
   })
   const [loading, setLoading] = useState(false)
   const [loans, setLoans] = useState([])
@@ -37,7 +39,6 @@ const DevelopmentLoan = () => {
   const getLoans = async () => {
     try {
       const result = await getLoansByUser()
-      console.log('result :: ', result)
       if (result.status === 200) {
         setLoans(result.data.data)
       }
@@ -50,43 +51,76 @@ const DevelopmentLoan = () => {
     getLoans()
   }, [])
 
+  const getFromAcct = async () => {
+    const currentAccount = keyring.getPair(polkadotAccount)
+    const {
+      address,
+      meta: { source, isInjected },
+    } = currentAccount
+
+    if (!isInjected) {
+      return [currentAccount]
+    }
+
+    // currentAccount is injected from polkadot-JS extension, need to return the addr and signer object.
+    // ref: https://polkadot.js.org/docs/extension/cookbook#sign-and-send-a-transaction
+    const injector = await web3FromSource(source)
+    return [address, { signer: injector.signer }]
+  }
+
   const submit = async () => {
     try {
       setLoading(true)
 
-      const formData = new FormData()
-  
-      formData.append('planningPermissionCode', loan.planningPermissionCode)
-      formData.append('planningAuthority', loan.planningAuthority)
-      formData.append('landTitleDeedCode', JSON.stringify(loan.landTitleDeedCode))
-      formData.append('companyUrl', loan.companyUrl)
-      formData.append('companyName', loan.companyName)
-      formData.append('companyPhoneNumber', loan.companyPhoneNumber)
-      formData.append('companyDirector', loan.companyDirector)
-      formData.append('address', loan.address)
-      formData.append('landValue', loan.landValue)
-      formData.append('totalGDV', loan.totalGDV)
-      formData.append('duration', loan.duration)
-      formData.append('amount', loan.amount)
-      formData.append('currency', loan.currency)
-      formData.append('repaymentMethod', loan.repaymentMethod)
-      formData.append('developmentPlan', loan.developmentPlan)
-      formData.append('elevationCGIS', loan.elevationCGIS)
-      formData.append('pricingSchedule', loan.pricingSchedule)
-  
-      const result = await create(formData)
-      if (result?.status === 201 && result?.data?.data) {
-        setLoading(false)
-        toast.success('Created a new loan request successfully')
-        setSubmitIsOpen(false)
-      } else {
-        setLoading(false)
-        toast.warn('Unexpected error occurred')
-      }
+      const fromAcct = await getFromAcct()
+      // collection creation
+      await api.tx.communityLoanPool.propose(loan?.amount, loan?.paymentAccount, loan?.developmentExperience, loan?.termRequired).signAndSend(...fromAcct, ({ events = [], status, txHash }) => {
+        status.isFinalized
+          ? toast.success(`Loan request finalized. Block hash: ${status.asFinalized.toString()}`)
+          : toast.info(`Loan request: ${status.type}`)
+
+        events.forEach(async ({ _, event: { data, method, section } }) => {
+          if ((section + ":" + method) === 'system:ExtrinsicFailed') {
+            console.log('loan request :: failed')
+            toast.warn('Unexpected error occurred')
+            setLoading(false)
+          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+            console.log('loan request :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+            const formData = new FormData()
+
+            formData.append('developmentCompanyName', loan.developmentCompanyName)
+            formData.append('developmentExperience', loan.developmentExperience)
+            formData.append('landOwnerName', loan.landOwnerName)
+            formData.append('projectName', loan.projectName)
+            formData.append('projectLocation', loan.projectLocation)
+            formData.append('planningPermissionCode', loan.planningPermissionCode)
+            formData.append('landTitleDeedNumber', loan.landTitleDeedNumber)
+            formData.append('existingLandValue', loan.existingLandValue)
+            formData.append('totalGDV', loan.totalGDV)
+            formData.append('developmentPlan', loan.developmentPlan)
+            formData.append('elevationCGIS', loan.elevationCGIS)
+            formData.append('estimatedPricingSchedule', loan.estimatedPricingSchedule)
+            formData.append('description', loan.description)
+            formData.append('amount', loan.amount)
+            formData.append('termRequired', loan.termRequired)
+            formData.append('paymentAccount', loan.paymentAccount)
+
+            const result = await create(formData)
+            if (result?.status === 201 && result?.data?.data) {
+              setLoading(false)
+              toast.success('Created a new loan request successfully')
+              setSubmitIsOpen(false)
+              getLoans()
+            } else {
+              setLoading(false)
+              toast.warn('Unexpected error occurred')
+            }
+          }
+        })
+      })
     } catch (error) {
       setLoading(false)
-      console.log('property creation error :: ', error)
-      toast.warn(error.toString())
+      console.log('error :: ', error)
     }
   }
 
@@ -97,17 +131,17 @@ const DevelopmentLoan = () => {
         <div className='flex flex-row items-center'>
           <button
             onClick={() => setActive('request')}
-            className={`flex flex-row items-center justify-center w-[159px] h-[52px] ${active === 'request'? 'bg-[#2F90B6]' : 'bg-white'} border border-solid border-[#2FA2C8]`}
+            className={`flex flex-row items-center justify-center w-[159px] h-[52px] ${active === 'request' ? 'bg-[#2F90B6]' : 'bg-white'} border border-solid border-[#2FA2C8]`}
           >
-            <h4 className={`font-graphik-regular text-lg ${active === 'request'? 'text-[#D9E3EA]' : 'text-[#2F8BB2]'}`}>
+            <h4 className={`font-graphik-regular text-lg ${active === 'request' ? 'text-[#D9E3EA]' : 'text-[#2F8BB2]'}`}>
               {`Loan request`}
             </h4>
           </button>
           <button
             onClick={() => setActive('status')}
-            className={`flex flex-row items-center justify-center w-[159px] h-[52px]  ${active === 'status'? 'bg-[#2F90B6]' : 'bg-white'} border border-solid border-[#2FA2C8]`}
+            className={`flex flex-row items-center justify-center w-[159px] h-[52px]  ${active === 'status' ? 'bg-[#2F90B6]' : 'bg-white'} border border-solid border-[#2FA2C8]`}
           >
-            <h4 className={`font-graphik-regular text-lg ${active === 'status'? 'text-[#D9E3EA]' : 'text-[#2F8BB2]'}`}>
+            <h4 className={`font-graphik-regular text-lg ${active === 'status' ? 'text-[#D9E3EA]' : 'text-[#2F8BB2]'}`}>
               {`Loan status`}
             </h4>
           </button>

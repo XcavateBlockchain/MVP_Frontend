@@ -204,7 +204,7 @@ const LoanRequestItem = ({ loan, setLoans }) => {
         </label>
         <label className='w-[15%]'>
           <h5 className=' font-dmsans-medium text-base text-body opacity-80 px-4'>
-            {`${loan?.duration} months` || ''}
+            {`${loan?.termRequired} months` || ''}
           </h5>
         </label>
         <label className='w-[15%]'>
