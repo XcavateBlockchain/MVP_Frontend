@@ -23,7 +23,7 @@ const ProfileDatailTab = () => {
             <h4 className=' font-graphik-medium text-2xl text-headers opacity-50 tracking-[0.6px] mr-4'>
               {`ID: #${user?.userData?._id || ''}`}
             </h4>
-            {!user?.userData?.isVerified && 
+            {!user?.userData?.isVerified &&
               <h4 className=' font-graphik-regular text-2xl text-progress'>
                 {`Verification in progress`}
               </h4>
@@ -98,6 +98,86 @@ const ProfileDatailTab = () => {
             </h4>
           </div>
         </div>
+        {user?.userData?.companies && user?.userData?.companies?.length > 0 &&
+          <>
+            {/* company information */}
+            <h3 className=' font-graphik-bold text-headers text-2xl opacity-80 tracking-[0.6px] mt-16'>
+              {`Company  Information`}
+            </h3>
+            <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'></div>
+            <div className=' flex flex-row w-full mt-6'>
+              <div className=' flex flex-col w-1/2 lg:w-1/3'>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px]'>
+                  {`Registration number:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Company name:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Company phone number:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Company email:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Associate website:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Associate member number:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Address:`}
+                </h4>
+              </div>
+              <div className=' flex flex-col w-1/2 lg:w-2/3'>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px]'>
+                  {user?.userData?.companies[0]?.registrationNumber || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] mt-10'>
+                  {user?.userData?.companies[0]?.name || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] mt-10'>
+                  {user?.userData?.companies[0]?.phoneNumber || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-links tracking-[0.6px] mt-10 cursor-pointer'>
+                  {user?.userData?.companies[0]?.email || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-links tracking-[0.6px] mt-10 cursor-pointer'>
+                  {user?.userData?.companies[0]?.associationWebsite || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] mt-10'>
+                  {user?.userData?.companies[0]?.associationMembershipNumber || ''} &nbsp;
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] mt-10'>
+                  {user?.userData?.companies[0]?.address || ''} &nbsp;
+                </h4>
+              </div>
+            </div>
+            {/* document */}
+            <h3 className=' font-graphik-bold text-headers text-2xl opacity-80 tracking-[0.6px] mt-10'>
+              {`Identification  Documents`}
+            </h3>
+            <div className=' w-full h-[1px] mt-6 bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'></div>
+            <div className=' flex flex-row w-full mt-6'>
+              <div className=' flex flex-col w-1/2 lg:w-1/3'>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px]'>
+                  {`Passport/drivers license:`}
+                </h4>
+                <h4 className=' font-graphik-medium text-xl text-headers tracking-[0.5px] mt-10'>
+                  {`Utility Bill:`}
+                </h4>
+              </div>
+              <div className=' flex flex-col w-1/2 lg:w-2/3'>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] cursor-pointer' onClick={() => openDocument(user?.userData?.companies[0]?.idDoc1 || '')}>
+                  {`Open the document`}
+                </h4>
+                <h4 className=' font-graphik-regular text-xl text-headers tracking-[0.6px] cursor-pointer mt-10' onClick={() => openDocument(user?.userData?.companies[0]?.idDoc2 || '')}>
+                  {`Open the document`}
+                </h4>
+              </div>
+            </div>
+          </>
+        }
       </div>
     </div>
   )
