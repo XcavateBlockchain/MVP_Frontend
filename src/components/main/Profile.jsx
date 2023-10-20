@@ -233,7 +233,6 @@ const Profile = () => {
                   <h5 className=' font-dmsans-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] mr-2 uppercase'>
                     {`Share`}
                   </h5>
-                  <ShareSvgIcon />
                 </div>
               </button>
               <button
