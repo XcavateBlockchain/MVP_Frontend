@@ -8,13 +8,14 @@ import { useEffect } from 'react'
 import LoanRequestItem from './LoanRequestItem'
 import { useSubstrateState } from '../../../contexts/SubstrateContext'
 import { web3FromSource } from '@polkadot/extension-dapp'
+import { bnFromHex } from '@polkadot/util'
 
 const DevelopmentLoan = () => {
   const { api, keyring, polkadotAccount } = useSubstrateState()
   const [active, setActive] = useState('request')
   const [isOpen, setIsOpen] = useState(false)
   const [detailIsOpen, setDetailIsOpen] = useState(false)
-  const [submistIsOpen, setSubmitIsOpen] = useState(false)
+  const [submitIsOpen, setSubmitIsOpen] = useState(false)
   const [loan, setLoan] = useState({
     developmentCompanyName: '',
     developmentExperience: '',
@@ -68,6 +69,34 @@ const DevelopmentLoan = () => {
     return [address, { signer: injector.signer }]
   }
 
+  const errorHandle = ({ data, method, section, target }) => {
+    // extract the data for this event
+    const [dispatchError, dispatchInfo] = data
+    console.log(`dispatchinfo: ${dispatchInfo}`)
+    let errorInfo
+    
+    // decode the error
+    if (dispatchError.isModule) {
+      // for module errors, we have the section indexed, lookup
+      // (For specific known errors, we can also do a check against the
+      // api.errors.<module>.<ErrorName>.is(dispatchError.asModule) guard)
+      const mod = dispatchError.asModule
+      const error = api.registry.findMetaError(
+          new Uint8Array([mod.index.toNumber(), bnFromHex(mod.error.toHex().slice(0, 4)).toNumber()])
+      )
+      let message = `${error.section}.${error.name}${
+          Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''
+      }`
+      
+      errorInfo = `${message}`
+      console.log(`Error-info::${JSON.stringify(error)}`)
+    } else {
+      // Other, CannotLookup, BadOrigin, no extra info
+      errorInfo = dispatchError.toString()
+    }
+    toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
+  }
+
   const submit = async () => {
     try {
       setLoading(true)
@@ -79,12 +108,15 @@ const DevelopmentLoan = () => {
           ? toast.success(`Loan request finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Loan request: ${status.type}`)
 
+        if (status?.type !== 'Ready' && status?.type !== 'Broadcast' && status?.type !== 'InBlock') {
+          console.log(`Loan request finalized. Block hash: ${status.asFinalized.toString()}`)
+        }
+
         events.forEach(async ({ _, event: { data, method, section } }) => {
           if ((section + ":" + method) === 'system:ExtrinsicFailed') {
-            console.log('loan request :: failed')
-            toast.warn('Unexpected error occurred')
             setLoading(false)
-          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+            errorHandle(data, method, section, 'loan request')
+          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'Ready' && status?.type !== 'Broadcast' && status?.type !== 'InBlock') {
             console.log('loan request :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
             const formData = new FormData()
 
@@ -164,7 +196,7 @@ const DevelopmentLoan = () => {
       </div>}
       <LoanRequestModal isOpen={isOpen} setIsOpen={setIsOpen} setDetailIsOpen={setDetailIsOpen} loan={loan} setLoan={setLoan} />
       <LoanRequestDetailModal isOpen={detailIsOpen} setIsOpen={setDetailIsOpen} setSubmitIsOpen={setSubmitIsOpen} />
-      <LoanRequestSubmitModal isOpen={submistIsOpen} setIsOpen={setSubmitIsOpen} loan={loan} setLoan={setLoan} submit={submit} loading={loading} />
+      <LoanRequestSubmitModal isOpen={submitIsOpen} setIsOpen={setSubmitIsOpen} loan={loan} setLoan={setLoan} submit={submit} loading={loading} />
     </div>
   )
 }
