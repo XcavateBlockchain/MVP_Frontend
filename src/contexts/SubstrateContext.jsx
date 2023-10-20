@@ -25,6 +25,7 @@ const initialState = {
   apiError: null,
   apiState: null,
   currentAccount: null,
+  polkadotAccount: null,
 }
 
 const registry = new TypeRegistry()
@@ -48,6 +49,8 @@ const reducer = (state, action) => {
       return { ...state, keyring: null, keyringState: 'ERROR' }
     case 'SET_CURRENT_ACCOUNT':
       return { ...state, currentAccount: action.payload }
+    case 'SET_POLKADOT_ACCOUNT':
+      return { ...state, polkadotAccount: action.payload }
     default:
       throw new Error(`Unknown type: ${action.type}`)
   }
@@ -102,6 +105,14 @@ const loadAccounts = (state, dispatch) => {
     try {
       await web3Enable(config.APP_NAME)
       let allAccounts = await web3Accounts()
+
+      let polkadotAccounts = allAccounts.filter(({address, meta}) => {
+        return meta.source === 'polkadot-js'
+      })
+
+      if (polkadotAccounts.length > 0) {
+        dispatch({ type: 'SET_POLKADOT_ACCOUNT', payload: polkadotAccounts[0].address})
+      }
 
       allAccounts = allAccounts.map(({ address, meta }) => ({
         address,

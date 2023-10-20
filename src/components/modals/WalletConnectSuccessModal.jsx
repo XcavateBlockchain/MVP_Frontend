@@ -16,13 +16,11 @@ const WalletConnectSuccessModal = () => {
   const navigate = useNavigate()
   const modalRef = useRef(null)
   const user = useSelector((state) => state.user)
-  const [processing, setProcessing] = useState(false)
-  const [error, setError] = useState(null)
   const [extensions, setExtensions] = useState(getCompatibleExtensions());
 
-  const closeModal = () => {
+  const closeModal = useCallback( () => {
     dispatch(setSuccessWalletModal(false))
-  }
+  }, [dispatch])
   
   useEffect(() => {
     function handler() {      
@@ -61,7 +59,7 @@ const WalletConnectSuccessModal = () => {
             const connectDidResult = await connectDid({did,})
             console.log('connect did result :: ', connectDidResult)
             if (connectDidResult?.status === 204) {
-              navigate('/link-credentail')
+              navigate('/link-credential')
             } else if (connectDidResult?.status === 202 && connectDidResult?.data?.data) {
               const data = connectDidResult?.data?.data
               const userData = data?.user || {}
@@ -79,10 +77,9 @@ const WalletConnectSuccessModal = () => {
         }
       } catch (error) {
         toast.info(`${error?.response?.statusText || 'Unexpected error'}`)
-        setProcessing(false)
       }
     },
-    [kilt],
+    [kilt, closeModal, dispatch, navigate],
   )
 
   return (
@@ -114,9 +111,9 @@ const WalletConnectSuccessModal = () => {
                     {`We would need you to verify your identity before you can list or invest in properties. This typically involves submitting personal information and supporting documents, such as a government-issued ID or proof of address. `}
                   </h5>
                 </div>
-                <button onClick={() => verifyIdentify(extensions[0])} className=' w-[213px] h-[60px] rounded-lg mt-[21px] bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px]'>
+                <button onClick={() => verifyIdentify(extensions[0])} className=' w-[213px] h-[60px] rounded-lg mt-[21px] bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px]'>
                   <div className=' flex flex-row items-center justify-center w-full h-full rounded-[7px] bg-white'>
-                    <h5 className=' font-graphik-semibold text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+                    <h5 className=' font-graphik-semibold text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>
                       {`Verify Identity`}
                     </h5>
                   </div>

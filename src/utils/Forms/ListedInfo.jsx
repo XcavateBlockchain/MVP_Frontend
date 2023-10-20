@@ -1,101 +1,116 @@
-import React from "react";
-import { BsCircle } from "react-icons/bs";
-const ListedInfo = () => {
+import React from 'react'
+const ListedInfo = ({ property, setProperty, onChangingPage }) => {
+  const onFormChange = (e) => {
+    let name = e.target.name
+    let value = e.target.value
+
+    setProperty({
+      ...property,
+      [name]: value,
+    })
+  }
+
+  const next = async () => {
+    onChangingPage(3)
+  }
+
   return (
     <>
-      <div className="container m-auto flex justify-center items-center  flex-col h-[100%]">
-        <div className="py-10 px-10 rounded-sm bg-white w-[60%] flex justify-center items-center  ">
-          <div className="w-[60%]">
-            <div className="mb-6">
+      <div className='container flex justify-center items-center flex-col mt-4'>
+        <div className='py-10 px-10 rounded-sm bg-white w-full flex justify-center items-center  '>
+          <div className=' w-full lg:w-1/2'>
+            <div className='mb-6'>
               <label
-                htmlFor="listedType"
-                className="block mb-2  text-sm font-bold text-gray-900 dark:text-black"
+                htmlFor='type'
+                className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
               >
-                Listing Type
+                {`Listing Type`}
               </label>
               <input
-                type="text"
-                id="name"
-                className="shadow-sm w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 "
-                placeholder="Sale,rent,lease"
+                type='text'
+                id='type'
+                name='type'
+                onChange={(e) => onFormChange(e)}
+                value={property?.type || ''}
+                className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                placeholder='Sale'
                 required
               />
             </div>
-            <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Listing Price
-              </label>
-              <input
-                type="number"
-                id="ptitle"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="Nikku Apartment"
-                required
-              />
+            <div className=''>
+              <div className='relative z-0 w-full mb-6 group'>
+                <label
+                  htmlFor='price'
+                  className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
+                >
+                  {`Listing Price`}
+                </label>
+                <div className='w-full grid grid-cols-2 gap-4'>
+                  <input
+                    type='number'
+                    id='price'
+                    name='price'
+                    onChange={(e) => onFormChange(e)}
+                    value={property?.price || ''}
+                    className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                    placeholder='0.00'
+                    required
+                  />
+                  <input
+                    type='number'
+                    id='priceXCAV'
+                    name='priceXCAV'
+                    className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                    placeholder='0.00'
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="relative z-0 w-full mb-6 group">
-            <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Listing Price
-              </label>
-              <input
-                type="number"
-                id="ptype"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="House , Apartment , Land"
-                required
-              />
+            <div className=''>
+              <div className='relative z-0 w-full mb-6 group'>
+                <label
+                  htmlFor='email'
+                  className=' font-graphik-medium text-headers text-lg tracking-[0.45px]'
+                >
+                  {`Estimated Rental Income`}
+                </label>
+                <div className='grid grid-cols-2 gap-4'>
+                  <input
+                    type='number'
+                    id='rentalIncome'
+                    name='rentalIncome'
+                    onChange={(e) => onFormChange(e)}
+                    value={property?.rentalIncome || ''}
+                    className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                    placeholder='0.00'
+                    required
+                  />
+                  <input
+                    type='number'
+                    id='rentalIncomeXCAV'
+                    name='rentalIncomeXCAV'
+                    className=' border-2 border-solid border-form border-opacity-[0.5] h-[52px] rounded-lg block w-full outline-none mt-2 p-4 font-graphik-regular text-lg trackign-[0.45px] text-body placeholder:text-headers placeholder:opacity-[0.2]'
+                    placeholder='0.00'
+                    required
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="grid md:grid-cols-2 md:gap-6">
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Estimated Rental Income
-              </label>
-              <input
-                type="number"
-                id="ptitle"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="Nikku Apartment"
-                required
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-            <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-bold text-gray-900 dark:text-black"
-              >
-                Listing Price
-              </label>
-              <input
-                type="number"
-                id="ptype"
-                className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:-light"
-                placeholder="House , Apartment , Land"
-                required
-              />
-            </div>
-          </div>
             <button
-              type="submit"
-              className="text-white rounded-md font-bold w-full mt-10 button  focus:ring-4 focus:outline-none focus:ring-blue-300  text-sm px-5 py-2.5 text-center  dark:focus:ring-blue-800"
+              type='button'
+              onClick={next}
+              className=' flex flex-row justify-center items-center w-full h-[60px] rounded-lg mt-10 bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
             >
-              Next
+              <h4 className=' font-dmsans-bold text-lg text-white'>
+                {`Next`}
+              </h4>
             </button>
           </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ListedInfo;
+export default ListedInfo

@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowPrevSvgIcon, LoadingSvgIcon } from '../../assets/icons'
 import { create } from '../../api/user'
 import { getTerms, requestAttestation } from '../../api/sporran'
-import { exceptionToError } from '../../utilities/exceptionToError'
 import {
   apiWindow,
   getCompatibleExtensions,
@@ -30,8 +29,6 @@ const LinkCredential = () => {
     did: user.did || '',
   })
   const [session, setSession] = useState(null)
-  const [error, setError] = useState(null)
-  const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -46,7 +43,7 @@ const LinkCredential = () => {
   }, [])
 
   useEffect(() => {
-    if (user?.did) {
+    if (user?.did && !formData.did) {
       setFormData({
         ...formData,
         did: user.did
@@ -89,8 +86,6 @@ const LinkCredential = () => {
   }
 
   const handleClaim = async () => {
-    setError(undefined)
-
     let sporranSession = session
 
     try {
@@ -127,7 +122,7 @@ const LinkCredential = () => {
             const type = 'developerCredential'
             // define in advance how to handle the response from the extension
             await sporranSession.listen(async (message) => {
-              const attestedResult = await requestAttestation(message, sessionId)
+              const attestedResult = await requestAttestation({ ...message, type, }, sessionId)
               console.log('attestedResult :: ', attestedResult)
               if (attestedResult?.status === 201 && attestedResult?.data?.data) {
                 setLoading(false)
@@ -136,7 +131,6 @@ const LinkCredential = () => {
                 toast.success('Successfully requested attestation')
                 navigate('/user-role')
               }
-              setStatus('requested')
             })
 
             // encrypt submit-terms message on the backend
@@ -151,16 +145,8 @@ const LinkCredential = () => {
           setLoading(false)
           console.error(error)
         })
-    } catch (exception) {
-      const { message } = exceptionToError(exception)
-      if (message.includes('closed') || message.includes('Conflict')) {
-        setError('closed')
-      } else if (message.includes('Not authorized')) {
-        setError('unauthorized')
-      } else {
-        setError('unknown')
-        console.error(exception)
-      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -178,9 +164,9 @@ const LinkCredential = () => {
       <div className="container m-auto flex justify-center items-center flex-col h-[100%]">
         <div className=" flex flex-row items-center w-[60%] h-[68px] bg-white rounded-t-lg px-6 mb-4 mt-10">
           {/* radio button */}
-          <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2] p-[2px] mr-2'>
+          <div className='w-5 h-5 rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] mr-2'>
             <div className='flex flex-row items-center justify-center w-full h-full rounded-full bg-white'>
-              <div className='w-[8px] h-[8px] rounded-full bg-gradient-to-r from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]'>
+              <div className='w-[8px] h-[8px] rounded-full bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'>
               </div>
             </div>
           </div>
@@ -286,7 +272,7 @@ const LinkCredential = () => {
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div className="flex justify-center flex-col">
               <h5
                 className=" font-graphik-medium block mb-[6px] text-lg text-body"
@@ -315,8 +301,7 @@ const LinkCredential = () => {
                       ></path>
                     </svg>
                     <p className=" font-graphik-regular mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -358,8 +343,7 @@ const LinkCredential = () => {
                       ></path>
                     </svg>
                     <p className=" font-graphik-regular mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Click to upload</span>
                     </p>
                   </div>
                   <input
@@ -377,7 +361,8 @@ const LinkCredential = () => {
           <button
             type="button"
             onClick={handleClaim}
-            className=" flex flex-row items-center justify-center w-full h-[60px] mt-10 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#F5A483] via-[#E574A5] via-[#354E78] to-[#2F8BB2]"
+            disabled={loading}
+            className=" flex flex-row items-center justify-center w-full h-[60px] mt-10 rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]"
           >
             {loading? <LoadingSvgIcon /> : <h5 className=" font-graphik-bold text-lg text-white">
               {`Verify`}

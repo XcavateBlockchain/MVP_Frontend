@@ -16,6 +16,8 @@ import { TermsAndCondition } from './components/TermsAndCondition'
 import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import BuyProcess from './components/main/BuyProcess'
+import CreateCompany from './components/main/CreateCompany'
 
 function App() {
   return (
@@ -29,9 +31,11 @@ function App() {
         <Route path='/user-role' element={<UserRole />} />
         <Route path='/wallet-download' element={<WalletDownload />} />
         <Route path='/did-payment' element={<DidPayment />} />
-        <Route path='/link-credentail' element={<LinkCredential />} />
+        <Route path='/link-credential' element={<LinkCredential />} />
         <Route path='/terms-and-conditions' element={<TermsAndCondition />} />
-        <Route path='/property-detail' element={<PropertyDetail />} />
+        <Route path='/property-detail/:id' element={<PropertyDetail />} />
+        <Route path='/buy-process/:id' element={<BuyProcess />} />
+        <Route path='/create-company' element={<CreateCompany />} />
       </Routes>
       <ToastContainer />      
       <Footer /> 

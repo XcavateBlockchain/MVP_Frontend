@@ -37,14 +37,18 @@ module.exports = {
         "frame": '#FAFAFA',
         "verified": '#00C058',
         "progress": '#FF8C00',
+        "listed": "#2F8BB2",
+        "label": "#D9D9D9",
       },
       textColor: {
         "headers": '#1C1F20',
         "body": '#151719',
         "links": '#005FDB',
         "warning": '#FF000F',
+        "placeholder": "#8C8C8C",
       },
       borderColor: {
+        "button": '#1C1F20',
         "form": "#151719",
       }
     }
