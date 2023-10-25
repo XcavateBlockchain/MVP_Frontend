@@ -14,7 +14,7 @@ import { getAllPropertiesByUser } from '../../api/property'
 import { useSubstrateState } from '../../contexts/SubstrateContext'
 import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
-import { create, getLastId } from '../../api/collection'
+import { create } from '../../api/collection'
 import { toast } from 'react-toastify'
 import DevelopmentLoan from '../partials/profile/DevelopmentLoan'
 
@@ -75,18 +75,107 @@ const Profile = () => {
     return [address, { signer: injector.signer }]
   }
 
-  const listProperty = async (item) => {
-    try {
-      let collection = 1
-      const lastIdResult = await getLastId()
-      if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
-        const lastId = lastIdResult?.data?.data
-        collection = lastId + 1
-      }
+  // list property with uniques pallet
+  // const listProperty = async (item) => {
+  //   try {
+  //     let collection = 1
+  //     const lastIdResult = await getLastId()
+  //     if (lastIdResult.status === 200 && lastIdResult?.data?.data) {
+  //       const lastId = lastIdResult?.data?.data
+  //       collection = lastId + 1
+  //     }
       
+  //     const fromAcct = await getFromAcct()
+  //     // collection creation
+  //     await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
+  //       status.isFinalized
+  //         ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
+  //         : toast.info(`Collection creation: ${status.type}`)
+        
+  //       events.forEach(async ({ _, event: { data, method, section } }) => {
+  //         if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+  //           errorHandle({ data, method, section, target: 'Collection creation' })
+  //         } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
+  //           console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+      
+  //           let txs = []
+      
+  //           const nftAmount = 100
+  //           const price = nftAmount > 0? Math.round(Number(item?.price) / nftAmount) : 0
+      
+  //           if (price > 0) {
+  //             for (let index = 0; index < 100; index++) {
+  //               txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
+  //             }
+              
+  //             // nft minting
+  //             await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+  //               status.isFinalized
+  //                 ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
+  //                 : toast.info(`NFT minting: ${status.type}`)
+                
+  //               events.forEach(async ({ _, event: { data, method, section } }) => {
+  //                 if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+  //                   errorHandle({ data, method, section, target: 'NFT minting' })
+  //                 } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+  //                   console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+      
+  //                   txs = []
+      
+  //                   for (let index = 0; index < 100; index++) {
+  //                     txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
+  //                   }
+                    
+  //                   // setting price
+  //                   await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+  //                     status.isFinalized
+  //                       ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
+  //                       : toast.info(`Setting price: ${status.type}`)
+                      
+  //                     events.forEach(async ({ _, event: { data, method, section } }) => {
+  //                       if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+  //                         errorHandle({ data, method, section, target: 'Setting price' })
+  //                       } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+  //                         console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+  //                         // add collection data to the database
+  //                         const result = await create({
+  //                           id: collection,
+  //                           owner: polkadotAccount,
+  //                           propertyId: item?._id,
+  //                           page: 'Profile',
+  //                         })
+  //                         if (result?.status === 201) {
+  //                           const data = result?.data?.data
+  //                           setProperties(data)
+  //                           toast.success(`Listing successful!`)
+  //                         }
+  //                       }
+  //                     })
+  //                   })
+  //                 }
+  //               })
+  //             })
+  //           }
+  //         }
+  //       })
+  //     })
+  //   } catch (error) {
+  //     console.log('error :: ', error)
+  //   }
+  // }
+
+  const listProperty = async (item) => {
+    try {      
       const fromAcct = await getFromAcct()
+      let collectionIndex = null
+
+      item.isListed = true
+
+      delete item?.collect
+      delete item?.user
+
       // collection creation
-      await api.tx.uniques.create(collection, polkadotAccount).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
+      await api.tx.nftMarketplace.listObject(item?.price, item? JSON.stringify(item) : '').signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{     
         status.isFinalized
           ? toast.success(`Collection creation finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Collection creation: ${status.type}`)
@@ -94,66 +183,24 @@ const Profile = () => {
         events.forEach(async ({ _, event: { data, method, section } }) => {
           if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
             errorHandle({ data, method, section, target: 'Collection creation' })
+          } else if (section + ":" + method === 'nftMarketplace:ObjectListed' && status?.type !== 'InBlock' ) {
+            collectionIndex = data?.collectionIndex?.toNumber()
           } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock' ) {
             console.log('collection creation :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-      
-            let txs = []
-      
-            const nftAmount = 100
-            const price = nftAmount > 0? Math.round(Number(item?.price) / nftAmount) : 0
-      
-            if (price > 0) {
-              for (let index = 0; index < 100; index++) {
-                txs.push(api.tx.uniques.mint(collection, index + 1, polkadotAccount))
-              }
-              
-              // nft minting
-              await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-                status.isFinalized
-                  ? toast.success(`NFT minting finalized. Block hash: ${status.asFinalized.toString()}`)
-                  : toast.info(`NFT minting: ${status.type}`)
-                
-                events.forEach(async ({ _, event: { data, method, section } }) => {
-                  if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-                    errorHandle({ data, method, section, target: 'NFT minting' })
-                  } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                    console.log('nft minting :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-      
-                    txs = []
-      
-                    for (let index = 0; index < 100; index++) {
-                      txs.push(api.tx.uniques.setPrice(collection, index + 1, price, undefined))
-                    }
-                    
-                    // setting price
-                    await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-                      status.isFinalized
-                        ? toast.success(`Setting price finalized. Block hash: ${status.asFinalized.toString()}`)
-                        : toast.info(`Setting price: ${status.type}`)
-                      
-                      events.forEach(async ({ _, event: { data, method, section } }) => {
-                        if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-                          errorHandle({ data, method, section, target: 'Setting price' })
-                        } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-                          console.log('setting price :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-                          // add collection data to the database
-                          const result = await create({
-                            id: collection,
-                            owner: polkadotAccount,
-                            propertyId: item?._id,
-                            page: 'Profile',
-                          })
-                          if (result?.status === 201) {
-                            const data = result?.data?.data
-                            setProperties(data)
-                            toast.success(`Listing successful!`)
-                          }
-                        }
-                      })
-                    })
-                  }
-                })
-              })
+
+            // add collection data to the database
+            const result = await create({
+              id: collectionIndex,
+              owner: process.env.REACT_APP_NFT_MARKETPLACE_ID,
+              seller: polkadotAccount,
+              propertyId: item?._id,
+              page: 'Profile',
+              type: 'property',
+            })
+            if (result?.status === 201) {
+              const data = result?.data?.data
+              setProperties(data)
+              toast.success(`Listing successful!`)
             }
           }
         })
