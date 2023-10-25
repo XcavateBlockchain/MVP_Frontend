@@ -13,7 +13,6 @@ const BuyProcess = () => {
   const { api } = useSubstrateState()
   const [property, setProperty] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [availableNFTs, setAvailableNFTs] = useState(0)
   const [owner, setOwner] = useState('')
   const [nftPrice, setNftPrice] = useState('')
   const [collectionId, setCollectionId] = useState('')
@@ -32,19 +31,11 @@ const BuyProcess = () => {
         if (api && collection?.owner && collection?.id) {
           setOwner(collection?.owner)
           setCollectionId(collection?.id)
-          const result = await api.query.uniques.account.entries(collection?.owner, collection?.id)
-      
-          if (result.length > 0) {
-            const soldNFTs = result.filter(([key]) => {
-              const [address] = key.args
-              return address.toString() !== collection?.owner?.toString()
-            })
-            setAvailableNFTs(result.length - soldNFTs.length)
-          }
         }
       }
     }
-  }, [api])
+    // eslint-disable-next-line
+  }, [api, successOpen])
 
   useEffect(() => {
     if (params?.id) {
@@ -103,7 +94,7 @@ const BuyProcess = () => {
       <BuyProceedModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        availableNFTs={availableNFTs}
+        property={property}
         owner={owner}
         nftPrice={nftPrice}
         collectionId={collectionId}

@@ -6,11 +6,12 @@ import { web3FromSource } from '@polkadot/extension-dapp'
 import { bnFromHex } from '@polkadot/util'
 import { toast } from 'react-toastify'
 
-const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, collectionId, setSuccessOpen}) => {
+const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collectionId, setSuccessOpen}) => {
   const modalRef = useRef(null)
   const { api, keyring, polkadotAccount } = useSubstrateState()
   const [count, setCount] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [availableNFTs, setAvailableNFTs] = useState(0)
 
   useEffect(() => {
     const handler = (event) => {
@@ -24,6 +25,25 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
       window.removeEventListener('mousedown', handler)
     }
   }, [setIsOpen])
+  
+  useEffect(() => {
+    const getAvailableNFTs = async () => {
+      try {
+        if (property?.collect) {
+          const collection = property?.collect
+  
+          if (api && collection?.id) {
+            const availableNftsResult = await api.query.nftMarketplace.listedNftsOfCollection(collection?.id)
+            setAvailableNFTs(availableNftsResult.length)
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    getAvailableNFTs()
+  }, [api, property])
 
   const increase = () => {
     setCount(c => c < availableNFTs? c + 1 : c)
@@ -78,26 +98,53 @@ const BuyProceedModal = ({ isOpen, setIsOpen, availableNFTs, owner, nftPrice, co
     toast.warn(`${target} transaction Failed! ${section}.${method}::${errorInfo}`)
   }
 
+  // buy with uniques pallet
+  // const payment = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const fromAcct = await getFromAcct()
+      
+  //     let txs = []
+  //     const firstItemId = 100 - Number(availableNFTs) + 1
+
+  //     for (let index = firstItemId; index < firstItemId + count; index++) {
+  //       txs.push(api.tx.uniques.buyItem(collectionId, index, nftPrice))
+  //     }
+
+  //     await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+  //       status.isFinalized
+  //         ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
+  //         : toast.info(`Purchasing: ${status.type}`)
+        
+  //       events.forEach(async ({ _, event: { data, method, section } }) => {
+  //         if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+  //           errorHandle({ data, method, section, target: 'Purchasing' })
+  //         } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+  //           setLoading(false)
+  //           setIsOpen(false)
+  //           setSuccessOpen(true)
+  //           console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+  //         }
+  //       })
+  //     })
+  //   } catch (error) {
+  //     console.log('error :: ', error)
+  //   }
+  // }
+
   const payment = async () => {
     try {
       setLoading(true)
       const fromAcct = await getFromAcct()
-      
-      let txs = []
-      const firstItemId = 100 - Number(availableNFTs) + 1
 
-      for (let index = firstItemId; index < firstItemId + count; index++) {
-        txs.push(api.tx.uniques.buyItem(collectionId, index, nftPrice))
-      }
-
-      await api.tx.utility.batch(txs).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+      await api.tx.nftMarketplace.buyNft(collectionId, count).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
         status.isFinalized
           ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
           : toast.info(`Purchasing: ${status.type}`)
         
         events.forEach(async ({ _, event: { data, method, section } }) => {
           if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-            errorHandle({ data, method, section, target: 'Setting price' })
+            errorHandle({ data, method, section, target: 'Purchasing' })
           } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
             setLoading(false)
             setIsOpen(false)
