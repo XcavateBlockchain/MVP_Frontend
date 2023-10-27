@@ -207,7 +207,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
                     </h5>
                   </div>
                   <div className=' flex flex-col items-start mt-4'>
-                    <label htmlFor='amount' className=' font-graphik-regular text-lg text-headers opacity-70'>
+                    <label className=' font-graphik-regular text-lg text-headers opacity-70'>
                       {`Amount`}
                     </label>
                     <div className='flex flex-row items-center w-full h-[52px] rounded mt-1'>
@@ -225,7 +225,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
                     </div>
                   </div>
                   <div className=' flex flex-col items-start mt-4'>
-                    <label htmlFor='amount' className=' font-graphik-regular text-lg text-headers opacity-70'>
+                    <label className=' font-graphik-regular text-lg text-headers opacity-70'>
                       {`Sender wallet address`}
                     </label>
                     <div className='flex flex-row items-center w-full h-[52px] bg-label rounded mt-1 px-4'>
@@ -235,7 +235,7 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
                     </div>
                   </div>
                   <div className=' flex flex-col items-start mt-4'>
-                    <label htmlFor='amount' className=' font-graphik-regular text-lg text-headers opacity-70'>
+                    <label className=' font-graphik-regular text-lg text-headers opacity-70'>
                       {`Holding wallet address`}
                     </label>
                     <div className='flex flex-row items-center w-full h-[52px] bg-label rounded mt-1 px-4'>
