@@ -25,21 +25,31 @@ const Profile = () => {
   const [tab, setTab] = useState('profile')
   const [properties, setProperties] = useState([])
   const { api, keyring, polkadotAccount } = useSubstrateState()
-
-  const getProperties = async () => {
-    try {
-      const result = await getAllPropertiesByUser()
-      if (result?.status === 200) {
-        setProperties(result?.data?.data)
-      }
-    } catch (error) {
-      console.log('error :: ', error)
-    }
-  }
+  const [soldNfts, setSoldNfts] = useState(0)
+  const [mintedNfts, setMintedNfts] = useState(0)
+  const [listedProperties, setListedProperties] = useState(0)
+  const [totalPropertyValue, setTotalPropertyValue] = useState(0)
 
   useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const result = await getAllPropertiesByUser()
+        if (result?.status === 200) {
+          setProperties(result?.data?.data)
+        }
+  
+        const mintedNftsResult = await api.query.nftMarketplace.sellerListings(polkadotAccount)
+        setMintedNfts(mintedNftsResult.length)
+        
+        const listedPropertiesResult = await api.query.nfts.collectionAccount.entries(polkadotAccount)
+        setListedProperties(listedPropertiesResult.length)
+      } catch (error) {
+        console.log('error :: ', error)
+      }
+    }
+
     getProperties()
-  }, [])
+  }, [api, polkadotAccount])
 
   useEffect(() => {
     if (user) {
@@ -298,10 +308,10 @@ const Profile = () => {
       {/* summary cards */}
       <div className=' container mt-28'>
         <div className=' grid grid-cols-2 lg:grid-cols-4 gap-5'>
-          <SummaryCard title={`NFT'S Sold`} value={0} />
-          <SummaryCard title={`Total NFT's minted`} value={0} />
-          <SummaryCard title={`Properties listed`} value={0} />
-          <SummaryCard title={`Total  property value`} value={0} />
+          <SummaryCard title={`NFT'S Sold`} value={soldNfts} />
+          <SummaryCard title={`Total NFT's minted`} value={mintedNfts} />
+          <SummaryCard title={`Properties listed`} value={listedProperties} />
+          <SummaryCard title={`Total  property value`} value={totalPropertyValue} />
         </div>
       </div>
       {/* tabs */}
