@@ -53,6 +53,13 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
     setCount(c => c > 1? c - 1 : c)
   }
 
+  const onChangeCount = (e) => {
+    const val = e.target.value
+    if (0 <= Number(val) && Number(val) <= availableNFTs) {
+      setCount(val)
+    }
+  }
+
   const getFromAcct = async () => {
     const currentAccount = keyring.getPair(polkadotAccount)
     const {
@@ -134,25 +141,29 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
 
   const payment = async () => {
     try {
-      setLoading(true)
-      const fromAcct = await getFromAcct()
-
-      await api.tx.nftMarketplace.buyNft(collectionId, count).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
-        status.isFinalized
-          ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
-          : toast.info(`Purchasing: ${status.type}`)
-        
-        events.forEach(async ({ _, event: { data, method, section } }) => {
-          if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
-            errorHandle({ data, method, section, target: 'Purchasing' })
-          } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
-            setLoading(false)
-            setIsOpen(false)
-            setSuccessOpen(true)
-            console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
-          }
+      if (count > 0) {
+        setLoading(true)
+        const fromAcct = await getFromAcct()
+  
+        await api.tx.nftMarketplace.buyNft(collectionId, count).signAndSend(...fromAcct, ({ events = [], status, txHash }) =>{
+          status.isFinalized
+            ? toast.success(`Purchasing finalized. Block hash: ${status.asFinalized.toString()}`)
+            : toast.info(`Purchasing: ${status.type}`)
+          
+          events.forEach(async ({ _, event: { data, method, section } }) => {
+            if ((section + ":" + method) === 'system:ExtrinsicFailed' ) {
+              errorHandle({ data, method, section, target: 'Purchasing' })
+            } else if (section + ":" + method === 'system:ExtrinsicSuccess' && status?.type !== 'InBlock') {
+              setLoading(false)
+              setIsOpen(false)
+              setSuccessOpen(true)
+              console.log('purchasing nfts :: ', `❤️️ Transaction successful! tx hash: ${txHash}, Block hash: ${status.asFinalized.toString()}`)
+            }
+          })
         })
-      })
+      } else {
+        toast.info('Please select the amount of nfts')
+      }
     } catch (error) {
       console.log('error :: ', error)
     }
@@ -194,9 +205,19 @@ const BuyProceedModal = ({ isOpen, setIsOpen, property, owner, nftPrice, collect
                         {`+`}
                       </h4>
                     </button>
-                    <h5 className=' font-graphik-regular text-lg text-headers mx-4'>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className=" flex flex-row items-center w-[60px] h-[30px] mx-2 border-2 border-solid border-button rounded-lg px-2 font-dmsans-regular text-body placeholder:font-dmsans-regular text-lg"
+                      placeholder="0"
+                      required
+                      value={count}
+                      onChange={(e) => onChangeCount(e)}
+                    />
+                    {/* <h5 className=' font-graphik-regular text-lg text-headers mx-4'>
                       {count}
-                    </h5>
+                    </h5> */}
                     <button onClick={decrease} className=' flex flex-row items-center justify-center w-[30px] h-[30px] border-2 border-solid border-button rounded'>
                       <h4 className=' font-graphik-medium text-2xl text-headers'>
                         {`-`}
