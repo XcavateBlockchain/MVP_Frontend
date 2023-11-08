@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import SummaryCard from '../cards/SummaryCard'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { USER_ROLES } from '../../data/mockData'
 import { HomeSvgIcon, VerifiedSvgIcon } from '../../assets/icons'
 import BannerPlaceholderImage from '../../assets/webp/placeholder.webp'
-import MalePlaceholderImage from '../../assets/webp/male_placeholder_image.webp'
 import { useNavigate } from 'react-router-dom'
 import ProfileTab from '../partials/profile/Tab'
 import ProfileDatailTab from '../partials/profile/Detail'
@@ -17,9 +16,21 @@ import { bnFromHex } from '@polkadot/util'
 import { create } from '../../api/collection'
 import { toast } from 'react-toastify'
 import DevelopmentLoan from '../partials/profile/DevelopmentLoan'
+import { setUserData } from '../../redux/features/userSlice'
+
+import { useDropzone } from 'react-dropzone'
+import { CloseSvgIcon } from '../../assets/icons'
+import { updateProfileImage } from '../../api/user'
+import ImagePlaceholderIcon from '../../assets/common/image-placeholder.svg'
+
+const styles = {
+  profileImage: 'relative group/profile-image flex flex-row justify-center items-center max-w-[149px] w-full h-[149px] mt-[29px] rounded-full border border-dashed border-[#8B6EAE] hover:bg-purple-lighter/10 cursor-pointer',
+  bannerImage: 'relative group/banner-image flex flex-row justify-center items-center max-w-[287px] w-full h-[156px] mt-[30px] rounded-[14px] border border-dashed border-[#8B6EAE] hover:bg-purple-lighter/10 cursor-pointer',
+}
 
 const Profile = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const [userRole, setUserRole] = useState('')
   const [tab, setTab] = useState('profile')
@@ -29,6 +40,29 @@ const Profile = () => {
   const [mintedNfts, setMintedNfts] = useState(0)
   const [listedProperties, setListedProperties] = useState(0)
   const [totalPropertyValue, setTotalPropertyValue] = useState(0)
+
+  const [profileImage, setProfileImage] = useState(user?.userData?.profileImage || null)
+  const [bannerImage, setBannerImage] = useState(user?.userData?.bannerImage || null)
+
+  // profile image
+  const onProfileImageDrop = async (acceptedFiles) => {
+    if (acceptedFiles[0]) {
+      const listLoading = toast.loading('Please wait while we update your profile image...')
+      const updateProfileImageResult = await updateProfileImage({ profileImage: acceptedFiles[0], })
+      if (updateProfileImageResult.status === 200) {
+        dispatch(setUserData(updateProfileImageResult.data.data))
+        toast.update(listLoading, { render: 'Profile image was updated successfully', type: 'success', isLoading: false, autoClose: 3000 })
+        setProfileImage(acceptedFiles[0])
+      } else {
+        toast.update(listLoading, { render: 'Failed, try again later', type: 'success', isLoading: false, autoClose: 3000 })
+      }
+    }
+  }
+  const { getRootProps: getProfileImageRootProps, open: profileImageOpen, getInputProps: getProfileImageInputProps } = useDropzone({
+    onDrop: onProfileImageDrop,
+    noClick: true,
+    noKeyboard: true,
+  })
 
   useEffect(() => {
     const getProperties = async () => {
@@ -261,11 +295,28 @@ const Profile = () => {
         {/* profile data */}
         <div className=' absolute bottom-[-87px] flex flex-row items-end w-full h-[175px] pl-[50px]'>
           {/* profile image */}
-          <img
-            src={user?.userData?.profileImage || MalePlaceholderImage}
-            alt='profile'
-            className='w-[180px] h-[180px] rounded-full border-[5px] border-white'
-          />
+          <div className={styles.profileImage} {...getProfileImageRootProps()} onClick={profileImageOpen}>
+            <input {...getProfileImageInputProps()} />
+            {profileImage && <div className='absolute w-full h-full box-border'>
+              <picture><img src={typeof profileImage === 'string' ? profileImage : URL.createObjectURL(profileImage)} alt='user profile' className='min-w-[100%] max-w-[100%] min-h-[100%] max-h-[100%] rounded-full object-cover' /></picture>
+              <div className='absolute top-6 right-6 z-20' onClick={(e) => {
+                e.stopPropagation()
+                setProfileImage(null)
+                return
+              }}>
+                <CloseSvgIcon color='white' width={16} height={16} />
+              </div>
+            </div>}
+            <div className='absolute hidden group-hover/profile-image:block p-1 w-full h-full '>
+              <div className='w-full h-full rounded-full bg-black/40'>
+              </div>
+            </div>
+            <img
+              src={ImagePlaceholderIcon}
+              alt='profile'
+              className='min-w-[30px] max-w-[53px] w-full h-auto group-hover/profile-image:z-[1] group-hover/image:opacity-90'
+            />
+          </div>
           <div className=' w-full flex flex-row items-center justify-between h-[87px] ml-8'>
             <div className='flex flex-col justify-center'>
               <div className='flex flex-row items-center'>
