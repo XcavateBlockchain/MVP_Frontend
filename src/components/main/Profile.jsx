@@ -5,6 +5,7 @@ import moment from 'moment'
 import { USER_ROLES } from '../../data/mockData'
 import { HomeSvgIcon, VerifiedSvgIcon } from '../../assets/icons'
 import BannerPlaceholderImage from '../../assets/webp/placeholder.webp'
+import ProfilePlaceholderImage from '../../assets/webp/male_placeholder_image.webp'
 import { useNavigate } from 'react-router-dom'
 import ProfileTab from '../partials/profile/Tab'
 import ProfileDatailTab from '../partials/profile/Detail'
@@ -19,13 +20,14 @@ import DevelopmentLoan from '../partials/profile/DevelopmentLoan'
 import { setUserData } from '../../redux/features/userSlice'
 
 import { useDropzone } from 'react-dropzone'
-import { CloseSvgIcon } from '../../assets/icons'
-import { updateProfileImage } from '../../api/user'
+// import { CloseSvgIcon } from '../../assets/icons'
+import { updateBannerImage, updateProfileImage } from '../../api/user'
 import ImagePlaceholderIcon from '../../assets/common/image-placeholder.svg'
+import Staking from '../partials/profile/Staking'
 
 const styles = {
-  profileImage: 'relative group/profile-image flex flex-row justify-center items-center max-w-[149px] w-full h-[149px] mt-[29px] rounded-full border border-dashed border-[#8B6EAE] hover:bg-purple-lighter/10 cursor-pointer',
-  bannerImage: 'relative group/banner-image flex flex-row justify-center items-center max-w-[287px] w-full h-[156px] mt-[30px] rounded-[14px] border border-dashed border-[#8B6EAE] hover:bg-purple-lighter/10 cursor-pointer',
+  profileImage: 'relative group/profile-image flex flex-row justify-center items-center max-w-[149px] w-full h-[149px] mt-[29px] rounded-full border border-[6px] border-white hover:bg-purple-lighter/10 cursor-pointer',
+  bannerImage: 'relative group/banner-image flex flex-row justify-center items-center w-full h-[300px] rounded-t-lg hover:bg-purple-lighter/10 cursor-pointer',
 }
 
 const Profile = () => {
@@ -60,6 +62,26 @@ const Profile = () => {
   }
   const { getRootProps: getProfileImageRootProps, open: profileImageOpen, getInputProps: getProfileImageInputProps } = useDropzone({
     onDrop: onProfileImageDrop,
+    noClick: true,
+    noKeyboard: true,
+  })
+
+  // banner image
+  const onBannerImageDrop = async (acceptedFiles) => {
+    if (acceptedFiles[0]) {
+      const listLoading = toast.loading('Please wait while we update your banner image...')
+      const updateBannerImageResult = await updateBannerImage({ bannerImage: acceptedFiles[0], })
+      if (updateBannerImageResult.status === 200) {
+        dispatch(setUserData(updateBannerImageResult.data.data))
+        toast.update(listLoading, { render: 'Banner image was updated successfully', type: 'success', isLoading: false, autoClose: 3000 })
+        setBannerImage(acceptedFiles[0])
+      } else {
+        toast.update(listLoading, { render: 'Failed, try again later', type: 'success', isLoading: false, autoClose: 3000 })
+      }
+    }
+  }
+  const { getRootProps: getBannerImageRootProps, open: bannerImageOpen, getInputProps: getBannerImageInputProps } = useDropzone({
+    onDrop: onBannerImageDrop,
     noClick: true,
     noKeyboard: true,
   })
@@ -287,26 +309,56 @@ const Profile = () => {
       {/* banner */}
       <div className=' relative container'>
         {/* banner image */}
-        <img
+        {/* <img
           src={user?.userData?.bannerImage || BannerPlaceholderImage}
           alt='banner'
           className='w-full h-[300px] object-cover rounded-t-lg'
-        />
+        /> */}
+        <div className={styles.bannerImage} {...getBannerImageRootProps()} onClick={bannerImageOpen}>
+          <input {...getBannerImageInputProps()} />
+          {bannerImage ? (<div className='absolute w-full h-full box-border'>
+            <picture><img src={typeof bannerImage === 'string' ? bannerImage : URL.createObjectURL(bannerImage)} alt='user banner' className='min-w-[100%] max-w-[100%] min-h-[100%] max-h-[100%] rounded-t-lg object-cover' /></picture>
+            {/* <div className='absolute top-6 right-6 z-20' onClick={(e) => {
+              e.stopPropagation()
+              setBannerImage(null)
+              return
+            }}>
+              <CloseSvgIcon color='white' width={16} height={16} />
+            </div> */}
+          </div>) : (
+            <div className='absolute w-full h-full box-border'>
+              <img src={BannerPlaceholderImage} alt='user banner' className='min-w-[100%] max-w-[100%] min-h-[100%] max-h-[100%] rounded-t-lg object-cover' />
+            </div>
+          )}
+          <div className='absolute hidden group-hover/banner-image:block p-1 w-full h-full '>
+            <div className='w-full h-full rounded-t-lg bg-black/40'>
+            </div>
+          </div>
+          <img
+            src={ImagePlaceholderIcon}
+            alt='banner'
+            className='min-w-[30px] max-w-[53px] w-full h-auto group-hover/banner-image:z-[1] group-hover/image:opacity-90'
+          />
+        </div>
         {/* profile data */}
         <div className=' absolute bottom-[-87px] flex flex-row items-end w-full h-[175px] pl-[50px]'>
           {/* profile image */}
           <div className={styles.profileImage} {...getProfileImageRootProps()} onClick={profileImageOpen}>
             <input {...getProfileImageInputProps()} />
-            {profileImage && <div className='absolute w-full h-full box-border'>
+            {profileImage ? (<div className='absolute w-full h-full box-border'>
               <picture><img src={typeof profileImage === 'string' ? profileImage : URL.createObjectURL(profileImage)} alt='user profile' className='min-w-[100%] max-w-[100%] min-h-[100%] max-h-[100%] rounded-full object-cover' /></picture>
-              <div className='absolute top-6 right-6 z-20' onClick={(e) => {
+              {/* <div className='absolute top-6 right-6 z-20' onClick={(e) => {
                 e.stopPropagation()
                 setProfileImage(null)
                 return
               }}>
                 <CloseSvgIcon color='white' width={16} height={16} />
+              </div> */}
+            </div>) : (
+              <div className='absolute w-full h-full box-border'>
+                <img src={ProfilePlaceholderImage} alt='user profile' className='min-w-[100%] max-w-[100%] min-h-[100%] max-h-[100%] rounded-full object-cover' />
               </div>
-            </div>}
+            )}
             <div className='absolute hidden group-hover/profile-image:block p-1 w-full h-full '>
               <div className='w-full h-full rounded-full bg-black/40'>
               </div>
@@ -371,6 +423,7 @@ const Profile = () => {
       {tab === 'profile' && <ProfileDatailTab />}
       {tab === 'properties' && properties.length > 0 && <ListedTab properties={properties} listProperty={listProperty} />}
       {tab === 'development-loan' && <DevelopmentLoan />}
+      {tab === 'staking' && <Staking />}
     </section>
   )
 }
