@@ -23,6 +23,7 @@ import MoonSvgIcon from './moon.svg'
 import DoubleArrowSvgIcon from './double-arrow.svg'
 import HomeSvgIcon from './home.svg'
 import SearchSvgIcon from './search.svg'
+import StakingSvgIcon from './staking.svg'
 
 export {
   WalletSvgIcon,
@@ -50,4 +51,5 @@ export {
   DoubleArrowSvgIcon,
   HomeSvgIcon,
   SearchSvgIcon,
+  StakingSvgIcon,
 }

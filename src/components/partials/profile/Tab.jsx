@@ -1,5 +1,5 @@
 import React from 'react'
-import { BellSvgIcon, FolderShareSvgIcon, FolderSvgIcon, UserSvgIcon, WalletSvgIcon, TransactionSvgIcon } from '../../../assets/icons'
+import { BellSvgIcon, FolderShareSvgIcon, FolderSvgIcon, UserSvgIcon, WalletSvgIcon, TransactionSvgIcon, StakingSvgIcon } from '../../../assets/icons'
 
 const ProfileTab = ({ tab, setTab }) => {
   return (
@@ -21,6 +21,12 @@ const ProfileTab = ({ tab, setTab }) => {
           <FolderShareSvgIcon opacity={tab === 'development-loan' ? 0.8 : 0.6} />
           <h4 className={` ${tab === 'development-loan' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
             {`Development loan`}
+          </h4>
+        </div>
+        <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('staking')}>
+          <StakingSvgIcon opacity={tab === 'staking' ? 0.8 : 0.6} />
+          <h4 className={` ${tab === 'staking' ? 'font-graphik-medium' : 'font-graphik-regular'} font-graphik-medium text-xl text-headers opacity-80 ml-1`}>
+            {`Staking`}
           </h4>
         </div>
         <div className=' flex flex-row items-center cursor-pointer' onClick={() => setTab('transactions')}>

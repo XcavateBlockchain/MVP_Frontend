@@ -48,3 +48,14 @@ export const updateProfileImage = (data) => {
     },
   })
 }
+
+export const updateBannerImage = (data) => {
+  const token = getToken()
+
+  return client.post('/user/update-banner-image', data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
