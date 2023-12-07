@@ -60,6 +60,12 @@ body {
   background-size: 10rem 10rem;
 }
 .heading {
+  background:  linear-gradient(90deg, #ED75A7 -16.18%, #43517A 60.86%, #3194BB 119.03%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+/* .heading {
   font-style: normal;
   line-height: 64px;
   text-align: center;
@@ -73,7 +79,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
+} */
 .connect-wallet-button {
   display: flex;
   flex-direction: column;
@@ -107,13 +113,14 @@ body {
   color: white;
 }
 .button {
-  background: radial-gradient(
+  /* background: radial-gradient(
     182.97% 1567.37% at -2.4% 100%,
     #f5a483 0%,
     #e574a5 40.52%,
     #354e78 65.22%,
     #2f8bb2 100%
-  );
+  ); */
+  background:  linear-gradient(90deg, #ED75A7 -16.18%, #43517A 60.86%, #3194BB 119.03%);
 }
 .home-para {
   width: 914px;

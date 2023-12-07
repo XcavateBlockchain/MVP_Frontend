@@ -18,16 +18,16 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className='bg-white  shadow-sm fixed top-0 left-0 w-full z-20  dark:border-gray-600 '>
-        <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+      <nav className='fixed top-0 left-0 z-20 w-full bg-white shadow-sm dark:border-gray-600 '>
+        <div className='flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto'>
           <a href='/' className='flex items-center'>
             <img src={logo} className='h-12 mr-3' alt='Flowbite Logo' />
           </a>
           <div className='flex flex-row items-center md:order-2'>
-            <span className=' mr-3'>
+            <span className='mr-3 '>
               <MoonSvgIcon />
             </span>
-            <span className=' mr-10'>
+            <span className='mr-10 '>
               <BellSvgIcon opacity={1} />
             </span>
             <button
@@ -35,7 +35,7 @@ const Navbar = () => {
               onClick={() => toggleWalletModal()}
               className=' flex flex-row items-center justify-center w-40 h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
             >
-              <h5 className=' font-graphik-semibold text-base text-white mr-2'>
+              <h5 className='mr-2 text-base text-white font-graphik-semibold'>
                 {user?.did ? getDidAbbreviation(user?.did) : `CONNECT`}
               </h5>
               <WalletSvgIcon color='white' width={18} height={18} />
@@ -64,14 +64,14 @@ const Navbar = () => {
             </button>
           </div>
           <div
-            className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1 text-black'
+            className='items-center justify-between hidden w-full text-black md:flex md:w-auto md:order-1'
             id='navbar-sticky'
           >
-            <ul className='flex flex-col p-4 md:p-0 mt-4 font-graphik-regular text-headers text-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white '>
+            <ul className='flex flex-col p-4 mt-4 text-lg md:p-0 font-graphik-regular text-headers bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white '>
               <li>
                 {/* <a
                   href='#'
-                  className='block py-2 pl-3 pr-4 text-white main-color rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
+                  className='block py-2 pl-3 pr-4 text-white rounded main-color md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
                   aria-current='page'
                 >
                   Marketplace
@@ -85,13 +85,13 @@ const Navbar = () => {
                 >
                   Dev-Loan
                 </a> */}
-                <Link to='/real-estate'>Estate</Link>
+                <Link to='#'>Loans</Link>
               </li>
               <li>
                 <Link to='#'>Stake</Link>
               </li>
               <li>
-                <Link to='/list-property'>List-Property</Link>
+                <Link to='/create-company'>Company</Link>
               </li>
             </ul>
           </div>
