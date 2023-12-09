@@ -2,6 +2,7 @@
   "name": "mvp_frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://main.d3vvm0zvfbmmmm.amplifyapp.com/",
   "dependencies": {
     "@kiltprotocol/sdk-js": "^0.33.0",
     "@polkadot/api": "^10.9.1",
