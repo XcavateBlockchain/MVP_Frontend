@@ -19,13 +19,13 @@ const EstateAssetCard = ({ item, listProperty }) => {
 
   return (
     <>
-      <div className='max-w-sm mt-2 bg-[#FEFEFE] relative rounded-lg shadow'>
+      <div className='mt-2 bg-[#FEFEFE] relative rounded-lg shadow'>
         <img
           className='rounded-t-lg w-[100%] h-[281px] object-cover'
           src={item.images[0] || ''}
           alt='property'
         />
-        <div className='p-3 absolute top-0 '>
+        <div className='absolute top-0 p-3 '>
           {item.isListed ? (
             <span className=' flex flex-row items-center bg-white mr-2 px-2.5 py-0.5 rounded'>
               <StatusSvgIcon color='#2F8BB2' />
@@ -63,13 +63,13 @@ const EstateAssetCard = ({ item, listProperty }) => {
               <div className='flex '>
                 <a className='flex items-center' href={item.googleMapCode}>
                   <LocationSvgIcon />
-                  <h5 className=' font-graphik-regular text-lg text-body mx-2'>
+                  <h5 className='mx-2 text-lg font-graphik-regular text-body'>
                     {abbreviation(`${item?.address?.street} ${item?.address?.city} ${item?.address?.zipcode}` || '', 20)}
                   </h5>
                 </a>
               </div>
               <div className='flex justify-between mt-5'>
-                <div className=' flex flex-row items-center'>
+                <div className='flex flex-row items-center '>
                   <div className='flex mr-4'>
                     <BedSvgIcon color='#151719' />
                     <h5 className=' font-graphik-regular text-lg text-body tracking-[0.45px] ml-2'>
@@ -88,10 +88,10 @@ const EstateAssetCard = ({ item, listProperty }) => {
             <img
               src={item?.user?.profileImage || Logo}
               alt='dev-logo'
-              className='w-16 h-16 object-cover rounded-full'
+              className='object-cover w-16 h-16 rounded-full'
             />
           </div>
-          <div className='flex mt-7'>
+          <div className='flex justify-between w-full mt-7'>
             <button
               onClick={detail}
               className=' flex w-[135px] h-[53px] rounded-lg bg-gradient-to-r from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%] p-[2px] hover:scale-[1.01] active:scale-100 hover:shadow-sm mr-4'>
@@ -107,7 +107,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
                   onClick={() => listProperty(item)}
                   className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
                 >
-                  <h5 className=' font-dmsans-bold text-base text-white'>
+                  <h5 className='text-base text-white font-dmsans-bold'>
                     {`List`}
                   </h5>
                 </button>}
@@ -115,7 +115,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
                   onClick={() => buy()}
                   className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
                 >
-                  <h5 className=' font-dmsans-bold text-base text-white'>
+                  <h5 className='text-base text-white font-dmsans-bold'>
                     {`Buy`}
                   </h5>
                 </button>}
@@ -124,7 +124,7 @@ const EstateAssetCard = ({ item, listProperty }) => {
               <button
                 className=' flex flex-row items-center justify-center w-[135px] h-[53px] rounded-md bg-gradient-to-r hover:scale-[1.01] hover:shadow-sm active:scale-[1] from-[#E574A5_32.81%] via-[#354E78_67.73%] to-[#2F8BB2_100%]'
               >
-                <h5 className=' font-dmsans-bold text-base text-white'>
+                <h5 className='text-base text-white font-dmsans-bold'>
                   {`Verify`}
                 </h5>
               </button>
