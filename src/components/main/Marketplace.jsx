@@ -34,12 +34,12 @@ const Marketplace = () => {
 
   return (
     <>
-      <div className='text-center w-full mt-32'>
-        <h2 className=' font-graphik-bold text-2xl text-body opacity-80'>
+      <div className='flex items-center justify-center w-full mt-32 text-center'>
+        <h2 className='text-2xl font-graphik-bold text-body opacity-80'>
           {`Explore The Marketplace`}
         </h2>
       </div>
-      <div className='px-4  py-10 grid grid-cols-3 gap-4 container mx-auto'>
+      <div className='container grid grid-cols-3 gap-y-6 gap-x-[19px] px-20 py-10 mx-auto'>
         {properties.length > 0 && properties.map((item, index) => {
           return <EstateAssetCard key={index} item={item} />
         })}
