@@ -37,7 +37,7 @@ const Profile = () => {
   const [userRole, setUserRole] = useState('')
   const [tab, setTab] = useState('profile')
   const [properties, setProperties] = useState([])
-  const { api, keyring, polkadotAccount } = useSubstrateState()
+  const { api, apiState, keyring, polkadotAccount } = useSubstrateState()
   const [soldNfts, setSoldNfts] = useState(0)
   const [mintedNfts, setMintedNfts] = useState(0)
   const [listedProperties, setListedProperties] = useState(0)
@@ -93,7 +93,7 @@ const Profile = () => {
         if (result?.status === 200) {
           setProperties(result?.data?.data)
         }
-  
+
         const mintedNftsResult = await api.query.nftMarketplace.sellerListings(polkadotAccount)
         setMintedNfts(mintedNftsResult.length)
         
@@ -104,8 +104,8 @@ const Profile = () => {
       }
     }
 
-    getProperties()
-  }, [api, polkadotAccount])
+    if (apiState === 'READY') getProperties()
+  }, [api, apiState, polkadotAccount])
 
   useEffect(() => {
     if (user) {
